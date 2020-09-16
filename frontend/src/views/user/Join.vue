@@ -2,16 +2,28 @@
     <div class="my-auto">
         <v-container >
             <v-form>
-                <p class="text-center" style="font-size:1.3rem; font-weight:bold;">회원가입</p>
+                <p class="text-center" style="font-size:1.3rem; font-weight:bold;">간편 회원가입</p>
                 <v-row>
                     <v-col cols="3"></v-col>
                     <v-col cols="6">
                         <v-row>
-                            <v-text-field
-                                label="E-mail"
-                                required
-                                ></v-text-field>
-                                <v-btn class="mt-5 ml-2" small outlined color="indigo">중복 확인</v-btn>
+                            <div style="width:46%">
+                                <v-text-field
+                                    label="E-mail"
+                                    required
+                                    ></v-text-field>
+                            </div>
+                                    <v-btn class="mt-5 ml-2" style="padding:0 0.5rem;" small outlined color="indigo">중복 확인</v-btn>
+
+                            <div style="width:25%">
+                                <v-text-field
+                                    class="ml-2"
+                                    label="인증번호"
+                                    required
+                                    ></v-text-field>
+                                
+                            </div>
+                                    <v-btn sm="2" class="mt-5 ml-2" style="padding:0 0.5rem;" small outlined color="indigo">인증 확인</v-btn>
                         </v-row>
                         
                         <v-row>
@@ -87,5 +99,4 @@
 </script>
 
 <style>
-
 </style>

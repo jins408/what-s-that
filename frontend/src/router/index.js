@@ -5,9 +5,13 @@ import VueRouter from 'vue-router'
 import Join from '../views/user/Join.vue'
 import Login from '../views/user/Login.vue'
 
+// Main
+import Main from '../views/main/Main.vue'
+
 Vue.use(VueRouter)
 
 const routes = [
+  // user
   {
     path: '/user/join',
     name: Join,
@@ -18,7 +22,12 @@ const routes = [
     name: Login,
     component: Login
   },
-  
+  // main
+  {
+    path: '/main',
+    name: Main,
+    component: Main
+  },
 ]
 
 const router = new VueRouter({
