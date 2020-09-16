@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 // Join
 import Join from '../views/user/Join.vue'
 import Login from '../views/user/Login.vue'
+import Mypage from '../views/user/Mypage.vue'
 
 Vue.use(VueRouter)
 
@@ -18,6 +19,11 @@ const routes = [
     name: Login,
     component: Login
   },
+  {
+    path: '/user/mypage',
+    name: Mypage,
+    component: Mypage
+  }
   
 ]
 
