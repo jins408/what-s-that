@@ -1,0 +1,39 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /dictionary
+    
+    
+spring:
+  resources:
+    static-locations: classpath:/
+  
+
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 1MB
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+
+
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://j3b202.p.ssafy.io/ssafyPJT2
+    username: ssafy
+    password: ssafy
+
+
+  mail:
+       host: smtp.gmail.com
+       port: 587
+       username: koreanculturedictionary@gmail.com
+       password: 1qa2ws3ed!@#
+       protocol: smtp
+       tls: true
+       properties.mail.smtp:
+           auth: true
+           starttls.enable: true
+           ssl.trust: smtp.gmail.com
+    
