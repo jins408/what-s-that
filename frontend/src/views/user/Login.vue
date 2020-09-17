@@ -12,14 +12,15 @@
             <v-row >
               <v-col class="mx-auto"  cols="12" sm="4">
                       <v-text-field
-                        placeholder="아이디(이메일)입력해주세요."
+                        label="아이디(이메일)입력해주세요."
                         background-color="white"
                         filled
-                        rounded                    
+                        rounded
+
                       ></v-text-field>         
                       <v-text-field
                         type="password"
-                        placeholder="영문, 숫자 혼용 8자 이상"
+                        label="영문, 숫자 혼용 8자 이상"
                         background-color="white"
                         filled
                         rounded              
