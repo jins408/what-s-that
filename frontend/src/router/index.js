@@ -19,7 +19,7 @@ const routes = [
     component: Join
   },
   {
-    path: '/user/login',
+    path: '/',
     name: Login,
     component: Login
   },
