@@ -33,7 +33,7 @@
     </div>
     <div>
       <p class="text-center" style="margin-top:14rem;">
-        <span style="font-size:2rem; font-wegiht:bold; color:red;">SEARCH</span>
+        <span style="font-size:2rem; font-wegiht:bold; color:red;">SEARCH </span>
         <span style="font-size:2rem; font-wegiht:bold;">ANYTHING</span>
       </p>
       <v-col cols="12" sm="6" class="mx-auto">
