@@ -4,7 +4,7 @@
 
 ###  팀장: 전병규(Back-end)
 
-###  팀원: 김석환(Front-end), 김진실(Front-end), 장진우(Back-end, AI), 이동현(Server, AI)  
+###  팀원: 김석환(Front-end), 김진실(Front-end), 장진우(Back-end, AI), 윤영현(Server, AI)  
 
 ### 1. 프로젝트 개요  
 
