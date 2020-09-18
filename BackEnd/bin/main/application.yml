@@ -20,16 +20,16 @@ spring:
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://127.0.0.1:3306/ai
-    username: root
-    password: 1234
+    url: jdbc:mariadb://j3b202.p.ssafy.io/ssafyPJT2
+    username: ssafy
+    password: ssafy
 
 
   mail:
        host: smtp.gmail.com
        port: 587
        username: koreanculturedictionary@gmail.com
-       password: wasd123#
+       password: 1qa2ws3ed!@#
        protocol: smtp
        tls: true
        properties.mail.smtp:
