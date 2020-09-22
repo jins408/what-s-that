@@ -9,6 +9,9 @@ import Mypage from '../views/user/Mypage.vue'
 // Main
 import Main from '../views/main/Main.vue'
 
+// Post
+import PostDetail from '../views/post/PostDetail.vue'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -19,7 +22,7 @@ const routes = [
     component: Join
   },
   {
-    path: '/user/login',
+    path: '/',
     name: Login,
     component: Login
   },
@@ -36,6 +39,13 @@ const routes = [
     path: '/main',
     name: Main,
     component: Main
+  },
+
+  // post
+  {
+    path: '/postdetail',
+    name: PostDetail,
+    component: PostDetail
   },
 
 ]
