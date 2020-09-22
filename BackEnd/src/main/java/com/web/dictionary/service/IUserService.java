@@ -1,6 +1,7 @@
 package com.web.dictionary.service;
 
 import com.web.dictionary.dto.SignupRequest;
+import com.web.dictionary.dto.User;
 
 public interface IUserService {
 	
@@ -15,5 +16,11 @@ public interface IUserService {
 	public void deleteAuthcode(String email);
 
 	public int checkOverlapAuthcode(String email);
+
+	public User logIn(String email, String password);
+
+	public String getUserSalt(String email);
+
+	public User getUserByEmail(String email);
 
 }
