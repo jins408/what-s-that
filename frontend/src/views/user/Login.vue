@@ -7,32 +7,34 @@
     </div>
   <div style="margin-top : 130px;"> 
     <v-container >
-          <h2 class="text-center mb-3">로그인</h2>
+          <h3 class="text-center mb-3">로그인</h3>
           <v-form>
             <v-row >
               <v-col class="mx-auto"  cols="12" sm="4">
                       <v-text-field
-                        placeholder="아이디(이메일)입력해주세요."
+                        label="아이디(이메일)입력해주세요."
                         background-color="white"
                         filled
-                        rounded                    
+                        rounded
+
                       ></v-text-field>         
                       <v-text-field
                         type="password"
-                        placeholder="영문, 숫자 혼용 8자 이상"
+                        label="영문, 숫자 혼용 8자 이상"
                         background-color="white"
                         filled
                         rounded              
                       ></v-text-field>
-                      <v-btn rounded color="primary" style="width:100%; height:19%;">로그인</v-btn>
+                      <v-btn rounded color="primary" style="width:100%; height:19%; font-size: 1rem">로그인</v-btn>
 
                       <div class=" d-flex justify-end">
                         <v-btn text style="color: white;">비회원으로 이용하기</v-btn>
                       </div>
-                      <hr class="mt-5">
+                      <!-- <p style="border-style: solid">solid</p> -->
+                      <hr class="mt-3" style="border: 1px solid white">
                       <div class="d-flex justify-end">
-                        <h5 style="color: white; margin-right:50%;" class="mt-1">카카오로 로그인하기</h5>
-                        <img src="../../assets/kakao.png" style="width:50px; height:50px;" class="mt-1" alt="">
+                        <h5 style="color: white; margin-right:43%; font-size: 1rem " >카카오로 로그인하기</h5>
+                        <img src="../../assets/kakao.png" style="width:50px; height:50px;"  alt="">
                       </div>
                       
                 </v-col>
