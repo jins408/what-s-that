@@ -73,12 +73,19 @@ export default {
       checkemail(){
         axios
         .get(`${baseURL}/dictionary/user/emailoverlap/${this.joindata.email}`)
-        .then(()=>{
-          alert(`${this.joindata.email} 확인되었습니다.`)
+        .then((res)=>{
+          alert(res.data.message)
+          if(res.data.message == "success"){
+            alert(`${this.joindata.email} 확인되었습니다.`)
+          }
+          else if(res.data.message=="fail"){
+            alert(`${this.joindata.email}이미 사용중인 이메일입니다.`)
+
+          }
         })
         .catch((err)=>{
-          alert(`${this.joindata.email}이미 사용중인 이메일입니다.`)
-          console.log(err)
+           alert(`오류`)
+          console.log(err.data)
         })
       },
       checkauthnum(){
