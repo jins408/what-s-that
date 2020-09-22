@@ -38,7 +38,7 @@ public class JwtServiceImpl implements JwtService {
 		headers.put("alg", "HS256");
 	    
 		Map<String, Object> payloads = new HashMap<>();
-		Long expiredTime = 1000 * 60l;//1분
+		Long expiredTime = 1000 * 60 * 60 * 24l;//24시간
 		Date now = new Date();
 		System.out.println("now "+now);
 		now.setTime(now.getTime() + expiredTime);
