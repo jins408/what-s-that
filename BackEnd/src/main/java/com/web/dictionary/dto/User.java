@@ -16,6 +16,8 @@ public class User {
 	private String profile;
 	@Setter
 	private String introduce;
+	@Setter
+	private String token;
 	
 	
 	

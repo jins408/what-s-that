@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.web.dictionary.dto.SignupRequest;
+import com.web.dictionary.dto.User;
 
 @Mapper
 public interface UserDao {
@@ -19,6 +20,12 @@ public interface UserDao {
 	public void deleteAuthcode(@Param("email") String email);
 
 	public int checkOverlapAuthcode(@Param("email") String email);
+
+	public User logIn(@Param("email") String email, @Param("password") String password);
+
+	public String getUserSalt(@Param("email") String email);
+
+	public User getUserByEmail(@Param("email") String email);
 
 
 }

@@ -11,25 +11,27 @@
                                 <v-text-field
                                     label="E-mail"
                                     required
+                                    v-model="joindata.email"
                                     ></v-text-field>
                             </div>
-                                    <v-btn class="mt-5 ml-2" style="padding:0 0.5rem;" small outlined color="indigo">중복 확인</v-btn>
+                                    <v-btn class="mt-5 ml-2" style="padding:0 0.5rem;" small outlined color="indigo" @click="checkemail">중복 확인</v-btn>
 
                             <div style="width:25%">
                                 <v-text-field
                                     class="ml-2"
                                     label="인증번호"
+                                    v-model="authnum"
                                     required
                                     ></v-text-field>
                                 
                             </div>
-                                    <v-btn sm="2" class="mt-5 ml-2" style="padding:0 0.5rem;" small outlined color="indigo">인증 확인</v-btn>
+                                    <v-btn sm="2" class="mt-5 ml-2" style="padding:0 0.5rem;" small outlined color="indigo" @click="checkauthnum">인증 확인</v-btn>
                         </v-row>
                         
                         <v-row>
                             <v-text-field
                                 label="Password"
-                                v-model="password"
+                                v-model="joindata.password"
                                 :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                                 :type="show1 ? 'text' : 'password'"
                                 @click:append="show1 = !show1"
@@ -41,7 +43,7 @@
                                 <v-row>
 
                                 <v-text-field
-                                    v-model="passwordconfirm"
+                                    v-model="joindata.passwordconfirm"
                                     :rules="rules"
                                     label="Password Confirm"
                                     :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -52,7 +54,7 @@
                             </v-form>
                 <v-row class="mt-5">
                     <v-row rows="9"></v-row>
-                    <v-btn outlined color="indigo">가입하기</v-btn>
+                    <v-btn outlined color="indigo" @click="join">가입하기</v-btn>
                 </v-row>
                     </v-col>
                 </v-row>
@@ -62,13 +64,56 @@
 </template>
 
 <script>
-  export default {
+import axios from "axios";
+
+const baseURL = "http://localhost:8080";
+
+export default {
+    methods: {
+      checkemail(){
+        axios
+        .get(`${baseURL}/dictionary/user/emailoverlap/${this.joindata.email}`)
+        .then(()=>{
+          alert(`${this.joindata.email} 확인되었습니다.`)
+        })
+        .catch((err)=>{
+          alert(`${this.joindata.email}이미 사용중인 이메일입니다.`)
+          console.log(err)
+        })
+      },
+      checkauthnum(){
+        axios
+        .get(`${baseURL}/dictionary/user/emailcode/${this.joindata.email}/${this.authnum}`)
+        .then(()=>{
+          alert(`${this.authnum} 확인되었습니다.`)
+        })
+        .catch((err)=>{
+          alert('정확히 입력해주세요.')
+          console.log(err)
+        })
+      },
+      join(){
+        axios
+        .post(`${baseURL}/dictionary/user/signup`, this.joindata)
+        .then(()=>{
+          alert('회원가입 성공!')
+          this.$router.push('/')
+        })
+        .catch((err)=>{
+          console.log(err)
+        })
+      }
+    },
     data () {
       return {
         show1: false,
         show2: false,
-        password:"",
-        passwordconfirm:"",
+        joindata:{
+          email:"",
+          password:"",
+          passwordconfirm:"",
+        },
+        authnum:"",
         allowSpaces: false,
       }
     },
@@ -84,9 +129,9 @@
           rules.push(rule)
         }
 
-        if (this.password) {
+        if (this.joindata.password) {
           const rule =
-            v => (!!v && v) === this.password ||
+            v => (!!v && v) === this.joindata.password ||
               'Password가 일치하지 않습니다.'
 
           rules.push(rule)

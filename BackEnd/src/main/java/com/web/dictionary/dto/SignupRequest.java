@@ -22,6 +22,7 @@ public class SignupRequest {
     @ApiModelProperty(required = true)
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d$@$!%*#?&]{8,}$")
     String password;
+    String username;
     String code;
     String salt;
     String introduce;
