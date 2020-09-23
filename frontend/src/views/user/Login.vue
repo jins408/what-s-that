@@ -29,7 +29,7 @@
                       <v-btn rounded color="primary" style="width:100%; height:19%; font-size: 1rem" @click="Login()">로그인</v-btn>
 
                       <div class=" d-flex justify-end">
-                        <v-btn text style="color: white;">비회원으로 이용하기</v-btn>
+                        <v-btn text style="color: white;" @click="main">비회원으로 이용하기</v-btn>
                       </div>
                       <!-- <p style="border-style: solid">solid</p> -->
                       <hr class="mt-3" style="border: 1px solid white">
@@ -80,6 +80,9 @@ export default {
       },
       join(){
         this.$router.push( '/user/join' )
+      },
+      main(){
+        this.$router.push("/main")
       }
     },
   data: () =>{
