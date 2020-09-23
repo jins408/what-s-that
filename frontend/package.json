@@ -15,6 +15,10 @@
 >>>>>>> login_Front_login
     "core-js": "^3.6.5",
     "es6-promise": "^4.2.8",
+<<<<<<< HEAD
+=======
+    "password-validator": "^5.1.0",
+>>>>>>> login_Front_join
     "vue": "^2.6.11",
     "vue-cookies": "^1.7.4",
     "vue-router": "^3.2.0",
