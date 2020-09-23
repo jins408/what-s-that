@@ -24,7 +24,7 @@ import com.web.dictionary.service.KakaoAPI;
 import com.web.dictionary.util.SHA256Util;
 
 import io.swagger.annotations.ApiOperation;
-
+//로그인이 필요없는 과정들!!!!!!
 @RequestMapping("/user")
 @CrossOrigin(origins = { "*" })
 @RestController
@@ -45,9 +45,9 @@ public class UserController {
         // 1이라면 이메일 중복
         if(IsOverlap == 1){
         	System.out.println("중복");
-        	result.status = false;
-			result.data = "fail";
-			return response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        	result.status = true;
+			result.message = "fail";
+			return response = new ResponseEntity<>(result, HttpStatus.OK);
         }
         else {
         	// 1이 아니라면 사용 가능
@@ -58,7 +58,7 @@ public class UserController {
     		if(code.equals("")) {
     			System.out.println("코드 생성 실패");
     			result.status = false;
-    			result.data = "fail";
+    			result.message = "fail";
     			return response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
     		}
     		else {
@@ -70,13 +70,13 @@ public class UserController {
     			if(userService.saveAuthcode(email, code)) {
     				System.out.println("코드 등록 성공");
     				result.status = true;
-    				result.data = "success";
+    				result.message = "success";
     				return response = new ResponseEntity<>(result, HttpStatus.OK);
     			}
     			else {
     				System.out.println("코드 등록 실패");
     				result.status = false;
-    				result.data = "fail";
+    				result.message = "fail";
     				return response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
     			}
     		}
@@ -97,7 +97,6 @@ public class UserController {
 		
 	}
 
-	
 	@ApiOperation(value = "회원 가입")
 	@PostMapping(value = "/signup")
 	 public ResponseEntity<?> signUp( @RequestBody SignupRequest request ) throws Exception{
@@ -114,14 +113,14 @@ public class UserController {
 			System.out.println("회원가입 성공");
 			userService.deleteAuthcode(request.getEmail());
 			result.status = true;
-			result.data = "success";
+			result.message = "success";
 			return response = new ResponseEntity<>(result, HttpStatus.OK);
 		}
 		else {
 			System.out.println("회원가입 실패");
 			userService.deleteAuthcode(request.getEmail());
 			result.status = false;
-			result.data = "fail";
+			result.message = "fail";
 			return response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
 		}
 		
@@ -138,7 +137,7 @@ public class UserController {
         if(u == null) {
         	System.out.println("ID/PW 틀림");
         	result.status = false;
-			result.data = "fail";
+			result.message = "fail";
 			return response = new ResponseEntity<>(result, HttpStatus.OK);
         }
         else {
@@ -147,21 +146,13 @@ public class UserController {
         	System.out.println(token);
         	u.setToken(token);
         	result.status = true;
-			result.data = "success";
+			result.message = "success";
 			result.object = u;
 			return response = new ResponseEntity<>(result, HttpStatus.OK);
         }
         
-        
     }
-	@ApiOperation(value = "로그인")
-	@GetMapping(value = "/test")
-	 public ResponseEntity<?> test() {
-		ResponseEntity response = null;
-		
-		System.out.println("토큰 테스트");
-		return response;
-	}
+
 	
 	@ApiOperation(value = "카카오소셜로그인.")
 	@GetMapping("/kakaologin")
@@ -179,7 +170,7 @@ public class UserController {
 			u.setPassword(null);
 			result.object = u;
 			result.status = true;
-			result.data = "success";
+			result.message = "success";
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		} else {
 			SignupRequest user = new SignupRequest();
@@ -204,10 +195,19 @@ public class UserController {
 			u.setPassword(null);
 			result.object = u;
 			result.status = true;
-			result.data = "success";
+			result.message = "success";
 			response = new ResponseEntity<>(result, HttpStatus.OK);
 		}
 
 		return response;
 	}
+	@ApiOperation(value = "비밀번호 찾기")
+	@GetMapping(value = "/findpwd/{email}/")
+    public ResponseEntity<?> findPwd(  @PathVariable ("email") String email) throws Exception{
+		ResponseEntity response = null;
+		final BasicResponse result = new BasicResponse();
+	
+			return response; 
+        
+    }
 }

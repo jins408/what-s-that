@@ -12,6 +12,7 @@
     "cookies": "^0.8.0",
     "core-js": "^3.6.5",
     "es6-promise": "^4.2.8",
+    "password-validator": "^5.1.0",
     "vue": "^2.6.11",
     "vue-cookies": "^1.7.4",
     "vue-router": "^3.2.0",
