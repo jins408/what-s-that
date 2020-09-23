@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import store from "../store"
+
 export default {
     methods: {
     gojoin(){
@@ -45,7 +47,11 @@ export default {
       this.$router.push('/user/mypage')
     },
     logout(){
-      alert('로그아웃 구현하자')
+      store.dispatch("AUTH_LOGOUT")
+      .then(() =>{
+        alert('로그아웃 되었습니다.')
+        this.$router.push("/")
+      })
     },
     }
 
