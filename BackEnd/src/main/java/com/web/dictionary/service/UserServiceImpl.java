@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.web.dictionary.dao.UserDao;
 import com.web.dictionary.dto.SignupRequest;
+import com.web.dictionary.dto.User;
 
 @Service
 public class UserServiceImpl implements IUserService{
@@ -40,6 +41,21 @@ public class UserServiceImpl implements IUserService{
 	@Override
 	public int checkOverlapAuthcode(String email) {
 		return dao.checkOverlapAuthcode(email);
+	}
+
+	@Override
+	public User logIn(String email, String password) {
+		return dao.logIn(email,password);
+	}
+
+	@Override
+	public String getUserSalt(String email) {
+		return dao.getUserSalt(email);
+	}
+
+	@Override
+	public User getUserByEmail(String email) {
+		return dao.getUserByEmail(email);
 	}
 	
 }
