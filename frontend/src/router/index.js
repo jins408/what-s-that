@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 
-import Store from '../store/index'
+// import Store from '../store/index'
 // Join
 import Join from '../views/user/Join.vue'
 import Login from '../views/user/Login.vue'
