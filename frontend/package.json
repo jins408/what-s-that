@@ -9,10 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.20.0",
-<<<<<<< HEAD
-=======
     "cookies": "^0.8.0",
->>>>>>> login_Front_login
     "core-js": "^3.6.5",
     "es6-promise": "^4.2.8",
     "vue": "^2.6.11",
