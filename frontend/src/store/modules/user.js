@@ -1,5 +1,5 @@
 import {USER_REQUEST, USER_ERROR, USER_SUCCESS} from "../actions/user"
-// import Vue from "vue";
+import Vue from "vue";
 import { AUTH_LOGOUT } from "../actions/auth";
 
 
@@ -34,10 +34,10 @@ const mutations = {
       state.status = "success";
     //   localStorage.setItem("user-login", response.data.userno);
     //   localStorage.setItem("token", response.data.token);
-    //   localStorage.setItem("isLoggedIn", true);
+      localStorage.setItem("isLoggedIn", true);
     //   Vue.set(state, "userno", response.data.userno);
     //   Vue.set(state, "token", response.data.token);
-    //   Vue.set(state, "isLoggedIn", true);
+      Vue.set(state, "isLoggedIn", true);
     },
     [USER_ERROR]: state => {
       state.status = "error";

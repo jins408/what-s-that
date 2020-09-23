@@ -65,7 +65,8 @@
                             </v-form>
                 <v-row class="mt-5">
                     <v-row rows="9"></v-row>
-                    <v-btn outlined color="indigo" @click="join">가입하기</v-btn>
+                    <v-btn outlined color="indigo" @click="checkrules" v-if="!this.rulecheck" >비밀번호 확인</v-btn>
+                    <v-btn outlined color="indigo" @click="join" v-if="this.rulecheck">가입하기</v-btn>
                 </v-row>
                     </v-col>
                 </v-row>
@@ -125,17 +126,36 @@ export default {
           console.log(err)
         })
       },
+      checkrules(){
+        if (!this.passwordSchema.validate(this.joindata.password)){
+          this.rulecheck = false
+          alert('영문,숫자 포함 8 자리이상이어야 합니다.')
+        }else if(this.joindata.password != this.joindata.passwordconfirm){
+          this.rulecheck = false
+          alert('비밀번호와 비밀번호 확인이 다릅니다.')
+        }else if((this.joindata.password).indexOf(' ') > 0){
+          this.rulecheck = false
+          alert('빈 칸을 넣을 수 없습니다.')
+        }
+        else{
+          this.rulecheck = true
+          alert('비밀번호 확인 되었습니다.')
+        }
+      },
       join(){
         if (this.joindata.email.length == 0 && this.joindata.password.length == 0 && this.joindata.passwordconfirm.length == 0 && this.joindata.username.length == 0 && this.authnum.length == 0){
+            this.rulecheck = false
             alert('정보를 모두 입력해주세요.')
           }
           else if (this.joindata.email.length == 0){
             alert('이메일을 입력해주세요.')
           }
           else if (this.joindata.password.length == 0){
+            this.rulecheck = false
             alert('비밀번호을 입력해주세요.')
           }
           else if (this.joindata.passwordconfirm.length == 0){
+            this.rulecheck = false
             alert('비밀번호 확인을 입력해주세요.')
           }
           else if (this.joindata.username.length == 0){
@@ -145,6 +165,7 @@ export default {
             alert('인증번호을 입력해주세요.')
           }
           else if (this.joindata.password != this.joindata.passwordconfirm) {
+            this.rulecheck = false
             alert('비밀번호와 비밀번호 확인이 다릅니다.')
           }
           else if (!this.checkemail) {
@@ -153,9 +174,6 @@ export default {
           else if (!this.authnumcheck) {
             alert('인증번호 확인을 해주세요.')
           }
-          // else if (!this.rulecheck){
-          //   alert('비밀번호는 영문,숫자 포함 8 자리이상이어야 합니다.')
-          // }
           else{
             axios
             .post(`${baseURL}/dictionary/user/signup`, this.joindata)
@@ -212,6 +230,14 @@ export default {
       passwordrules(){
         const rules = []
 
+        if (!this.allowSpaces) {
+          const rule =
+            v => (v || '').indexOf(' ') < 0 ||
+              '빈 칸을 넣을 수 없습니다.'
+
+          rules.push(rule)
+        }
+        
         if (!this.passwordSchema.validate(this.joindata.password)) {
           const rule = '영문,숫자 포함 8 자리이상이어야 합니다.'
 
