@@ -16,16 +16,17 @@
                         background-color="white"
                         filled
                         rounded
-
+                        v-model="email"
                       ></v-text-field>         
                       <v-text-field
                         type="password"
                         label="영문, 숫자 혼용 8자 이상"
                         background-color="white"
                         filled
-                        rounded              
+                        rounded
+                        v-model="password"              
                       ></v-text-field>
-                      <v-btn rounded color="primary" style="width:100%; height:19%; font-size: 1rem">로그인</v-btn>
+                      <v-btn rounded color="primary" style="width:100%; height:19%; font-size: 1rem" @click="Login()">로그인</v-btn>
 
                       <div class=" d-flex justify-end">
                         <v-btn text style="color: white;">비회원으로 이용하기</v-btn>
@@ -48,15 +49,44 @@
 </template>
 
 <script>
+
+import { AUTH_REQUEST } from "../../store/actions/auth";
+import { USER_SUCCESS } from "../../store/actions/user";
+
 export default {
     name:"Login",
-    computed:{
 
-  },
+    computed:{
+      
+    },
+
+    created(){
+    
+    },
+
   methods:{
+      Login(){
+        const {email, password} = this;
+        this.$store
+          .dispatch(AUTH_REQUEST, {email, password})
+          .then(() =>{
+            this.$store.commit(USER_SUCCESS, {email, password})
+            this.$router.push('/main')
+          })
+          .catch((error)=>{
+            console.log(error)
+            // alert("로그인실패")
+          })
+      },
       join(){
         this.$router.push( '/user/join' )
       }
+    },
+  data: () =>{
+        return{
+          email: "",
+          password: "",
+        }
     }
   }
 </script>
