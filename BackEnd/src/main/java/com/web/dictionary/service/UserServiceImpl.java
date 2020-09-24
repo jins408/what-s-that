@@ -62,8 +62,8 @@ public class UserServiceImpl implements IUserService{
 	}
 
 	@Override
-	public User getUserByUserno(int userno) {
-		return dao.getUserByUserno(userno);
+	public User getUserByUsernoForModify(int userno) {
+		return dao.getUserByUsernoForModify(userno);
 	}
 
 	@Override
@@ -74,6 +74,11 @@ public class UserServiceImpl implements IUserService{
 	@Override
 	public boolean deleteAccount(int userno) {
 		return dao.deleteAccount(userno);
+	}
+
+	@Override
+	public User getUserByUsernoForResponse(int userno) {
+		return dao.getUserByUsernoForResponse(userno);
 	}
 
 	

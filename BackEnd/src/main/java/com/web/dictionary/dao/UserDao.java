@@ -29,11 +29,14 @@ public interface UserDao {
 
 	public boolean updatePassword(@Param("email") String email, @Param("password") String password);
 
-	public User getUserByUserno(@Param("userno") int userno);
+	public User getUserByUsernoForModify(@Param("userno") int userno);
+
+	public User getUserByUsernoForResponse(@Param("userno") int userno);
 
 	public boolean modifyUserInfo(User user);
 
 	public boolean deleteAccount(int userno);
+
 
 
 }
