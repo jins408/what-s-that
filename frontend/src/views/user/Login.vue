@@ -102,6 +102,7 @@ export default {
             axios.get(`${baseURL}/dictionary/user/kakaologin?access_token=${respones.access_token}`)
               .then(respones =>{
                 alert("카카오로그인 성공")
+                location.href="http://localhost:8081/main"
                 kakaovue.$store.commit(USER_SUCCESS, respones)
               })
             },
