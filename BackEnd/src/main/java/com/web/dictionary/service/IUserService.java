@@ -23,4 +23,12 @@ public interface IUserService {
 
 	public User getUserByEmail(String email);
 
+	public boolean updatePassword(String email, String password);
+
+	public User getUserByUserno(int userno);
+
+	public boolean modifyUserInfo(User user);
+
+	public boolean deleteAccount(int userno);
+
 }

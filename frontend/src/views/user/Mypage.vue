@@ -11,7 +11,7 @@
     <v-card-title>MyPage</v-card-title>
         <div class="d-flex justify-end">
             <v-card-actions>
-                <v-btn >회원정보</v-btn>
+                <v-btn @click="goinfo()" >회원정보</v-btn>
             </v-card-actions>
         </div>
   </div>
@@ -88,7 +88,12 @@ import category from "../../components/Category.vue"
 export default {
   components:{
     category,
-  }
+  },
+  methods:{
+    goinfo(){
+      this.$router.push('/user/info')
+    }
+  },
 
 }
 </script>
