@@ -14,16 +14,16 @@
         </v-btn>
       </template>
       <v-list class="text-center p-0">
-        <v-list-item class="userlist" @click="gojoin"  v-if="!isAuthenticated">
+        <v-list-item class="userlist" @click="gojoin"  >
           <v-list-item-title style="font-size:0.9rem;">Singup</v-list-item-title>
         </v-list-item>
-        <v-list-item class="userlist" @click="gologin"  v-if="!isAuthenticated">
+        <v-list-item class="userlist" @click="gologin"  >
           <v-list-item-title style="font-size:0.9rem;">Login</v-list-item-title>
         </v-list-item>
-        <v-list-item class="userlist" v-if="isAuthenticated" @click="gomypage" >
+        <v-list-item class="userlist"  @click="gomypage" >
           <v-list-item-title style="font-size:0.9rem;">Mypage</v-list-item-title>
         </v-list-item>
-        <v-list-item class="userlist" v-if="isAuthenticated" @click="logout" >
+        <v-list-item class="userlist"  @click="logout"  >
           <v-list-item-title style="font-size:0.9rem;">Logout</v-list-item-title>
         </v-list-item>
       </v-list>
@@ -35,12 +35,15 @@
 <script>
 import store from "../store"
 
+// import { mapState} from "vuex";
+
 export default {
 
     computed:{
-      isAuthenticated(){
-        return this.$store.getters.isAuthenticated
-      }   
+      // isAuthenticated(){
+      //   return this.$store.getters.isAuthenticated
+      // }
+      // ...mapState(["user-login","isLoggedIn"]),   
     },
     methods: {
     gojoin(){
