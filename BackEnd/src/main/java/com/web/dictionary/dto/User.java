@@ -4,19 +4,15 @@ import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
+@Data
 public class User {
 	private int userno;
-	@Setter
 	private String username;
 	private String email;
-	@Setter
 	private String password;
-	@Setter
 	private String profile;
-	@Setter
 	private String introduce;
-	
-	
+	private String token;
+	private String salt;
 	
 }
