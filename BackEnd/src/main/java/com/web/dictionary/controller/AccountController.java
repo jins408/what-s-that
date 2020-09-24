@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,18 +43,12 @@ public class AccountController {
 		Map<String, Object> payload = jwtService.getBody(token);
 		int userno = (int)payload.get("userno");
 		System.out.println(userno);
-		//기존의 유저정보
-		User u = userService.getUserByUserno(userno);
+		//기존의 유저정보 not null인 부분만 null일시 기존데이터로 바꿔준다.
+		User u = userService.getUserByUsernoForModify(userno);
 		if(user.getPassword() != null) {
 			String salt = u.getSalt();
 			String password = SHA256Util.getEncrypt(user.getPassword(), salt);
 			u.setPassword(password);
-		}
-		if(user.getIntroduce() != null) {
-			u.setIntroduce(user.getIntroduce());
-		}
-		if(user.getProfile() != null) {
-			u.setProfile(user.getProfile());
 		}
 		if(user.getUsername() != null) {
 			u.setUsername(user.getUsername());;
@@ -86,11 +81,34 @@ public class AccountController {
 			return response = new ResponseEntity<>(result, HttpStatus.OK);
 		}
 		else {
-			result.status = true;
-			result.message = "success";
+			result.status = false;
+			result.message = "fail";
 			return response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
 		}
 		
 	}
+	@ApiOperation(value="회원정보 불러오기 (이메일, 닉네임, 프로필사진주소, 자기소개 ")
+	@GetMapping("/userinfo")
+	public ResponseEntity<?> getUserByUsernoForResponse(){
+		ResponseEntity response = null;
+		final BasicResponse result = new BasicResponse();
+		String token ="";
+		Map<String, Object> payload = jwtService.getBody(token);
+		int userno = (int)payload.get("userno");
+		User u = userService.getUserByUsernoForResponse(userno);
+		if(u != null) {
+			result.status = true;
+			result.message = "success";
+			result.object = u;
+			return response = new ResponseEntity<>(result, HttpStatus.OK);
+		}
+		else {
+			result.status = false;
+			result.message = "fail";
+			return response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+		}
+		
+	}
+	
 
 }

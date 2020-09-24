@@ -30,8 +30,14 @@
 		where email = #{email}
 	</select>
 	
-	<select id="getUserByUserno" resultType="com.web.dictionary.dto.User">
+	<select id="getUserByUsernoForModify" resultType="com.web.dictionary.dto.User">
 		select userno, username, email, salt, password, profile
+		from user
+		where userno = #{userno}
+	</select>
+	
+	<select id="getUserByUsernoForResponse" resultType="com.web.dictionary.dto.User">
+		select username, email, profile, introduce
 		from user
 		where userno = #{userno}
 	</select>
