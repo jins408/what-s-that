@@ -145,9 +145,10 @@ export default {
         {headers:{
           Authorization : this.$store.state.auth.token
       }})
-      .then((res)=>{
-        console.log(res.data)
+      .then(()=>{
+        // console.log(res.data)
         alert('수정완료!')
+        this.$router.go()
       })
       .catch((err)=>{
         console.log(err)
