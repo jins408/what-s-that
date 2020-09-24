@@ -97,7 +97,7 @@ public class UserController {
 		
 	}
 
-	@ApiOperation(value = "회원 가입")
+	@ApiOperation(value = "회원 가입 (email, password, username 필수! ")
 	@PostMapping(value = "/signup")
 	 public ResponseEntity<?> signUp( @RequestBody SignupRequest request ) throws Exception{
 		ResponseEntity response = null;
@@ -201,13 +201,38 @@ public class UserController {
 
 		return response;
 	}
-	@ApiOperation(value = "비밀번호 찾기")
+	@ApiOperation(value = "비밀번호 찾기 (이메일 존재 확인 -> 새로운 비밀번호 전송 -> 새로운 비밀번호 update")
 	@GetMapping(value = "/findpwd/{email}/")
     public ResponseEntity<?> findPwd(  @PathVariable ("email") String email) throws Exception{
 		ResponseEntity response = null;
 		final BasicResponse result = new BasicResponse();
-	
-			return response; 
+		//이메일이 존재하는지 확인 -> 새로운 비밀번호를 만들어서  update 후  -> 이메일로 새로운 비밀번호 전송
+		int IsOverlap = 0; 
+		IsOverlap = userService.checkOverlapEmail(email);
+		//해당 이메일이 존재
+		if(IsOverlap == 1) {
+			// 새로운 비밀번호룰 만들어서 salt값으로 암호화 한 후 update
+			String password = emailService.passwordSend(email);
+			String salt = userService.getUserSalt(email);
+			String newpassword = SHA256Util.getEncrypt(password, salt);
+			if(userService.updatePassword(email, newpassword)) {
+				System.out.println("비밀번호 update 성공");
+	        	result.status = true;
+				result.message = "success";
+				return response = new ResponseEntity<>(result, HttpStatus.OK);
+			}else {
+				System.out.println("비밀번호 update 실패");
+				result.status = false;
+				result.message = "fail";
+				return response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+			}
+		}
+		else {
+			System.out.println("입력 이메일을 확인해주세요");
+        	result.status = true;
+			result.message = "fail";
+			return response = new ResponseEntity<>(result, HttpStatus.OK);
+		}
         
     }
 }
