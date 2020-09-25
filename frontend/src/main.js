@@ -13,6 +13,7 @@ Vue.use(vuetify)
 Vue.use(VueCookies)
 Vue.use(Vuex)
 
+
 new Vue({
   router,
   vuetify,

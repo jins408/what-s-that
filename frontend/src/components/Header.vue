@@ -14,16 +14,16 @@
         </v-btn>
       </template>
       <v-list class="text-center p-0">
-        <v-list-item class="userlist" @click="gojoin">
+        <v-list-item class="userlist" @click="gojoin" v-if="!isLoggedIn"  >
           <v-list-item-title style="font-size:0.9rem;">Singup</v-list-item-title>
         </v-list-item>
-        <v-list-item class="userlist" @click="gologin">
+        <v-list-item class="userlist" @click="gologin" v-if="!isLoggedIn"  >
           <v-list-item-title style="font-size:0.9rem;">Login</v-list-item-title>
         </v-list-item>
-        <v-list-item class="userlist" @click="gomypage">
+        <v-list-item class="userlist"  @click="gomypage" v-if="isLoggedIn" >
           <v-list-item-title style="font-size:0.9rem;">Mypage</v-list-item-title>
         </v-list-item>
-        <v-list-item class="userlist" @click="logout">
+        <v-list-item class="userlist"  @click="logout" v-if="isLoggedIn"  >
           <v-list-item-title style="font-size:0.9rem;">Logout</v-list-item-title>
         </v-list-item>
       </v-list>
@@ -33,7 +33,18 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import store from "../store"
+
+// import { mapState} from "vuex";
+
 export default {
+
+    computed:{
+      ...mapState({
+        isLoggedIn: state => state.user.isLoggedIn,
+      })   
+    },
     methods: {
     gojoin(){
       this.$router.push('/user/join')
@@ -45,7 +56,11 @@ export default {
       this.$router.push('/user/mypage')
     },
     logout(){
-      alert('로그아웃 구현하자')
+      store.dispatch("AUTH_LOGOUT")
+      .then(() =>{
+        alert('로그아웃 되었습니다.')
+        this.$router.push("/")
+      })
     },
     }
 
