@@ -7,7 +7,6 @@ import Vuex from 'vuex'
 import Join from '../views/user/Join.vue'
 import Login from '../views/user/Login.vue'
 import Mypage from '../views/user/Mypage.vue'
-import Info from '../views/user/Info.vue'
 
 // Main
 import Main from '../views/main/Main.vue'
@@ -35,11 +34,6 @@ const routes = [
     path: '/user/mypage',
     name: Mypage,
     component: Mypage
-  },
-  {
-    path: '/user/info',
-    name: Info,
-    component: Info
   },
   
 
