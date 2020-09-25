@@ -18,16 +18,59 @@
 		from emailauth
 		where email = #{email} and code = #{code}
 	</select>
+	<select id="getUserSalt" resultType="java.lang.String">
+		select salt
+		from user
+		where email = #{email}
+	</select>
+	
+	<select id="getUserByEmail" resultType="com.web.dictionary.dto.User">
+		select userno, username, email
+		from user
+		where email = #{email}
+	</select>
+	
+	<select id="getUserByUsernoForModify" resultType="com.web.dictionary.dto.User">
+		select userno, username, email, salt, password, profile
+		from user
+		where userno = #{userno}
+	</select>
+	
+	<select id="getUserByUsernoForResponse" resultType="com.web.dictionary.dto.User">
+		select username, email, profile, introduce
+		from user
+		where userno = #{userno}
+	</select>
+	
+	<select id="logIn" resultType="com.web.dictionary.dto.User">
+		select userno, username, email, introduce
+		from user
+		where email = #{email} and password = #{password}
+	</select>
+	
+	
 	<insert id="saveAuthcode" >
 		INSERT INTO emailauth(email, code) VALUES(#{email}, #{code})
 	</insert>
 
 	<insert id="signUp" >
-		INSERT INTO user(email, password, salt) VALUES(#{email}, #{password}, #{salt})
+		INSERT INTO user(email, password, salt, username) VALUES(#{email}, #{password}, #{salt}, #{username})
 	</insert>
+	
+	<update id="updatePassword" >
+		UPDATE user SET PASSWORD = #{password} WHERE email=#{email}
+	</update>
+	
+	<update id="modifyUserInfo" >
+		UPDATE user SET password = #{password}, profile = #{profile}, introduce = #{introduce}, username = #{username} WHERE userno=#{userno}
+	</update>
 	
 	<delete id="deleteAuthcode">
 		DELETE from emailauth where email=#{email}
+	</delete>
+	
+	<delete id="deleteAccount">
+		DELETE from user where userno=#{userno}
 	</delete>
 	
 </mapper>
