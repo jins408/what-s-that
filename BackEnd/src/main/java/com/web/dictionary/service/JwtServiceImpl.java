@@ -38,14 +38,11 @@ public class JwtServiceImpl implements JwtService {
 		headers.put("alg", "HS256");
 	    
 		Map<String, Object> payloads = new HashMap<>();
-		Long expiredTime = 1000 * 60l;//1분
+		Long expiredTime = 1000 * 60 * 60 * 24l;//24시간
 		Date now = new Date();
-		System.out.println("now "+now);
 		now.setTime(now.getTime() + expiredTime);
 		byte[] key = generateKey();
-		System.out.println("create token time" + now);
 		payloads.put("exp", now);
-		System.out.println("payload exp " +payloads.get("exp"));
 		payloads.put("userno", userno);
 		String jwt = Jwts.builder()
 					.setHeader(headers)
@@ -87,13 +84,13 @@ public class JwtServiceImpl implements JwtService {
 	public Map<String, Object> getBody(String token) {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 		String jwt = request.getHeader("Authorization");
-		System.out.println("jwt "+jwt);
+		System.out.println("jwt token : "+jwt);
 		Jws<Claims> claims = null;
 		try {
 			claims = Jwts.parser()
 						 .setSigningKey(SALT.getBytes("UTF-8"))
 						 .parseClaimsJws(jwt);
-			System.out.println("claims "+ claims);
+			System.out.println("claims : "+ claims);
 		} catch (Exception e) {
 			throw new UnauthorizedException();
 		}

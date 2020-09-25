@@ -29,13 +29,8 @@ public class JwtInterceptor implements HandlerInterceptor {
 		final String token = request.getHeader(HEADER_AUTH);
 
 		if(token != null && jwtService.isUsable(token)){
-//			Date now = new Date();
-//			now.setTime(now.getTime()+1l);
-//			Map<String,Object> timeconvert = new HashMap<>();
-//			timeconvert.put("now", now);
-//			System.out.println("now!!!! " +timeconvert.get("now"));
+
 			Map<String,Object> claimsbody = jwtService.getBody(token);
-			System.out.println("exp "+claimsbody.get("exp"));
 			return true;
 		}else{
 			throw new UnauthorizedException();

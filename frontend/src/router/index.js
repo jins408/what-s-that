@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Vuex from 'vuex'
 
-// Join
+// import Store from '../store/index'
+// User
 import Join from '../views/user/Join.vue'
 import Login from '../views/user/Login.vue'
 import Mypage from '../views/user/Mypage.vue'
@@ -13,6 +15,7 @@ import Main from '../views/main/Main.vue'
 import PostDetail from '../views/post/PostDetail.vue'
 
 Vue.use(VueRouter)
+Vue.use(Vuex)
 
 const routes = [
   // user

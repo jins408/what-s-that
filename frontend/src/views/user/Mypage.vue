@@ -11,7 +11,8 @@
     <v-card-title>MyPage</v-card-title>
         <div class="d-flex justify-end">
             <v-card-actions>
-                <v-btn >회원정보</v-btn>
+                <v-btn @click="gomodify()" v-if="!modifycheck" >회원정보 수정</v-btn>
+                <v-btn @click="gomodify()" v-if="modifycheck" >회원정보 취소</v-btn>
             </v-card-actions>
         </div>
   </div>
@@ -49,6 +50,7 @@
       background-color="white"
       color="deep-purple accent-4"
       left
+      v-if="!modifycheck"
     >
       <v-tab>찜목록</v-tab>
       <v-tab>카테고리</v-tab>
@@ -78,17 +80,81 @@
         </v-container>
       </v-tab-item>
     </v-tabs>
+    <v-container v-if="modifycheck">
+          <v-row rows="12">
+            <v-col cols="12" sm="4">
+                <div class="d-flex justify-content-center">
+                <img style="height: 15rem; width:15rem;" src="../../assets/bgbg.jpg" alt="">
+
+                </div>
+                <v-row>
+                    <v-col cols="12" sm="2"></v-col>
+                    <v-col cols="12" sm="8">
+                        <v-file-input accept="image/*" label="프로필"></v-file-input>
+                    </v-col>
+                </v-row>
+            </v-col>
+            <v-col cols="12" sm="6">
+                <v-text-field v-model="info.username" label="이름" clearable></v-text-field>
+                <v-textarea rows="2" v-model="info.introduce" clearable auto-grow label="자기소개" value="자기소개해주세요" counter maxlength="200" :rules="rules"></v-textarea>
+                <!-- <v-text-field v-model="introduce" label="소개" clearable counter maxlength="200" :rules="rules"></v-text-field> -->
+                <v-text-field v-model="info.password" label="비밀번호" clearable></v-text-field>
+                <v-text-field v-model="info.passwordconfirm" label="비밀번호 확인" clearable ></v-text-field>
+            </v-col>
+          </v-row>
+          <div class="d-flex justify-content-end" style="width:85%">
+            <v-btn @click="completemodify()" v-if="modifycheck" >수정 완료</v-btn>
+          </div>
+      </v-container>
   </v-card>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
 import category from "../../components/Category.vue"
+
+const baseURL = "http://localhost:8080";
 
 export default {
   components:{
     category,
-  }
+  },
+   data () {
+      return {
+        rules: [v => v.length <= 200 || 'Max 200 characters'],
+        info:{
+          username:'',
+          introduce:'',
+          password:'',
+          passwordconfirm:'',
+        },
+        modifycheck:false,
+      }
+    },
+  methods:{
+    gomodify(){
+      this.modifycheck = !this.modifycheck
+      this.info.username = ''
+      this.info.introduce = ''
+      this.info.password = ''
+      this.info.passwordconfirm = ''
+    },
+    completemodify(){
+      axios.put(`${baseURL}/dictionary/account/modify`, this.info,
+        {headers:{
+          Authorization : this.$store.state.auth.token
+      }})
+      .then(()=>{
+        // console.log(res.data)
+        alert('수정완료!')
+        this.$router.go()
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
+    }
+  },
 
 }
 </script>

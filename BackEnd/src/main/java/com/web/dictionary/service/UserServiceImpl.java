@@ -18,8 +18,6 @@ public class UserServiceImpl implements IUserService{
 
 	@Override
 	public boolean saveAuthcode(String email, String code) {
-		System.out.println("service " + email);
-		System.out.println("service " + code);
 		return dao.saveAuthcode(email,code);
 	}
 
@@ -57,5 +55,31 @@ public class UserServiceImpl implements IUserService{
 	public User getUserByEmail(String email) {
 		return dao.getUserByEmail(email);
 	}
+
+	@Override
+	public boolean updatePassword(String email, String password) {
+		return dao.updatePassword(email, password);
+	}
+
+	@Override
+	public User getUserByUsernoForModify(int userno) {
+		return dao.getUserByUsernoForModify(userno);
+	}
+
+	@Override
+	public boolean modifyUserInfo(User user) {
+		return dao.modifyUserInfo(user);
+	}
+
+	@Override
+	public boolean deleteAccount(int userno) {
+		return dao.deleteAccount(userno);
+	}
+
+	@Override
+	public User getUserByUsernoForResponse(int userno) {
+		return dao.getUserByUsernoForResponse(userno);
+	}
+
 	
 }
