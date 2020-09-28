@@ -36,7 +36,6 @@ public class AccountController {
 	@ApiOperation(value = "회원정보 수정 (비밀번호, 프로필, 소개, 닉네임 변경 가능")
 	@PutMapping(value = "/modify")
     public ResponseEntity<?> modifyUserInfo( @RequestBody User user) throws Exception{
-		System.out.println("modify :" +user.toString());
 		ResponseEntity response = null;
 		final BasicResponse result = new BasicResponse();
 		String token ="";
@@ -45,15 +44,23 @@ public class AccountController {
 		System.out.println(userno);
 		//기존의 유저정보 not null인 부분만 null일시 기존데이터로 바꿔준다.
 		User u = userService.getUserByUsernoForModify(userno);
-		if(user.getPassword() != null) {
+		System.out.println("front에서 보낸 회원정보 :" +user.toString());
+		System.out.println("수정을 위해 불러온 회원정보 "+u.toString());
+		if(!user.getPassword().equals("")) {
 			String salt = u.getSalt();
 			String password = SHA256Util.getEncrypt(user.getPassword(), salt);
 			u.setPassword(password);
 		}
-		if(user.getUsername() != null) {
+		if(!user.getUsername().equals("")) {
 			u.setUsername(user.getUsername());;
 		}
-		System.out.println(u.toString());
+		if(!user.getIntroduce().equals("")) {
+			u.setIntroduce(user.getIntroduce());
+		}
+		if(!user.getProfile().equals("")) {
+			u.setProfile(user.getProfile());
+		}
+		System.out.println("보정 후 회원정보 "+u.toString());
 		//이제 입력된 u를 update해줌
 		if(userService.modifyUserInfo(u)) {
 			result.status = true;
