@@ -100,7 +100,7 @@ export default {
         .then((res)=>{
           if(res.data.message == "success"){
             this.emailcheck = true
-            console.log(this.emailcheck)
+            // console.log(this.emailcheck)
             alert(`${this.joindata.email} 확인되었습니다.`)
           }
           else if(res.data.message=="fail"){
@@ -118,7 +118,7 @@ export default {
         .get(`${baseURL}/dictionary/user/emailcode/${this.joindata.email}/${this.authnum}`)
         .then(()=>{
           this.authnumcheck = true
-          console.log(this.authnumcheck)
+          // console.log(this.authnumcheck)
           alert(`${this.authnum} 확인되었습니다.`)
         })
         .catch((err)=>{
