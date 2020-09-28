@@ -46,18 +46,18 @@ public class AccountController {
 		User u = userService.getUserByUsernoForModify(userno);
 		System.out.println("front에서 보낸 회원정보 :" +user.toString());
 		System.out.println("수정을 위해 불러온 회원정보 "+u.toString());
-		if(!user.getPassword().equals("")) {
+		if(user.getPassword()!=null) {
 			String salt = u.getSalt();
 			String password = SHA256Util.getEncrypt(user.getPassword(), salt);
 			u.setPassword(password);
 		}
-		if(!user.getUsername().equals("")) {
+		if(user.getUsername()!=null) {
 			u.setUsername(user.getUsername());;
 		}
-		if(!user.getIntroduce().equals("")) {
+		if(user.getIntroduce()!=null) {
 			u.setIntroduce(user.getIntroduce());
 		}
-		if(!user.getProfile().equals("")) {
+		if(user.getProfile()!=null) {
 			u.setProfile(user.getProfile());
 		}
 		System.out.println("보정 후 회원정보 "+u.toString());
