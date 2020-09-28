@@ -1,9 +1,9 @@
 <template>
   <div>
     <div>
-      <p class="text-center" style="margin-top:14rem;">
-        <span style="font-size:3rem; font-weight:bold; color:red; text-shadow: 2px 2px 2px gray;">What</span>
-        <span style="font-size:2rem; text-shadow: 2px 2px 2px gray;">'s that!?</span>
+      <p class="text-center" style="margin-top:10rem;">
+        <span style="font-size:5rem; font-weight:bold; color:red; text-shadow: 2px 2px 2px gray;">What</span>
+        <span style="font-size:3rem; text-shadow: 2px 2px 2px gray;">'s that!?</span>
       </p>
       <v-col cols="12" sm="6" class="mx-auto">
         <v-row>

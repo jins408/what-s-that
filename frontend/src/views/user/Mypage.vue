@@ -1,5 +1,5 @@
 <template>
-  <div style="margin: 10rem 0">
+  <div style="margin: 3rem 0">
     <v-card class="mx-auto" outlined width="90%" style="margin-bottom: 2rem">
       <div class="d-flex justify-content-between">
         <v-card-title>MyPage</v-card-title>
