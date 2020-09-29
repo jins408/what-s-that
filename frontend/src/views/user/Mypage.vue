@@ -131,6 +131,8 @@
 <script>
 import axios from "axios";
 import Swal from "sweetalert2";
+
+import store from "../../store"
 import category from "../../components/Category.vue";
 
 const baseURL = "http://localhost:8080";
@@ -199,8 +201,9 @@ export default {
           },
         })
         .then(() => {
-          alert("회원 탈퇴되었습니다.");
-          this.$router.push("/");
+          store.dispatch("AUTH_LOGOUT").then(() => {
+            this.$router.push("/");
+          });
         })
         .catch((err) => {
           console.log(err);
