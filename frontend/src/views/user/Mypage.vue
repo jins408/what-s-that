@@ -13,19 +13,21 @@
       <!-- <div class="overline mb-4">OVERLINE</div> -->
 
       <v-list-item three-line>
-        <v-list-item-avatar tile size="80" color="grey">{{this.getuser.profile}}</v-list-item-avatar>
+        <v-list-item-avatar tile size="80" color="grey">{{
+          this.getuser.profile
+        }}</v-list-item-avatar>
         <v-list-item-content>
           <v-row>
             <v-col cols="12" sm="5">
               <v-list-item-title class="headline mb-4"
-                >{{this.getuser.username}} 님</v-list-item-title
+                >{{ this.getuser.username }} 님</v-list-item-title
               >
-              <v-list-item-title class="mb-1"
-                >{{this.getuser.email}}</v-list-item-title
-              >
-              <v-list-item-subtitle style="margin-bottom: 2rem"
-                >{{this.getuser.introduce}}</v-list-item-subtitle
-              >
+              <v-list-item-title class="mb-1">{{
+                this.getuser.email
+              }}</v-list-item-title>
+              <v-list-item-subtitle style="margin-bottom: 2rem">{{
+                this.getuser.introduce
+              }}</v-list-item-subtitle>
             </v-col>
             <v-col cols="12" sm="2"></v-col>
             <v-col cols="12" sm="5">
@@ -116,7 +118,9 @@
           </v-col>
         </v-row>
         <div class="d-flex justify-content-end" style="width: 85%">
-          <v-btn @click="gomodify()" v-if="modifycheck" class="mr-2">취소</v-btn>
+          <v-btn @click="gomodify()" v-if="modifycheck" class="mr-2"
+            >취소</v-btn
+          >
           <v-btn @click="completemodify()" v-if="modifycheck">수정 완료</v-btn>
         </div>
       </v-container>
@@ -126,6 +130,7 @@
 
 <script>
 import axios from "axios";
+import Swal from "sweetalert2";
 import category from "../../components/Category.vue";
 
 const baseURL = "http://localhost:8080";
@@ -143,7 +148,7 @@ export default {
         password: "",
         passwordconfirm: "",
       },
-      getuser:{
+      getuser: {
         email: "",
         username: "",
         introduce: "",
@@ -152,38 +157,57 @@ export default {
       modifycheck: false,
     };
   },
-  created(){
-    this.getinfo()
+  created() {
+    this.getinfo();
   },
   methods: {
-    getinfo(){
+    getinfo() {
       axios
-      .get(`${baseURL}/dictionary/account/userinfo`, {
-        headers: {
+        .get(`${baseURL}/dictionary/account/userinfo`, {
+          headers: {
             Authorization: this.$store.state.auth.token,
-        }
-      })
-      .then((res)=>{
-        this.getuser = res.data.object
-        // console.log(this.getuser)
-      })
-      .catch((err)=>{
-        console.log(err)
-      })
+          },
+        })
+        .then((res) => {
+          this.getuser = res.data.object;
+          // console.log(this.getuser)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
-    signout(){
-      axios
-      .delete(`${baseURL}/dictionary/account/signout`,{
-        headers:{
-          Authorization: this.$store.state.auth.token,
-      }})
-      .then(()=>{
-        alert('회원 탈퇴되었습니다.')
-        this.$router.push('/')
-      })
-      .catch((err)=>{
-        console.log(err)
-      })
+    signout() {
+      Swal.fire({
+        width: 350,
+        text: "탈퇴하시겠습니까?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "red",
+        cancelButtonColor: "gray",
+        confirmButtonText: '<a style="font-size:1rem; color:white">회원탈퇴</a>',
+        cancelButtonText: '<a style="font-size:1rem; color:white">취소</a>',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            width: 350,
+            text: "회원탈퇴 되었습니다.",
+            icon: "success"});
+          axios
+        .delete(`${baseURL}/dictionary/account/signout`, {
+          headers: {
+            Authorization: this.$store.state.auth.token,
+          },
+        })
+        .then(() => {
+          alert("회원 탈퇴되었습니다.");
+          this.$router.push("/");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+        }
+      });
+      
     },
     gomodify() {
       this.modifycheck = !this.modifycheck;
