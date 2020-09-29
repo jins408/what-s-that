@@ -27,5 +27,16 @@ public interface UserDao {
 
 	public User getUserByEmail(@Param("email") String email);
 
+	public boolean updatePassword(@Param("email") String email, @Param("password") String password);
+
+	public User getUserByUsernoForModify(@Param("userno") int userno);
+
+	public User getUserByUsernoForResponse(@Param("userno") int userno);
+
+	public boolean modifyUserInfo(User user);
+
+	public boolean deleteAccount(int userno);
+
+
 
 }
