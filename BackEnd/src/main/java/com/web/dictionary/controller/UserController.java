@@ -40,7 +40,7 @@ public class UserController {
     public ResponseEntity<?> checkOverlapEmail( @PathVariable ("email") String email) throws Exception{
 		int IsOverlap = 0;
 		ResponseEntity response = null;
-		final BasicResponse result = new BasicResponse();
+		BasicResponse result = new BasicResponse();
         IsOverlap = userService.checkOverlapEmail(email);
         // 1이라면 이메일 중복
         if(IsOverlap == 1){
@@ -101,7 +101,7 @@ public class UserController {
 	@PostMapping(value = "/signup")
 	 public ResponseEntity<?> signUp( @RequestBody SignupRequest request ) throws Exception{
 		ResponseEntity response = null;
-		final BasicResponse result = new BasicResponse();
+		BasicResponse result = new BasicResponse();
 		
 		//비밀번호 : salt값 생성 -> 입력한 비밀번호 + salt 합쳐서 SHA256(해싱) 해서 비밀번호로 저장
 		String salt = SHA256Util.generateSalt();
@@ -130,7 +130,7 @@ public class UserController {
 	@GetMapping(value = "/login/{email}/{password}")
     public ResponseEntity<?> logIn(  @PathVariable ("email") String email, @PathVariable ("password") String password) throws Exception{
 		ResponseEntity response = null;
-		final BasicResponse result = new BasicResponse();
+		BasicResponse result = new BasicResponse();
 		String salt = userService.getUserSalt(email);
 		String newpwd = SHA256Util.getEncrypt(password, salt);
         User u = userService.logIn(email,newpwd);
@@ -161,7 +161,7 @@ public class UserController {
 
 		HashMap<String, Object> userInfo = kakao.getUserInfo(access_token);
 		System.out.println("login Controller : " + userInfo);
-		final BasicResponse result = new BasicResponse();
+		BasicResponse result = new BasicResponse();
 		// 클라이언트의 이메일이 존재할 때 세션에 해당 이메일과 토큰 등록
 		User u = userService.getUserByEmail((String) userInfo.get("email"));
 		if (u != null) { // 중복된 에메일이 있으면
@@ -205,7 +205,7 @@ public class UserController {
 	@GetMapping(value = "/findpwd/{email}/")
     public ResponseEntity<?> findPwd(  @PathVariable ("email") String email) throws Exception{
 		ResponseEntity response = null;
-		final BasicResponse result = new BasicResponse();
+		BasicResponse result = new BasicResponse();
 		//이메일이 존재하는지 확인 -> 새로운 비밀번호를 만들어서  update 후  -> 이메일로 새로운 비밀번호 전송
 		int IsOverlap = 0; 
 		IsOverlap = userService.checkOverlapEmail(email);

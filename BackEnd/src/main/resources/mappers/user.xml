@@ -31,13 +31,15 @@
 	</select>
 	
 	<select id="getUserByUsernoForModify" resultType="com.web.dictionary.dto.User">
-		select userno, username, email, salt, password, profile
+		select userno, username, email, salt, password, introduce, 
+		ifnull(profileurl,'http://localhost:8080/dictionary/images/profile/noimage.png') as profileurl
 		from user
 		where userno = #{userno}
 	</select>
 	
 	<select id="getUserByUsernoForResponse" resultType="com.web.dictionary.dto.User">
-		select username, email, profile, introduce
+		select username, email, introduce,
+		ifnull(profileurl,'http://localhost:8080/dictionary/images/profile/noimage.png') as profileurl
 		from user
 		where userno = #{userno}
 	</select>
@@ -62,7 +64,7 @@
 	</update>
 	
 	<update id="modifyUserInfo" >
-		UPDATE user SET password = #{password}, profile = #{profile}, introduce = #{introduce}, username = #{username} WHERE userno=#{userno}
+		UPDATE user SET password = #{password}, profileurl = #{profileurl}, introduce = #{introduce}, username = #{username} WHERE userno=#{userno}
 	</update>
 	
 	<delete id="deleteAuthcode">
