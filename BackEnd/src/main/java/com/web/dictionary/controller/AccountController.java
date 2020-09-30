@@ -1,5 +1,8 @@
 package com.web.dictionary.controller;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,8 +18,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.web.dictionary.dto.User;
 import com.web.dictionary.model.BasicResponse;
 import com.web.dictionary.service.IUserService;
@@ -35,7 +42,8 @@ public class AccountController {
 	
 	@ApiOperation(value = "회원정보 수정 (비밀번호, 프로필, 소개, 닉네임 변경 가능")
 	@PutMapping(value = "/modify")
-    public ResponseEntity<?> modifyUserInfo( @RequestBody User user) throws Exception{
+    public ResponseEntity<?> modifyUserInfo(@RequestPart("profile") MultipartFile profile,@RequestParam("password") String password
+    		,@RequestParam("introduce") String introduce, @RequestParam("username") String username) throws Exception{
 		ResponseEntity response = null;
 		final BasicResponse result = new BasicResponse();
 		String token ="";
@@ -44,27 +52,42 @@ public class AccountController {
 		System.out.println(userno);
 		//기존의 유저정보 not null인 부분만 null일시 기존데이터로 바꿔준다.
 		User u = userService.getUserByUsernoForModify(userno);
-		System.out.println("front에서 보낸 회원정보 :" +user.toString());
+		
+		
 		System.out.println("수정을 위해 불러온 회원정보 "+u.toString());
-		if(!user.getPassword().equals("")) {
+		if(password != null && !password.equals("")) {
 			String salt = u.getSalt();
-			String password = SHA256Util.getEncrypt(user.getPassword(), salt);
-			u.setPassword(password);
+			String newpassword = SHA256Util.getEncrypt(password, salt);
+			u.setPassword(newpassword);
 		}
-		if(!user.getUsername().equals("")) {
-			u.setUsername(user.getUsername());;
+		if(username != null && !username.equals("")) {
+			u.setUsername(username);
 		}
-		if(!user.getIntroduce().equals("")) {
-			u.setIntroduce(user.getIntroduce());
+		if(introduce != null && !introduce.equals("")) {
+			u.setIntroduce(introduce);
 		}
-		if(!user.getProfile().equals("")) {
-			u.setProfile(user.getProfile());
+		if(profile != null && !profile.equals("")) {
+			SimpleDateFormat format1 = new SimpleDateFormat("yyMMddHHmmss");
+			String time1 = format1.format(new Date());
+			
+	      String filename = "http://localhost:8080/dictionary/images/profile/" + userno + time1 + profile.getOriginalFilename();
+	      u.setProfileurl(filename);
+			
+	      String fileUrl = "/C://images/profile/" + userno + time1
+	            + profile.getOriginalFilename();
+//			String fileUrl = "/C://Users/multicampus/Documents/workspace-spring-tool-suite-4-4.7.0.RELEASE/AIproject/src/main/resources/static/images/" 
+//					+ userno + time1 + profile.getOriginalFilename();
+			File dest = new File(fileUrl);
+			profile.transferTo(dest);
 		}
 		System.out.println("보정 후 회원정보 "+u.toString());
 		//이제 입력된 u를 update해줌
 		if(userService.modifyUserInfo(u)) {
+			u.setPassword(null);
+			u.setSalt(null);
 			result.status = true;
 			result.message ="success";
+			result.object = u;
 			return response = new ResponseEntity<>(result, HttpStatus.OK);
 		}
 		else {
@@ -73,6 +96,7 @@ public class AccountController {
 			return response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
 		}
     }
+
 	
 	@ApiOperation(value="회원탈퇴!")
 	@DeleteMapping("/signout")
