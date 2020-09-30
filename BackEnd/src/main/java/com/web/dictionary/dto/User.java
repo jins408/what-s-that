@@ -1,5 +1,7 @@
 package com.web.dictionary.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.*;
 
 @NoArgsConstructor
@@ -10,7 +12,8 @@ public class User {
 	private String username;
 	private String email;
 	private String password;
-	private String profile;
+//	MultipartFile profile;
+	private String profileurl;
 	private String introduce;
 	private String token;
 	private String salt;
