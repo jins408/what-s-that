@@ -77,6 +77,7 @@
 
 <script>
 import axios from "axios";
+import Swal from "sweetalert2";
 import PV from "password-validator";
 
 const baseURL = "http://localhost:8080";
@@ -101,10 +102,28 @@ export default {
           if(res.data.message == "success"){
             this.emailcheck = true
             // console.log(this.emailcheck)
-            alert(`${this.joindata.email} 확인되었습니다.`)
+            Swal.fire({
+              width: 450,
+              height: 250,
+              position: 'top-end',
+              icon: 'success',
+              text: `<${this.joindata.email}> 확인되었습니다.`,
+              showConfirmButton: false,
+              timer: 1500
+            })
+            // alert(`${this.joindata.email} 확인되었습니다.`)
           }
           else if(res.data.message=="fail"){
-            alert(`${this.joindata.email}이미 사용중인 이메일입니다.`)
+            Swal.fire({
+              width: 450,
+              height: 250,
+              position: 'top-end',
+              icon: 'error',
+              text: `<${this.joindata.email}>은(는) 이미 사용중인 이메일입니다.`,
+              showConfirmButton: false,
+              timer: 1500
+            })
+            // alert(`${this.joindata.email}이미 사용중인 이메일입니다.`)
 
           }
         })
@@ -119,10 +138,28 @@ export default {
         .then(()=>{
           this.authnumcheck = true
           // console.log(this.authnumcheck)
-          alert(`${this.authnum} 확인되었습니다.`)
+          Swal.fire({
+              width: 400,
+              height: 200,
+              position: 'top-end',
+              icon: 'success',
+              text: `<${this.authnum}> 확인되었습니다.`,
+              showConfirmButton: false,
+              timer: 1500
+            })
+          // alert(`${this.authnum} 확인되었습니다.`)
         })
         .catch((err)=>{
-          alert('정확히 입력해주세요.')
+          Swal.fire({
+              width: 400,
+              height: 200,
+              position: 'top-end',
+              icon: 'error',
+              text: `정확히 입력해주세요.`,
+              showConfirmButton: false,
+              timer: 1500
+            })
+          // alert('정확히 입력해주세요.')
           console.log(err)
         })
       },
