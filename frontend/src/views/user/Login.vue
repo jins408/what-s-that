@@ -78,18 +78,25 @@ export default {
 
   methods:{
     Login(){
-      const {email, password} = this;
-        this.$store
-          .dispatch(AUTH_REQUEST, {email, password})
-          .then(() =>{
-            this.$store.commit(USER_SUCCESS, {email, password})
-            this.$router.push('/main')
-            this.$router.go()
-          })
-          .catch((error)=>{
-            console.log(error)
-            // alert("로그인실패")
-          })
+      var reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      if(!this.email.match(reg)){
+        alert("이메일 양식을 확인해주세요")
+      }
+      else{
+        const {email, password} = this;
+          this.$store
+            .dispatch(AUTH_REQUEST, {email, password})
+            .then(() =>{
+              this.$store.commit(USER_SUCCESS, {email, password})
+              this.$router.push('/main')
+              this.$router.go()
+            })
+            .catch((error)=>{
+              console.log(error)
+              // alert("로그인실패")
+            })
+
+          }
       },
       join(){
         this.$router.push( '/user/join' )
