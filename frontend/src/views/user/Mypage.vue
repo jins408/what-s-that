@@ -14,6 +14,13 @@
 
       <v-list-item three-line>
         <img
+          v-if="!this.getuser.profileurl"
+          style="width: 10rem; hegith: 11rem"
+          src="../../assets/bgbg.jpg"
+          alt=""
+        />
+        <img
+          v-if="this.getuser.profileurl"
           style="width: 10rem; hegith: 11rem"
           :src="getuser.profileurl"
           alt="안나옴"
@@ -90,17 +97,16 @@
                 alt=""
               />
             </div>
-            <v-row>
-              <v-col cols="12" sm="2"></v-col>
-              <v-col cols="12" sm="8">
-                <v-file-input
+            <v-row class="d-flex justify-content-center mt-5">
+                <v-btn accept="image/*"
+                  @click="onClickImageUpload">이미지 업로드</v-btn>
+                <!-- <v-file-input
                   accept="image/*"
                   label="프로필"
                   show-size
                   v-model="file"
                   @click="onClickImageUpload"
-                ></v-file-input>
-              </v-col>
+                ></v-file-input> -->
             </v-row>
           </v-col>
           <v-col cols="12" sm="6">
@@ -252,8 +258,9 @@ export default {
       let introduce = this.info.introduce;
       let password = this.info.introduce;
       let username = this.info.username;
-      console.log(this.file);
-      formData.append("profile", this.file);
+      const file = this.$refs.imageInput.files[0];
+      console.log(file);
+      formData.append("profile", file);
       formData.append("introduce", introduce);
       formData.append("password", password);
       formData.append("username", username);

@@ -129,7 +129,7 @@ export default {
         })
         .catch((err)=>{
            alert(`오류`)
-          console.log(err.data)
+          console.log(err)
         })
       },
       checkauthnum(){
