@@ -28,7 +28,9 @@
                       ></v-text-field>
                       <v-btn rounded color="primary" style="width:100%; height:19%; font-size: 1rem" @click="Login()">로그인</v-btn>
 
-                      <div class=" d-flex justify-end">
+                      <div class=" d-flex justify-content-between">
+                        <findpw v-model="showFindpwForm"></findpw>
+                        <v-btn text style="color: white;" @click.stop="showFindpwForm=true">pw찾기</v-btn>
                         <v-btn text style="color: white;" @click="main">비회원으로 이용하기</v-btn>
                       </div>
                       <!-- <p style="border-style: solid">solid</p> -->
@@ -53,6 +55,7 @@
 
 <script>
 import axios from "axios";
+import findpw from "../../components/Findpw.vue"
 
 const baseURL = "http://localhost:8080";
 
@@ -65,9 +68,9 @@ import { USER_SUCCESS } from "../../store/actions/user";
 export default {
     name:"Login",
 
-    computed:{
-      
-      },
+    components:{
+      findpw
+    },
 
     created(){
       
@@ -119,6 +122,7 @@ export default {
         return{
           email: "",
           password: "",
+          showFindpwForm: false
         }
     }
   }
