@@ -13,12 +13,14 @@
       <!-- <div class="overline mb-4">OVERLINE</div> -->
 
       <v-list-item three-line>
-        <v-list-item-avatar tile size="80" color="grey">{{
-          this.getuser.profile
-        }}</v-list-item-avatar>
+        <img
+          style="width: 10rem; hegith: 11rem"
+          :src="getuser.profileurl"
+          alt="안나옴"
+        />
         <v-list-item-content>
           <v-row>
-            <v-col cols="12" sm="5">
+            <v-col cols="12" sm="5" class="ml-5">
               <v-list-item-title class="headline mb-4"
                 >{{ this.getuser.username }} 님</v-list-item-title
               >
@@ -29,7 +31,7 @@
                 this.getuser.introduce
               }}</v-list-item-subtitle>
             </v-col>
-            <v-col cols="12" sm="2"></v-col>
+            <v-col cols="12" sm="1"></v-col>
             <v-col cols="12" sm="5">
               <v-list-item-subtitle class="mb-3"
                 ><v-icon>mdi-bookmark</v-icon> 찜한 수
@@ -74,16 +76,30 @@
         <v-row rows="12">
           <v-col cols="12" sm="4">
             <div class="d-flex justify-content-center">
+               <input ref="imageInput" type="file" hidden @change="onChangeImages">
               <img
+                v-if="!imageUrl"
                 style="height: 15rem; width: 15rem"
                 src="../../assets/bgbg.jpg"
+                alt=""
+              />
+              <img
+                v-if="imageUrl"
+                style="height: 15rem; width: 15rem"
+                :src="imageUrl"
                 alt=""
               />
             </div>
             <v-row>
               <v-col cols="12" sm="2"></v-col>
               <v-col cols="12" sm="8">
-                <v-file-input accept="image/*" label="프로필"></v-file-input>
+                <v-file-input
+                  accept="image/*"
+                  label="프로필"
+                  show-size
+                  v-model="file"
+                  @click="onClickImageUpload"
+                ></v-file-input>
               </v-col>
             </v-row>
           </v-col>
@@ -132,7 +148,7 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 
-import store from "../../store"
+import store from "../../store";
 import category from "../../components/Category.vue";
 
 const baseURL = "http://localhost:8080";
@@ -154,15 +170,25 @@ export default {
         email: "",
         username: "",
         introduce: "",
-        profile: "",
+        profileurl: "",
       },
+      file: null,
       modifycheck: false,
+      imageUrl: null,
     };
   },
   created() {
     this.getinfo();
   },
   methods: {
+    onClickImageUpload() {
+      this.$refs.imageInput.click();
+    },
+    onChangeImages(e) {
+      console.log(e.target.files);
+      const file = e.target.files[0]; // Get first index in files
+      this.imageUrl = URL.createObjectURL(file); // Create File URL
+    },
     getinfo() {
       axios
         .get(`${baseURL}/dictionary/account/userinfo`, {
@@ -172,6 +198,7 @@ export default {
         })
         .then((res) => {
           this.getuser = res.data.object;
+          this.imageUrl = res.data.object.profileurl;
           // console.log(this.getuser)
         })
         .catch((err) => {
@@ -186,31 +213,32 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "red",
         cancelButtonColor: "gray",
-        confirmButtonText: '<a style="font-size:1rem; color:white">회원탈퇴</a>',
+        confirmButtonText:
+          '<a style="font-size:1rem; color:white">회원탈퇴</a>',
         cancelButtonText: '<a style="font-size:1rem; color:white">취소</a>',
       }).then((result) => {
         if (result.isConfirmed) {
           Swal.fire({
             width: 350,
             text: "회원탈퇴 되었습니다.",
-            icon: "success"});
-          axios
-        .delete(`${baseURL}/dictionary/account/signout`, {
-          headers: {
-            Authorization: this.$store.state.auth.token,
-          },
-        })
-        .then(() => {
-          store.dispatch("AUTH_LOGOUT").then(() => {
-            this.$router.push("/");
+            icon: "success",
           });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+          axios
+            .delete(`${baseURL}/dictionary/account/signout`, {
+              headers: {
+                Authorization: this.$store.state.auth.token,
+              },
+            })
+            .then(() => {
+              store.dispatch("AUTH_LOGOUT").then(() => {
+                this.$router.push("/");
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         }
       });
-      
     },
     gomodify() {
       this.modifycheck = !this.modifycheck;
@@ -220,11 +248,25 @@ export default {
       this.info.passwordconfirm = "";
     },
     completemodify() {
+      let formData = new FormData();
+      let introduce = this.info.introduce;
+      let password = this.info.introduce;
+      let username = this.info.username;
+      console.log(this.file);
+      formData.append("profile", this.file);
+      formData.append("introduce", introduce);
+      formData.append("password", password);
+      formData.append("username", username);
+      for (var pair of formData.entries()) {
+        console.log(pair[0] + ", " + pair[1]);
+      }
+
       axios
-        .put(`${baseURL}/dictionary/account/modify`, this.info, {
+        .put(`${baseURL}/dictionary/account/modify`, formData, {
           headers: {
             Authorization: this.$store.state.auth.token,
           },
+          contentType: "multipart/form-data",
         })
         .then(() => {
           // console.log(res.data)
