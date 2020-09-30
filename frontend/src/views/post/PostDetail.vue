@@ -24,6 +24,9 @@
         <p>문화재 지정일</p>
       </div>
     </div>
+   
+    <comment id="comment"></comment>
+
     <v-card width="90%" class="mx-auto">
       <v-tabs background-color="white" color="red" left>
         <v-tab>정의</v-tab>
@@ -51,7 +54,21 @@
 </template>
 
 <script>
-export default {};
+import comment from "../../components/Comment.vue";
+
+export default {
+  components: {
+    comment,
+  },
+
+  data() {
+    return {
+      comment: null,
+      
+    }
+  }
+
+};
 </script>
 
 <style>
