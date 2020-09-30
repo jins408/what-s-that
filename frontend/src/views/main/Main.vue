@@ -1,21 +1,42 @@
 <template>
   <div>
     <div>
-      <p class="text-center" style="margin-top:10rem;">
-        <span style="font-size:5rem; font-weight:bold; color:red; text-shadow: 2px 2px 2px gray;">What</span>
-        <span style="font-size:3rem; text-shadow: 2px 2px 2px gray;">'s that!?</span>
-      </p>
-      <v-col cols="12" sm="6" class="mx-auto">
-        <v-row>
-          <v-text-field prepend-icon="fas fa-search" placeholder="검색해주세요!" filled rounded dense></v-text-field>
-          <i class="fas fa-microphone ml-2 mt-2" style="font-size:1.6rem;"></i>
-        </v-row>
-      </v-col>
-      <div class="d-flex justify-content-center" style="margin-top:18rem;">
-        <button class="btndown" @click="scroll">
-          <i class="fas fa-angle-down" style="font-size:2rem;"></i>
-        </button>
-      </div>
+      <v-carousel
+      cycle
+      height="730"
+      hide-delimiter-background
+      show-arrows-on-hover
+      >
+        <v-carousel-item
+          v-for="(item, i) in items"
+          :key="i"
+          :src="item.src"
+        >
+            <v-row
+              class="fill-height"
+              align="center"
+              justify="center"
+            >
+            <div class="display-3">
+              <p class="text-center" style="margin-top:10rem;">
+                <span style="font-size:5rem; font-weight:bold; color:red; text-shadow: 2px 2px 2px gray;">What</span>
+                <span style="font-size:3rem; text-shadow: 2px 2px 2px gray;">'s that!?</span>
+              </p>
+              <v-col cols="12" sm="12" class="mx-auto">
+                <v-row>
+                  <v-text-field prepend-icon="fas fa-search" label="검색해주세요!" filled rounded ></v-text-field>
+                  <i class="fas fa-microphone ml-2 mt-2" style="font-size:1.6rem;"></i>
+                </v-row>
+              </v-col>
+              <div class="d-flex justify-content-center" style="margin-top:20rem;">
+                <button class="btndown" @click="scroll">
+                  <i class="fas fa-angle-down" style="font-size:2rem;"></i>
+                </button>
+              </div>
+            </div>
+            </v-row>
+        </v-carousel-item>
+      </v-carousel>
     </div>
 
     <div class="mt-2">
@@ -66,6 +87,18 @@ export default {
   data() {
     return {
       scrollposition: 0,
+        items: [
+          {
+            src:  require('../../assets/mainbg1.jpg'),
+          },
+          {
+            src:  require('../../assets/mainbg2.jpg'),
+          },
+          {
+            src:  require('../../assets/mainbg3.jpg'),
+          },
+
+        ],
     };
   },
 };
