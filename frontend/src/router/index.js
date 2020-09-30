@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Vuex from 'vuex'
 
-// Join
+// import Store from '../store/index'
+// User
 import Join from '../views/user/Join.vue'
 import Login from '../views/user/Login.vue'
 import Mypage from '../views/user/Mypage.vue'
@@ -9,7 +11,11 @@ import Mypage from '../views/user/Mypage.vue'
 // Main
 import Main from '../views/main/Main.vue'
 
+// Post
+import PostDetail from '../views/post/PostDetail.vue'
+
 Vue.use(VueRouter)
+Vue.use(Vuex)
 
 const routes = [
   // user
@@ -19,7 +25,7 @@ const routes = [
     component: Join
   },
   {
-    path: '/user/login',
+    path: '/',
     name: Login,
     component: Login
   },
@@ -36,6 +42,13 @@ const routes = [
     path: '/main',
     name: Main,
     component: Main
+  },
+
+  // post
+  {
+    path: '/postdetail',
+    name: PostDetail,
+    component: PostDetail
   },
 
 ]
