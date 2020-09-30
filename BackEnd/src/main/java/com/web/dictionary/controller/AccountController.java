@@ -40,12 +40,12 @@ public class AccountController {
 	@Autowired JwtService jwtService;
 	@Autowired IUserService userService;
 	
-	@ApiOperation(value = "회원정보 수정 (비밀번호, 프로필, 소개, 닉네임 변경 가능")
+	@ApiOperation(value = "회원정보 수정 (비밀번호, 프로필, 소개, 닉네임 변경 가능) **formdata로 profile,password,introduce,userno 넘겨주기!!")
 	@PutMapping(value = "/modify")
     public ResponseEntity<?> modifyUserInfo(@RequestPart("profile") MultipartFile profile,@RequestParam("password") String password
     		,@RequestParam("introduce") String introduce, @RequestParam("username") String username) throws Exception{
 		ResponseEntity response = null;
-		final BasicResponse result = new BasicResponse();
+		BasicResponse result = new BasicResponse();
 		String token ="";
 		Map<String, Object> payload = jwtService.getBody(token);
 		int userno = (int)payload.get("userno");
@@ -53,7 +53,7 @@ public class AccountController {
 		//기존의 유저정보 not null인 부분만 null일시 기존데이터로 바꿔준다.
 		User u = userService.getUserByUsernoForModify(userno);
 		
-		
+		System.out.println("profile : " + profile);
 		System.out.println("수정을 위해 불러온 회원정보 "+u.toString());
 		if(password != null && !password.equals("")) {
 			String salt = u.getSalt();
@@ -66,7 +66,7 @@ public class AccountController {
 		if(introduce != null && !introduce.equals("")) {
 			u.setIntroduce(introduce);
 		}
-		if(profile != null && !profile.equals("")) {
+		if(!profile.isEmpty()) {
 			SimpleDateFormat format1 = new SimpleDateFormat("yyMMddHHmmss");
 			String time1 = format1.format(new Date());
 			
@@ -102,7 +102,7 @@ public class AccountController {
 	@DeleteMapping("/signout")
 	public ResponseEntity<?> deleteAccount(){
 		ResponseEntity response = null;
-		final BasicResponse result = new BasicResponse();
+		BasicResponse result = new BasicResponse();
 		String token ="";
 		Map<String, Object> payload = jwtService.getBody(token);
 		int userno = (int)payload.get("userno");
@@ -122,7 +122,7 @@ public class AccountController {
 	@GetMapping("/userinfo")
 	public ResponseEntity<?> getUserByUsernoForResponse(){
 		ResponseEntity response = null;
-		final BasicResponse result = new BasicResponse();
+		BasicResponse result = new BasicResponse();
 		String token ="";
 		Map<String, Object> payload = jwtService.getBody(token);
 		int userno = (int)payload.get("userno");

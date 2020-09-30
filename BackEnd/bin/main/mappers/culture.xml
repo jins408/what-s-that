@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dictionary.dao.CultureDao">
+
+
+
+	
+	<select id="getCultureInfoByCultureName" resultType="com.web.dictionary.dto.Culture">
+		select postno, culturename, content
+		from culturepost
+		where culturename = #{culturename}
+		
+	</select>
+	
+	<select id="searchCultureInfoByCultureName" resultType="java.lang.String">
+		select culturename
+		from culturepost
+		where culturename LIKE concat('%',#{culturename},'%')
+	</select>
+	
+	<select id="getfavoritePost" resultType="com.web.dictionary.dto.Culture">
+		SELECT post.postno, post.culturename, post.content 
+		FROM culturepost AS post
+		LEFT JOIN favoriteculture AS favorite 
+		ON (post.postno = favorite.postno) 
+		WHERE favorite.userno = #{userno} 
+	</select>
+	
+	<insert id="registFavoriteCulture" >
+		insert into favoriteculture(postno, userno) values (#{postno}, #{userno})
+	</insert>
+	
+	<delete id="deleteFavoriteCulture" >
+		delete from favoriteculture  where postno = #{postno} and userno = #{userno}
+	</delete>
+	
+	
+	
+</mapper>
