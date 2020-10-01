@@ -49,25 +49,26 @@
               small
               color="deep-purple accent-4"
               v-if="comment.userno == commentData.userno"
+              @click="changeupdate(comment.regno)"
             ><v-icon >mdi-pencil-circle-outline</v-icon></v-btn>
             
-            <!-- <div class="d-flex justify-left" v-if="isupdate">
+            <div class="d-flex justify-left" v-if="isupdate">
               <v-textarea
                 v-if="comment.regno == cid"
                 auto-grow
                 outlined
                 rows="1"
                 row-height="15"
-                v-model="updatecomment.content"
+                v-model="updatecomment.reply"
               ></v-textarea>
               <v-btn
-                v-if="comment.commentno == cid"
+                v-if="comment.regno == cid"
                 class="mt-2"
                 text
                 color="success accent-4"
-                @click="commentupdate(comment.commentno)"
+                @click="commentupdate(comment.regno )"
               >수정완료</v-btn>
-            </div> -->
+            </div>
           </div>
         </v-card>
     </div>
@@ -90,6 +91,7 @@ export default {
         console.log(this.$store.state.user.userno)
         // this.commentData.userno=this.$store.state.user.userno
         console.log(this.commentData.userno)
+        this.updatecomment.userno=this.$store.state.user.userno
         this.commentList()
         
     },
@@ -138,6 +140,23 @@ export default {
             .catch((error) =>{
                 console.log(error)
             })
+        },
+        commentupdate(){
+            axios.put(`${baseURL}/dictionary/comment`, this.updatecomment)
+            .then(() =>{
+                alert("댓글 수정완료!")
+                location.reload();
+            })
+            .catch((error) =>{
+                console.log(error)
+                alert(error)
+            })
+        },
+        changeupdate(regno){
+            this.updatecomment.commentno = regno;
+            this.isupdate = !this.isupdate;
+            this.cid = regno;
+            console.log(this.cid);
         }
     },
 
@@ -147,12 +166,15 @@ export default {
 
     data: () => {
         return { 
-            // commentData: {
-            //     reply:"",
-            //     userno:"",
-            //     postno:1
-            // },
+            isupdate: false,
+            cid: "",
             comments: [],
+            updatecomment: {  
+                commentno: "",
+                postno: 1,
+                reply: "",
+                userno: "",
+            }
         };
   },
 
