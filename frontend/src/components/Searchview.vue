@@ -1,14 +1,28 @@
 <template>
-  <div>
+  <div class="container">
       <div>
-          <p class="text-center" style="margin-top:3rem;">
+          <p class="text-center" style="margin:3rem 0;">
                 <span style="font-size:5rem; font-weight:bold; color:red; text-shadow: 2px 2px 2px gray;">What</span>
                 <span style="font-size:3rem; text-shadow: 2px 2px 2px gray;">'s that!?</span>
               </p>
-        <div v-for="(item,index) in culture" :key="index" class="mx-auto mb-2" style="width:50%; cursor:pointer;" @click="gopostdetail(item)">
-                <span style="font-size:2rem; color:gray;">{{index+1}}. </span>
-                <span style="font-size:2rem; color:gray; margin-left:3rem;" >{{item}}</span>
-        </div>
+              <div class="d-flex justify-content-between">
+                <v-card
+                    class="mx-5"
+                    max-width="300"
+                    v-for="(item,index) in culture" :key="index" style="cursor:pointer;" @click="gopostdetail(item)"
+                >
+                    <v-img
+                    class="white--text align-end"
+                    height="200px"
+                    src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+                    >
+                    <v-card-title>{{item}}</v-card-title>
+                    </v-img>
+                </v-card>
+
+              </div>
+                <!-- <span style="font-size:2rem; color:gray;">{{index+1}}. </span>
+                <span style="font-size:2rem; color:gray; margin-left:3rem;" >{{item}}</span> -->
       </div>
   </div>
 </template>

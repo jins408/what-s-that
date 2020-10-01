@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="header">
+    <div class="header" v-if="mainpage">
       <div class="text-center mr-3 mt-2">
         <v-menu offset-y>
           <template v-slot:activator="{ on, attrs }">
@@ -43,7 +43,51 @@
         </v-menu>
       </div>
     </div>
-    <div class="text-center" v-if="!mainpage">
+    <div class="header" v-if="!mainpage">
+      <div class="text-center mr-3 mt-2">
+        <v-menu offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              color="white"
+              v-bind="attrs"
+              v-on="on"
+              style="box-shadow: none"
+              ><i
+                class="far fa-user-circle mr-2"
+                style="font-size: 1.3rem"
+                v-bind="attrs"
+                v-on="on"
+              ></i>
+              User
+            </v-btn>
+          </template>
+          <v-list class="text-center p-0">
+            <v-list-item class="userlist" @click="gojoin" v-if="!isLoggedIn">
+              <v-list-item-title style="font-size: 0.9rem"
+                >Singup</v-list-item-title
+              >
+            </v-list-item>
+            <v-list-item class="userlist" @click="gologin" v-if="!isLoggedIn">
+              <v-list-item-title style="font-size: 0.9rem"
+                >Login</v-list-item-title
+              >
+            </v-list-item>
+            <v-list-item class="userlist" @click="gomypage" v-if="isLoggedIn">
+              <v-list-item-title style="font-size: 0.9rem"
+                >Mypage</v-list-item-title
+              >
+            </v-list-item>
+            <v-list-item class="userlist" @click="logout" v-if="isLoggedIn">
+              <v-list-item-title style="font-size: 0.9rem"
+                >Logout</v-list-item-title
+              >
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </div>
+    </div>
+
+    <div class="text-center" style="margin-top:5rem;" v-if="!mainpage">
       <span @click="gomain()" style="cursor: pointer">
         <span
           style="
