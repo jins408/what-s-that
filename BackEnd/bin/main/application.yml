@@ -24,6 +24,7 @@ spring:
     password: ssafy
 
 
+
   mail:
        host: smtp.gmail.com
        port: 587

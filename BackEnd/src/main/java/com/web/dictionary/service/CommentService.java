@@ -36,4 +36,9 @@ public class CommentService implements ICommentService{
     public int deleteComment(int regno) {
         return  commentdao.deleteComment(regno);
     }
+
+	@Override
+	public boolean modifyComment(Comment comment) {
+		return commentdao.modifyComment(comment);
+	}
 }

@@ -5,22 +5,22 @@
                 <span style="font-size:5rem; font-weight:bold; color:red; text-shadow: 2px 2px 2px gray;">What</span>
                 <span style="font-size:3rem; text-shadow: 2px 2px 2px gray;">'s that!?</span>
               </p>
-              <div class="d-flex justify-content-between">
-                <v-card
-                    class="mx-5"
-                    max-width="300"
-                    v-for="(item,index) in culture" :key="index" style="cursor:pointer;" @click="gopostdetail(item)"
-                >
-                    <v-img
-                    class="white--text align-end"
-                    height="200px"
-                    src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+                  <v-row>
+                    <v-card
+                        class="mx-5 my-3"
+                        max-width="250"
+                        v-for="(item,index) in culture" :key="index" style="cursor:pointer;" @click="gopostdetail(item)"
                     >
-                    <v-card-title>{{item}}</v-card-title>
-                    </v-img>
-                </v-card>
+                        <v-img
+                        class="white--text align-end"
+                        height="200px"
+                        src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+                        >
+                        <v-card-title>{{item}}</v-card-title>
+                        </v-img>
+                    </v-card>
+                  </v-row>
 
-              </div>
                 <!-- <span style="font-size:2rem; color:gray;">{{index+1}}. </span>
                 <span style="font-size:2rem; color:gray; margin-left:3rem;" >{{item}}</span> -->
       </div>

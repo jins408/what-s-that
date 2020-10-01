@@ -41,7 +41,7 @@
             <v-col cols="12" sm="1"></v-col>
             <v-col cols="12" sm="5">
               <v-list-item-subtitle class="mb-3"
-                ><v-icon>mdi-bookmark</v-icon> 찜한 수
+                ><v-icon>mdi-bookmark</v-icon> 찜한 수 : {{this.mystorages.length}}
               </v-list-item-subtitle>
               <v-list-item-subtitle>
                 <v-icon>mdi-pencil</v-icon> 카테고리 수</v-list-item-subtitle
@@ -65,6 +65,7 @@
         <v-tab>내정보</v-tab>
 
         <v-tab-item v-for="n in 3" :key="n">
+          <mystorage v-if="n == 1" :mystorages="mystorages" />
           <category v-if="n == 2" />
           <v-container fluid>
             <v-row>
@@ -156,12 +157,14 @@ import Swal from "sweetalert2";
 
 import store from "../../store";
 import category from "../../components/Category.vue";
+import mystorage from "../../components/Mystorage.vue";
 
 const baseURL = "http://localhost:8080";
 
 export default {
   components: {
     category,
+    mystorage,
   },
   data() {
     return {
@@ -181,12 +184,28 @@ export default {
       file: null,
       modifycheck: false,
       imageUrl: null,
+      mystorages:[],
     };
   },
   created() {
     this.getinfo();
   },
   methods: {
+    mylist() {
+      axios
+        .get(`${baseURL}/dictionary/culture/favorite`, {
+          headers: {
+            Authorization: this.$store.state.user.token,
+          },
+        })
+        .then((res) => {
+          this.mystorages = res.data.object;
+          console.log(this.mystorages);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     onClickImageUpload() {
       this.$refs.imageInput.click();
     },
@@ -205,6 +224,7 @@ export default {
         .then((res) => {
           this.getuser = res.data.object;
           this.imageUrl = res.data.object.profileurl;
+          this.mylist();
           // console.log(this.getuser)
         })
         .catch((err) => {
