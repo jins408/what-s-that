@@ -38,6 +38,21 @@ public class CommentController {
           }
 
     }
+    @ApiOperation(value = "해당 게시물에 댓글 수정")
+    @PutMapping("")
+    public ResponseEntity<?> modifyComment(@RequestBody Comment comment){
+    	BasicResponse result = new BasicResponse();
+    	if(commentservice.modifyComment(comment) ){
+    		result.status = true;
+    		result.message ="success";
+    		return new ResponseEntity(result, HttpStatus.OK);
+    	} else{
+    		result.status = false;
+    		result.message ="fail";
+    		return new ResponseEntity(result, HttpStatus.NO_CONTENT);
+    	}
+    	
+    }
     
     @ApiOperation(value = "해당 댓글 지우기")
     @DeleteMapping("/{regno}")
