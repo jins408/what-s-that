@@ -13,6 +13,10 @@
         <p style="font-size: 1.5rem; font-weight: 540; text-align: center">
           경주 불국사
         </p>
+        <div class="d-flex justify-content-end">
+        <i class="far fa-bookmark" style="font-size: 2rem" v-if="!ismark" @click="bookmark"></i>
+        <i class="fas fa-bookmark" style="font-size: 2rem" v-if="ismark" @click="bookmarkdelete"></i>    
+        </div>
         <p>유형</p>
         <p>시대</p>
         <p>건립시기/연도</p>
@@ -25,7 +29,7 @@
       </div>
     </div>
    
-    <comment id="comment"></comment>
+    <comment :commentData="commentData"></comment>
 
     <v-card width="90%" class="mx-auto mt-5">
       <v-tabs background-color="white" color="red" left>
@@ -54,6 +58,10 @@
 </template>
 
 <script>
+import axios from "axios";
+
+const baseURL = "http://localhost:8080";
+
 import comment from "../../components/Comment.vue";
 
 export default {
@@ -61,9 +69,75 @@ export default {
     comment,
   },
 
+  created(){
+     this.commentData.userno=this.$store.state.user.userno
+     console.log(this.$store.state.user.token)
+     this.bmarkList()
+  },
+
+  methods: {
+    bookmark(){
+      axios.post(`${baseURL}/dictionary/culture/favorite?postno=${this.commentData.postno}`,this.commentData.postno,{
+         headers: {
+            Authorization: this.$store.state.user.token,
+          },
+      })
+      .then((response) =>{
+        console.log(response)
+        alert("찜등록!")
+        location.reload();
+      })
+      .catch((error)=>{
+        console.log(error)
+      })
+    },
+    bmarkList(){
+      axios.get(`${baseURL}/dictionary/culture/favorite`, {
+          headers: {
+            Authorization: this.$store.state.user.token,
+          },
+        })
+        .then((response) => {
+          this.bookmarkdata = response.data.object;
+          for(var i=0; i<this.bookmarkdata.length; i++){
+            if(this.bookmarkdata[i].postno == this.commentData.postno){
+              this.ismark = true;
+            }
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    bookmarkdelete(){
+       axios
+        .delete(`${baseURL}/dictionary/culture/favorite/${this.commentData.postno}`,{
+          headers: {
+            Authorization: this.$store.state.user.token,
+          },
+          })
+          .then(()=>{
+              alert('찜해제!')
+              location.reload()
+          })
+          .catch((err)=>{
+              console.log(err)
+          })
+    },
+
+    
+  },
+
   data() {
     return {
       comment: null,
+      bookmarkdata:"",
+      ismark:false,
+      commentData: {
+          reply:"",
+          userno:"",
+          postno:1
+      },
       
     }
   }

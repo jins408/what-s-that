@@ -88,7 +88,7 @@ export default {
     },
     created(){
         console.log(this.$store.state.user.userno)
-        this.commentData.userno=this.$store.state.user.userno
+        // this.commentData.userno=this.$store.state.user.userno
         console.log(this.commentData.userno)
         this.commentList()
         
@@ -141,13 +141,17 @@ export default {
         }
     },
 
+    props:{
+        commentData : Object
+    },
+
     data: () => {
         return { 
-            commentData: {
-                reply:"",
-                userno:"",
-                postno:1
-            },
+            // commentData: {
+            //     reply:"",
+            //     userno:"",
+            //     postno:1
+            // },
             comments: [],
         };
   },
