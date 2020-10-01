@@ -2,8 +2,9 @@
   <div>
     <div>
       <v-carousel
+      hide-delimiters
       cycle
-      height="730"
+      height="755"
       hide-delimiter-background
       show-arrows-on-hover
       >
@@ -39,10 +40,10 @@
       </v-carousel>
     </div>
 
-    <div class="mt-2">
-      <searchview v-if="this.searchok == true" :culture="culture" />
+    <div class="mt-2" data-offset="0">
+      <searchview v-if="this.searchok == true" :culture="culture" id="searchview" />
       <div style="height:50rem;">
-        <a class="ml-5" href="#heritage" style="font-size:1.5rem; margin:0">문화재</a>
+        <a class="ml-5" id="heritage" style="font-size:1.5rem; margin:0">문화재</a>
         <div class="d-flex justify-content-center" style="margin-top:19rem;">
           <button class="btndown" @click="scroll1">
             <i class="fas fa-angle-down" style="font-size:2rem;"></i>
@@ -50,7 +51,7 @@
         </div>
       </div>
       <div style="height:50rem;">
-        <a class="ml-5" href="#location" style="font-size:1.5rem;">지역</a>
+        <a class="ml-5" id="location" style="font-size:1.5rem;">지역</a>
         <div class="d-flex justify-content-center" style="margin-top:19rem;">
           <button class="btndown" @click="scroll2">
             <i class="fas fa-angle-down" style="font-size:2rem;"></i>
@@ -58,7 +59,7 @@
         </div>
       </div>
       <div style="height:50rem;">
-        <a class="ml-5" href="#comment" style="font-size:1.5rem;">최근 댓글</a>
+        <a class="ml-5" id="comment" style="font-size:1.5rem;">최근 댓글</a>
       </div>
     </div>
   </div>
@@ -84,10 +85,14 @@ export default {
       }else{
         axios.get(`${baseURL}/dictionary/culture/search/${this.culturename}`)
         .then((res)=>{
+          if(this.searchok == false){
+            this.scroll();
+            }else{
+            this.gosearchview();
+          }
           this.searchok = true;
           this.culture = res.data.object
           // console.log(this.culture)
-          this.scroll();
         })
         .catch((err)=>{
           console.log(err)
@@ -98,15 +103,21 @@ export default {
       this.scrollposition = window.scrollY;
       // console.log(this.scrollposition)
     },
+    gosearchview(){
+      var ll = document.querySelector("#searchview").offsetTop;
+      window.scrollTo({top:ll, behavior:'smooth'});
+    },
     scroll() {
-      // var location = document.querySelector("#heritage").offsetTop;
-      window.scrollTo({ top: 740, behavior: "smooth" });
+      var ll = document.querySelector("#heritage").offsetTop;
+      window.scrollTo({top:ll, behavior:'smooth'});
     },
     scroll1() {
-      window.scrollTo({ top: 1545, behavior: "smooth" });
+      var ll = document.querySelector("#location").offsetTop;
+      window.scrollTo({top:ll, behavior:'smooth'});
     },
     scroll2() {
-      window.scrollTo({ top: 2345, behavior: "smooth" });
+      var ll = document.querySelector("#comment").offsetTop;
+      window.scrollTo({top:ll, behavior:'smooth'});
     },
   },
   data() {

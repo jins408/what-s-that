@@ -1,9 +1,13 @@
 <template>
   <div>
       <div>
-          <a class="ml-5" style="font-size:1.5rem; margin:0 text-decoration: none; color: red;">검색 결과</a>
-        <div v-for="(item,index) in culture" :key="index">
-            <p style="margin-left:3rem;" @click="gopostdetail(item)">{{item}}</p>
+          <p class="text-center" style="margin-top:3rem;">
+                <span style="font-size:5rem; font-weight:bold; color:red; text-shadow: 2px 2px 2px gray;">What</span>
+                <span style="font-size:3rem; text-shadow: 2px 2px 2px gray;">'s that!?</span>
+              </p>
+        <div v-for="(item,index) in culture" :key="index" class="mx-auto mb-2" style="width:50%; cursor:pointer;" @click="gopostdetail(item)">
+                <span style="font-size:2rem; color:gray;">{{index+1}}. </span>
+                <span style="font-size:2rem; color:gray; margin-left:3rem;" >{{item}}</span>
         </div>
       </div>
   </div>

@@ -1,12 +1,11 @@
 <template>
   <div>
-    <div class="d-flex justify-content-end">
+    <div class="header">
       <div class="text-center mr-3 mt-2">
         <v-menu offset-y>
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               class="userbtn"
-              color="white"
               v-bind="attrs"
               v-on="on"
               style="box-shadow: none"
@@ -19,24 +18,24 @@
               User
             </v-btn>
           </template>
-          <v-list class="text-center p-0">
+          <v-list class="text-center p-0 userbtnmenu">
             <v-list-item class="userlist" @click="gojoin" v-if="!isLoggedIn">
-              <v-list-item-title style="font-size: 0.9rem"
+              <v-list-item-title style="font-size: 0.9rem; color:white;"
                 >Singup</v-list-item-title
               >
             </v-list-item>
             <v-list-item class="userlist" @click="gologin" v-if="!isLoggedIn">
-              <v-list-item-title style="font-size: 0.9rem"
+              <v-list-item-title style="font-size: 0.9rem; color:white;"
                 >Login</v-list-item-title
               >
             </v-list-item>
             <v-list-item class="userlist" @click="gomypage" v-if="isLoggedIn">
-              <v-list-item-title style="font-size: 0.9rem"
+              <v-list-item-title style="font-size: 0.9rem; color:white;"
                 >Mypage</v-list-item-title
               >
             </v-list-item>
             <v-list-item class="userlist" @click="logout" v-if="isLoggedIn">
-              <v-list-item-title style="font-size: 0.9rem"
+              <v-list-item-title style="font-size: 0.9rem; color:white;"
                 >Logout</v-list-item-title
               >
             </v-list-item>
@@ -108,5 +107,20 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.header{
+  position: absolute;
+  right:1%;
+  top:0.5%;
+  z-index: 5;
+}
+
+.userbtn{
+  background: none !important;
+  color: white;
+}
+
+.userbtnmenu{
+  background: none !important;
+}
 </style>
