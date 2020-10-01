@@ -24,7 +24,6 @@ import com.web.dictionary.service.JwtService;
 import io.swagger.annotations.ApiOperation;
 
 
-//로그인이 필요없는 과정들!!!!!!
 @RequestMapping("/culture")
 @CrossOrigin(origins = { "*" })
 @RestController
@@ -33,6 +32,30 @@ public class CultureController {
 	
 	@Autowired ICultureService cultureService;
 	@Autowired JwtService jwtService;
+	
+	
+	@ApiOperation(value = "문화재 상세페이지 조회 (문화재이름, 문화재내용, 찜 상태(1이면 찜한 상태)")
+	@GetMapping(value = "/detail/{postno}")
+    public ResponseEntity<?> getDetailCulturePost ( @PathVariable ("postno") int postno) throws Exception{
+		ResponseEntity response = null;
+		BasicResponse result = new BasicResponse();
+		String token = "";
+		Map<String, Object> payload = jwtService.getBody(token);
+		int userno = (int)payload.get("userno");
+		Culture culture = cultureService.getDetailCulturePost(postno,userno);
+		if(culture != null) {
+			result.status = true;
+			result.message = "success";
+			result.object = culture;
+			return response = new ResponseEntity<>(result, HttpStatus.OK);
+		}
+		else {
+			result.status = false;
+			result.message = "fail";
+			return response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+		}
+	}
+		
 	
 	@ApiOperation(value = "문화재 이름으로 문화재 조회")
 	@GetMapping(value = "/{culturename}")

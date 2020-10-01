@@ -5,6 +5,10 @@ import com.web.dictionary.dto.Comment;
 import com.web.dictionary.model.BasicResponse;
 import com.web.dictionary.service.ICommentService;
 import com.web.dictionary.util.SHA256Util;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +24,7 @@ public class CommentController {
     @Autowired
     ICommentService commentservice;
 
+    @ApiOperation(value = "해당 게시물에 달린 댓글 불러오기")
     @GetMapping("/{postno}")
     public ResponseEntity<?> getComments(@PathVariable("postno") int postno){
         BasicResponse result = new BasicResponse();
@@ -34,6 +39,7 @@ public class CommentController {
 
     }
     
+    @ApiOperation(value = "해당 댓글 지우기")
     @DeleteMapping("/{regno}")
     public ResponseEntity<?> deleteComment(@PathVariable("regno") int regno){
         BasicResponse result = new BasicResponse();

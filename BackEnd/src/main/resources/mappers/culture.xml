@@ -8,8 +8,14 @@
 	<select id="getCultureInfoByCultureName" resultType="com.web.dictionary.dto.Culture">
 		select postno, culturename, content
 		from culturepost
-		where culturename = #{culturename}
-		
+		where culturename = #{culturename}	
+	</select>
+	
+	<select id="getDetailCulturePost" resultType="com.web.dictionary.dto.Culture">
+		SELECT culture.postno, culture.culturename, culture.content, 
+		(SELECT COUNT(*) FROM favoriteculture AS favorite WHERE favorite.postno = #{postno} AND favorite.userno = #{userno}) AS isfavorite
+		FROM culturepost AS culture
+		WHERE culture.postno = #{postno}
 	</select>
 	
 	<select id="searchCultureInfoByCultureName" resultType="java.lang.String">
