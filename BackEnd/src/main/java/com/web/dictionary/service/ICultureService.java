@@ -15,5 +15,7 @@ public interface ICultureService {
 	public List<String> searchCultureInfoByCultureName(String culturename);
 
 	public List<Culture> getfavoritePost(int userno);
+
+	public Culture getDetailCulturePost(int postno, int userno);
 	
 }

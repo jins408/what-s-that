@@ -18,5 +18,7 @@ public interface CultureDao {
 	public List<String> searchCultureInfoByCultureName(@Param("culturename") String culturename);
 
 	public List<Culture> getfavoritePost( @Param("userno") int userno);
+
+	public Culture getDetailCulturePost(@Param("postno") int postno, @Param("userno") int userno);
 	
 }

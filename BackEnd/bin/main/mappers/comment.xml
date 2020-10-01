@@ -20,6 +20,9 @@
 		INSERT INTO comment(commentno, reply, reply_date) VALUES(#{commentno}, #{reply} , now())
 	</insert>
 	
+	<update id="modifyComment">
+		UPDATE comment SET reply = #{reply}, reply_date = now() WHERE commentno = #{commentno}
+	</update>
 
 	<select id="getRegNo" resultType="java.lang.Integer">
 	SELECT regno FROM commentreg

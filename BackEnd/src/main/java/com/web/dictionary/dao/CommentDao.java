@@ -20,5 +20,7 @@ public interface CommentDao {
     public int registComment(@Param(value = "userno") int userno, @Param(value="postno") int postno);
     public int getRegNo(@Param(value = "userno") int userno, @Param(value="postno") int postno);
 
+	public boolean modifyComment(Comment comment);
+
 
 }

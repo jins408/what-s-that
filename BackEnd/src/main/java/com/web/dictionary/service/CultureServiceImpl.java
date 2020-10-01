@@ -39,4 +39,9 @@ public class CultureServiceImpl implements ICultureService{
 		return dao.getfavoritePost(userno);
 	}
 
+	@Override
+	public Culture getDetailCulturePost(int postno, int userno) {
+		return dao.getDetailCulturePost(postno,userno);
+	}
+
 }
