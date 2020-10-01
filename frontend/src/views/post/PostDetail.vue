@@ -27,7 +27,7 @@
    
     <comment id="comment"></comment>
 
-    <v-card width="90%" class="mx-auto">
+    <v-card width="90%" class="mx-auto mt-5">
       <v-tabs background-color="white" color="red" left>
         <v-tab>정의</v-tab>
         <v-tab>내용</v-tab>
