@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dictionary.dao.PostDao">
+
+    <insert id="uploadPost">
+		INSERT INTO culturepost(culturename, content, imageUrl)
+		VALUES(#{culturename}, #{content}, #{imageUrl});
+	</insert>
+
+    <update id="updatePost">
+		UPDATE culturepost SET culturename = #{culturename}, content = #{content}, imageUrl = #{imageUrl}
+		WHERE postno = #{postno}
+	</update>
+
+	<delete id="deletePost">
+		DELETE FROM culturepost
+		WHERE postno = #{postno}
+	</delete>
+
+</mapper>
