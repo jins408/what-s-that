@@ -24,7 +24,7 @@
               </p>
               <v-col cols="12" sm="12" class="mx-auto">
                 <v-row>
-                  <v-text-field prepend-icon="fas fa-search" label="검색해주세요!" filled rounded ></v-text-field>
+                  <v-text-field prepend-icon="fas fa-search" label="검색해주세요!" v-model="culturename" filled rounded @keypress.enter="search" ></v-text-field>
                   <i class="fas fa-microphone ml-2 mt-2" style="font-size:1.6rem;"></i>
                 </v-row>
               </v-col>
@@ -40,6 +40,7 @@
     </div>
 
     <div class="mt-2">
+      <searchview v-if="this.searchok == true" :culture="culture" />
       <div style="height:50rem;">
         <a class="ml-5" href="#heritage" style="font-size:1.5rem; margin:0">문화재</a>
         <div class="d-flex justify-content-center" style="margin-top:19rem;">
@@ -64,11 +65,35 @@
 </template>
 
 <script>
+import axios from "axios";
+import searchview from "../../components/Searchview.vue";
+
+const baseURL = "http://localhost:8080";
+
 export default {
+  components:{
+    searchview,
+  },
   created() {
     window.addEventListener("scroll", this.updatescroll);
   },
   methods: {
+    search(){
+      if(this.culturename == ""){
+        this.searchok = false
+      }else{
+        axios.get(`${baseURL}/dictionary/culture/search/${this.culturename}`)
+        .then((res)=>{
+          this.searchok = true;
+          this.culture = res.data.object
+          // console.log(this.culture)
+          this.scroll();
+        })
+        .catch((err)=>{
+          console.log(err)
+        })
+      }
+    },
     updatescroll() {
       this.scrollposition = window.scrollY;
       // console.log(this.scrollposition)
@@ -86,7 +111,10 @@ export default {
   },
   data() {
     return {
+      culturename :'',
       scrollposition: 0,
+      culture:[],
+      searchok:false,
         items: [
           {
             src:  require('../../assets/mainbg1.jpg'),

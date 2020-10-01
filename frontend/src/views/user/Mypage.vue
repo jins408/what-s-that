@@ -199,7 +199,7 @@ export default {
       axios
         .get(`${baseURL}/dictionary/account/userinfo`, {
           headers: {
-            Authorization: this.$store.state.auth.token,
+            Authorization: this.$store.state.user.token,
           },
         })
         .then((res) => {
@@ -232,7 +232,7 @@ export default {
           axios
             .delete(`${baseURL}/dictionary/account/signout`, {
               headers: {
-                Authorization: this.$store.state.auth.token,
+                Authorization: this.$store.state.user.token,
               },
             })
             .then(() => {
@@ -271,7 +271,7 @@ export default {
       axios
         .put(`${baseURL}/dictionary/account/modify`, formData, {
           headers: {
-            Authorization: this.$store.state.auth.token,
+            Authorization: this.$store.state.user.token,
           },
           contentType: "multipart/form-data",
         })

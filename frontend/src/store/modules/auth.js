@@ -27,9 +27,10 @@ const actions = {
         commit(AUTH_REQUEST);
         axios.get(`${baseURL}/dictionary/user/login/${user.email}/${user.password}`)
             .then( async response =>{
-                let data = response.data.object.token;
+                let data = response.data.object;
                 console.log(data)
-                localStorage.setItem("user-login", data)
+                localStorage.setItem("user-login", data.userno)
+                localStorage.setItem("token", data.token)
                 commit(AUTH_SUCCESS, response)
                 await dispatch(USER_REQUEST, data)
                 resolve(response.data.object)
