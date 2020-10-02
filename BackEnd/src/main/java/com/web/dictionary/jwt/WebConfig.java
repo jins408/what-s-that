@@ -4,11 +4,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
+	
+		@Override
+		public void addResourceHandlers(ResourceHandlerRegistry registry) {
+			registry.addResourceHandler("/images/**")
+			.addResourceLocations("file:///C:/images/");
+//		    .addResourceLocations("file:///home/ubuntu/images/");
+			System.out.println("resource handler");
+		}
+	
 	   private static final String[] EXCLUDE_PATHS = {
 	            "/user/**",
 	            "/swagger-resources/**",
@@ -16,6 +26,8 @@ public class WebConfig implements WebMvcConfigurer {
 				"/csrf/**",
 				"/v2/api-docs/**",
 				"/webjars/**",
+				"/account/**",
+				"/**",
 	    };
 
 	    @Autowired

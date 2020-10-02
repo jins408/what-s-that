@@ -17,12 +17,12 @@ spring:
       max-request-size: 100MB
 
 
-
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://j3b202.p.ssafy.io/ssafyPJT2
     username: ssafy
     password: ssafy
+
 
 
   mail:
