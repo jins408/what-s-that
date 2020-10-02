@@ -3,8 +3,6 @@ package com.web.dictionary.dto;
 
 import lombok.*;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
 public class Culture {
 
@@ -12,5 +10,5 @@ public class Culture {
 	private String culturename;
 	private String content;
 	private int isfavorite;
-	
+	private String imageUrl;
 }

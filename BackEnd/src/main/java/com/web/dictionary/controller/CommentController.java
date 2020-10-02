@@ -26,7 +26,7 @@ public class CommentController {
 
     @ApiOperation(value = "해당 게시물에 달린 댓글 불러오기")
     @GetMapping("/{postno}")
-    public ResponseEntity<?> getComments(@PathVariable("postno") int postno){
+    public ResponseEntity<?> getComments(@PathVariable("postno") int postno) throws Exception {
         BasicResponse result = new BasicResponse();
         List<Comment> commentList = commentservice.getComments(postno);
           if(commentList.size() > 0 ){
@@ -40,7 +40,7 @@ public class CommentController {
     }
     @ApiOperation(value = "해당 게시물에 댓글 수정")
     @PutMapping("")
-    public ResponseEntity<?> modifyComment(@RequestBody Comment comment){
+    public ResponseEntity<?> modifyComment(@RequestBody Comment comment) throws Exception {
     	BasicResponse result = new BasicResponse();
     	if(commentservice.modifyComment(comment) ){
     		result.status = true;
@@ -56,7 +56,7 @@ public class CommentController {
     
     @ApiOperation(value = "해당 댓글 지우기")
     @DeleteMapping("/{regno}")
-    public ResponseEntity<?> deleteComment(@PathVariable("regno") int regno){
+    public ResponseEntity<?> deleteComment(@PathVariable("regno") int regno) throws Exception {
         BasicResponse result = new BasicResponse();
         int res = commentservice.deleteComment(regno);
         if( res == 1) { //성공
@@ -70,7 +70,7 @@ public class CommentController {
     
     
     @PostMapping("")
-    public ResponseEntity<?> insertComment(Comment commnet){
+    public ResponseEntity<?> insertComment(Comment commnet) throws Exception {
         BasicResponse result = new BasicResponse();
 
         commentservice.insertComment(commnet);

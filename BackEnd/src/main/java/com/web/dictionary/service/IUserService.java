@@ -7,30 +7,30 @@ public interface IUserService {
 	
 	public int checkOverlapEmail(String email) throws Exception;
 
-	public boolean saveAuthcode(String email, String code);
+	public boolean saveAuthcode(String email, String code) throws Exception;
 
-	public boolean signUp(SignupRequest request);
+	public boolean signUp(SignupRequest request) throws Exception;
 
-	public int checkEmailandCode(String email, String code);
+	public int checkEmailandCode(String email, String code) throws Exception;
 
-	public void deleteAuthcode(String email);
+	public void deleteAuthcode(String email) throws Exception;
 
-	public int checkOverlapAuthcode(String email);
+	public int checkOverlapAuthcode(String email) throws Exception;
 
-	public User logIn(String email, String password);
+	public User logIn(String email, String password) throws Exception;
 
-	public String getUserSalt(String email);
+	public String getUserSalt(String email) throws Exception;
 
-	public User getUserByEmail(String email);
+	public User getUserByEmail(String email) throws Exception;
 
-	public boolean updatePassword(String email, String password);
+	public boolean updatePassword(String email, String password) throws Exception;
 
-	public User getUserByUsernoForModify(int userno);
+	public User getUserByUsernoForModify(int userno) throws Exception;
 
-	public boolean modifyUserInfo(User user);
+	public boolean modifyUserInfo(User user) throws Exception;
 
-	public boolean deleteAccount(int userno);
+	public boolean deleteAccount(int userno) throws Exception;
 
-	public User getUserByUsernoForResponse(int userno);
+	public User getUserByUsernoForResponse(int userno) throws Exception;
 
 }

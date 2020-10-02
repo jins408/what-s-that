@@ -2,9 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.web.dictionary.dao.CultureDao">
 
-
-
-	
 	<select id="getCultureInfoByCultureName" resultType="com.web.dictionary.dto.Culture">
 		select postno, culturename, content
 		from culturepost
@@ -39,7 +36,21 @@
 	<delete id="deleteFavoriteCulture" >
 		delete from favoriteculture  where postno = #{postno} and userno = #{userno}
 	</delete>
-	
+
+	<insert id="uploadPost">
+		INSERT INTO culturepost(culturename, content, imageUrl)
+		VALUES(#{culturename}, #{content}, #{imageUrl});
+	</insert>
+
+	<update id="updatePost">
+		UPDATE culturepost SET culturename = #{culturename}, content = #{content}, imageUrl = #{imageUrl}
+		WHERE postno = #{postno}
+	</update>
+
+	<delete id="deletePost">
+		DELETE FROM culturepost
+		WHERE postno = #{postno}
+	</delete>
 	
 	
 </mapper>
