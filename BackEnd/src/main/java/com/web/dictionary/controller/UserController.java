@@ -126,8 +126,11 @@ public class UserController {
 		ResponseEntity response = null;
 		BasicResponse result = new BasicResponse();
 		String salt = userService.getUserSalt(user.getEmail());
-		String newpwd = SHA256Util.getEncrypt(user.getPassword(), salt);
-        User u = userService.logIn(user.getEmail(),newpwd);
+		User u = null;
+		if(salt != null) {
+			String newpwd = SHA256Util.getEncrypt(user.getPassword(), salt);
+			u = userService.logIn(user.getEmail(), newpwd);
+		}
         if(u == null) {
 			logger.info("ID/PW 틀림");
         	result.status = false;
