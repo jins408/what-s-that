@@ -13,7 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
 		public void addResourceHandlers(ResourceHandlerRegistry registry) {
 			registry.addResourceHandler("/images/**")
 //			.addResourceLocations("file:///C:/images/");
-		    .addResourceLocations("file:///home/ubuntu/springboot/images/");
+		    .addResourceLocations("/home/ubuntu/springboot/images/");
 
 
 			System.out.println("resource handler");
