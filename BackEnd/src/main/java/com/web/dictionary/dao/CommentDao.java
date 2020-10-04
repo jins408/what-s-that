@@ -10,17 +10,18 @@ import java.util.List;
 public interface CommentDao {
 
     //댓글 조회
-    public List<Comment> getComments(int postno);
+    public List<Comment> getComments(int postno) throws Exception;
 
     //댓글 삭제
-    public int deleteComment(int commentno);
-    
+    public int deleteComment(int commentno) throws Exception;
+
     //댓글 등록
     public int insertComment(Comment comment);
-    public int registComment(@Param(value = "userno") int userno, @Param(value="postno") int postno);
-    public int getRegNo(@Param(value = "userno") int userno, @Param(value="postno") int postno);
 
-	public boolean modifyComment(Comment comment);
+    public int registComment(@Param(value = "userno") int userno, @Param(value = "postno") int postno) throws Exception;
 
+    public int getRegNo(@Param(value = "userno") int userno, @Param(value = "postno") int postno) throws Exception;
+
+    public boolean modifyComment(Comment comment) throws Exception;
 
 }

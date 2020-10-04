@@ -276,7 +276,7 @@ export default {
     completemodify() {
       let formData = new FormData();
       let introduce = this.info.introduce;
-      let password = this.info.introduce;
+      let password = this.info.password;
       let username = this.info.username;
       const file = this.$refs.imageInput.files[0];
       console.log(file);

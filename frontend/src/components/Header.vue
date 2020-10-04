@@ -29,6 +29,11 @@
                 >Login</v-list-item-title
               >
             </v-list-item>
+            <v-list-item class="userlist" @click="gowrite" v-if="isLoggedIn">
+              <v-list-item-title style="font-size: 0.9rem; color:white;"
+                >Write</v-list-item-title
+              >
+            </v-list-item>
             <v-list-item class="userlist" @click="gomypage" v-if="isLoggedIn">
               <v-list-item-title style="font-size: 0.9rem; color:white;"
                 >Mypage</v-list-item-title
@@ -70,6 +75,11 @@
             <v-list-item class="userlist" @click="gologin" v-if="!isLoggedIn">
               <v-list-item-title style="font-size: 0.9rem"
                 >Login</v-list-item-title
+              >
+            </v-list-item>
+            <v-list-item class="userlist" @click="gowrite" v-if="isLoggedIn">
+              <v-list-item-title style="font-size: 0.9rem;"
+                >Write</v-list-item-title
               >
             </v-list-item>
             <v-list-item class="userlist" @click="gomypage" v-if="isLoggedIn">
@@ -147,6 +157,9 @@ export default {
     gomain() {
       this.$router.push("/main");
     },
+    gowrite(){
+      this.$router.push('/postcreate')
+    }
   },
 };
 </script>

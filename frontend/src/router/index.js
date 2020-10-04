@@ -14,6 +14,7 @@ import Main from '../views/main/Main.vue'
 // Post
 import PostList from '../views/post/PostList.vue'
 import PostDetail from '../views/post/PostDetail.vue'
+import PostCreate from '../views/post/PostCreate.vue'
 
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -55,6 +56,11 @@ const routes = [
     path: '/postdetail/:ID',
     name: 'PostDetail',
     component: PostDetail
+  },
+  {
+    path: '/postcreate',
+    name: 'PostCreate',
+    component: PostCreate
   },
 
 ]

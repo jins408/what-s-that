@@ -28,7 +28,9 @@
                       ></v-text-field>
                       <v-btn rounded color="primary" style="width:100%; height:19%; font-size: 1rem" @click="Login()">로그인</v-btn>
 
-                      <div class=" d-flex justify-end">
+                      <div class=" d-flex justify-content-between">
+                        <findpw v-model="showFindpwForm"></findpw>
+                        <v-btn text style="color: white;" @click.stop="showFindpwForm=true">pw찾기</v-btn>
                         <v-btn text style="color: white;" @click="main">비회원으로 이용하기</v-btn>
                       </div>
                       <!-- <p style="border-style: solid">solid</p> -->
@@ -53,6 +55,7 @@
 
 <script>
 import axios from "axios";
+import findpw from "../../components/Findpw.vue"
 
 const baseURL = "http://localhost:8080";
 
@@ -65,9 +68,9 @@ import { USER_SUCCESS } from "../../store/actions/user";
 export default {
     name:"Login",
 
-    computed:{
-      
-      },
+    components:{
+      findpw
+    },
 
     created(){
       
@@ -75,18 +78,25 @@ export default {
 
   methods:{
     Login(){
-      const {email, password} = this;
-        this.$store
-          .dispatch(AUTH_REQUEST, {email, password})
-          .then(() =>{
-            this.$store.commit(USER_SUCCESS, {email, password})
-            this.$router.push('/main')
-            // this.$router.go()
-          })
-          .catch((error)=>{
-            console.log(error)
-            // alert("로그인실패")
-          })
+      var reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      if(!this.email.match(reg)){
+        alert("이메일 양식을 확인해주세요")
+      }
+      else{
+        const {email, password} = this;
+          this.$store
+            .dispatch(AUTH_REQUEST, {email, password})
+            .then(() =>{
+              this.$store.commit(USER_SUCCESS, {email, password})
+              this.$router.push('/main')
+              this.$router.go()
+            })
+            .catch((error)=>{
+              console.log(error)
+              // alert("로그인실패")
+            })
+
+          }
       },
       join(){
         this.$router.push( '/user/join' )
@@ -119,6 +129,7 @@ export default {
         return{
           email: "",
           password: "",
+          showFindpwForm: false
         }
     }
   }
