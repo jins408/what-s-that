@@ -6,6 +6,8 @@ import com.web.dictionary.model.BasicResponse;
 import com.web.dictionary.service.ICultureService;
 import com.web.dictionary.service.JwtService;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +24,7 @@ import java.util.List;
 @CrossOrigin(origins = {"*"})
 @RestController
 public class CultureController {
-
+    private static final Logger logger = LoggerFactory.getLogger(CultureController.class);
 
     @Autowired
     ICultureService cultureService;
@@ -92,7 +94,7 @@ public class CultureController {
         ResponseEntity response = null;
         BasicResponse result = new BasicResponse();
         int userno = (int) jwtService.getKey("userno");
-        System.out.println(userno);
+        logger.info(""+userno);
         List<Culture> list = cultureService.getfavoritePost(userno);
         if (list != null) {
             result.status = true;
@@ -113,7 +115,7 @@ public class CultureController {
         ResponseEntity response = null;
         BasicResponse result = new BasicResponse();
         int userno = (int) jwtService.getKey("userno");
-        System.out.println(userno);
+        logger.info(""+userno);
         if (cultureService.registFavoriteCulture(postno, userno)) {
             result.status = true;
             result.message = "success";
@@ -131,7 +133,7 @@ public class CultureController {
         ResponseEntity response = null;
         BasicResponse result = new BasicResponse();
         int userno = (int) jwtService.getKey("userno");
-        System.out.println(userno);
+        logger.info(""+userno);
         if (cultureService.deleteFavoriteCulture(postno, userno)) {
             result.status = true;
             result.message = "success";
