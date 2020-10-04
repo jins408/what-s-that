@@ -9,6 +9,8 @@ import com.web.dictionary.service.JwtService;
 import com.web.dictionary.service.KakaoAPI;
 import com.web.dictionary.util.SHA256Util;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import java.util.HashMap;
 @CrossOrigin(origins = { "*" })
 @RestController
 public class UserController {
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@Autowired EmailServiceImpl emailService;
 	@Autowired IUserService userService;
@@ -35,19 +38,19 @@ public class UserController {
         IsOverlap = userService.checkOverlapEmail(email);
         // 1이라면 이메일 중복
         if(IsOverlap == 1){
-        	System.out.println("중복");
+        	logger.info("중복");
         	result.status = true;
 			result.message = "fail";
 			return response = new ResponseEntity<>(result, HttpStatus.OK);
         }
         else {
         	// 1이 아니라면 사용 가능
-    		System.out.println(email);
+			logger.info(email);
     		//이메일 주소 받아서 코드 생성한 뒤 이메일에 코드를 보냄
     		String code = emailService.mailSend(email);
     		
     		if(code.equals("")) {
-    			System.out.println("코드 생성 실패");
+				logger.info("코드 생성 실패");
     			result.status = false;
     			result.message = "fail";
     			return response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
@@ -59,13 +62,13 @@ public class UserController {
     				userService.deleteAuthcode(email);
     			}
     			if(userService.saveAuthcode(email, code)) {
-    				System.out.println("코드 등록 성공");
+    				logger.info("코드 등록 성공");
     				result.status = true;
     				result.message = "success";
     				return response = new ResponseEntity<>(result, HttpStatus.OK);
     			}
     			else {
-    				System.out.println("코드 등록 실패");
+					logger.info("코드 등록 실패");
     				result.status = false;
     				result.message = "fail";
     				return response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
@@ -101,14 +104,14 @@ public class UserController {
 		request.setPassword(newpwd);
 		
 		if(userService.signUp(request)) {
-			System.out.println("회원가입 성공");
+			logger.info("회원가입 성공");
 			userService.deleteAuthcode(request.getEmail());
 			result.status = true;
 			result.message = "success";
 			return response = new ResponseEntity<>(result, HttpStatus.OK);
 		}
 		else {
-			System.out.println("회원가입 실패");
+			logger.info("회원가입 실패");
 			userService.deleteAuthcode(request.getEmail());
 			result.status = false;
 			result.message = "fail";
@@ -126,15 +129,15 @@ public class UserController {
 		String newpwd = SHA256Util.getEncrypt(user.getPassword(), salt);
         User u = userService.logIn(user.getEmail(),newpwd);
         if(u == null) {
-        	System.out.println("ID/PW 틀림");
+			logger.info("ID/PW 틀림");
         	result.status = false;
 			result.message = "fail";
 			return response = new ResponseEntity<>(result, HttpStatus.OK);
         }
         else {
-        	System.out.println("ID/PW 맞고, Token 발생하여 insert");
+			logger.info("ID/PW 맞고, Token 발생하여 insert");
         	String token = jwtService.createToken(u.getUserno());
-        	System.out.println(token);
+			logger.info(token);
         	u.setToken(token);
         	result.status = true;
 			result.message = "success";
@@ -151,7 +154,7 @@ public class UserController {
 		ResponseEntity response = null;
 
 		HashMap<String, Object> userInfo = kakao.getUserInfo(access_token);
-		System.out.println("login Controller : " + userInfo);
+		logger.info("login Controller : " + userInfo);
 		BasicResponse result = new BasicResponse();
 		// 클라이언트의 이메일이 존재할 때 세션에 해당 이메일과 토큰 등록
 		User u = userService.getUserByEmail((String) userInfo.get("email"));
@@ -167,8 +170,8 @@ public class UserController {
 			SignupRequest user = new SignupRequest();
 			String email = (String) userInfo.get("email");
 			String username = (String)userInfo.get("nickname");
-			System.out.println("email : " + email);
-			System.out.println("username : " + username);
+			logger.info("email : " + email);
+			logger.info("username : " + username);
 			String pwd = access_token;
 			String salt = SHA256Util.generateSalt();
 			user.setEmail(email);
@@ -207,19 +210,19 @@ public class UserController {
 			String salt = userService.getUserSalt(email);
 			String newpassword = SHA256Util.getEncrypt(password, salt);
 			if(userService.updatePassword(email, newpassword)) {
-				System.out.println("비밀번호 update 성공");
+				logger.info("비밀번호 update 성공");
 	        	result.status = true;
 				result.message = "success";
 				return response = new ResponseEntity<>(result, HttpStatus.OK);
 			}else {
-				System.out.println("비밀번호 update 실패");
+				logger.info("비밀번호 update 실패");
 				result.status = false;
 				result.message = "fail";
 				return response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
 			}
 		}
 		else {
-			System.out.println("입력 이메일을 확인해주세요");
+			logger.info("입력 이메일을 확인해주세요");
         	result.status = true;
 			result.message = "fail";
 			return response = new ResponseEntity<>(result, HttpStatus.OK);

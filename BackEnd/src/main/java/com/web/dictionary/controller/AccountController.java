@@ -6,6 +6,8 @@ import com.web.dictionary.service.IUserService;
 import com.web.dictionary.service.JwtService;
 import com.web.dictionary.util.SHA256Util;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import java.util.Date;
 @CrossOrigin(origins = {"*"})
 @RestController
 public class AccountController {
+    private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
     @Autowired
     JwtService jwtService;
@@ -33,12 +36,12 @@ public class AccountController {
         ResponseEntity response = null;
         BasicResponse result = new BasicResponse();
         int userno = (int) jwtService.getKey("userno");
-        System.out.println(userno);
+        logger.info("" + userno);
         //기존의 유저정보 not null인 부분만 null일시 기존데이터로 바꿔준다.
         User u = userService.getUserByUsernoForModify(userno);
 
-        System.out.println("profile : " + profile);
-        System.out.println("수정을 위해 불러온 회원정보 " + u.toString());
+        logger.info("profile : " + profile);
+        logger.info("수정을 위해 불러온 회원정보 " + u.toString());
         if (password != null && !password.equals("")) {
             String salt = u.getSalt();
             String newpassword = SHA256Util.getEncrypt(password, salt);
@@ -60,12 +63,12 @@ public class AccountController {
 
 //            String fileUrl = "/C://images/profile/" + userno + time1
 //                    + profile.getOriginalFilename();
-			String fileUrl = "/home/ubuntu/springboot/images/profiles/"
-					+ userno + time1 + profile.getOriginalFilename();
+            String fileUrl = "/home/ubuntu/springboot/images/profiles/"
+                    + userno + time1 + profile.getOriginalFilename();
             File dest = new File(fileUrl);
             profile.transferTo(dest);
         }
-        System.out.println("보정 후 회원정보 " + u.toString());
+        logger.info("보정 후 회원정보 " + u.toString());
         //이제 입력된 u를 update해줌
         if (userService.modifyUserInfo(u)) {
             u.setPassword(null);
