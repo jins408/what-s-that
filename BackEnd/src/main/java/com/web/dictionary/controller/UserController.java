@@ -1,19 +1,5 @@
 package com.web.dictionary.controller;
 
-import java.util.HashMap;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.web.dictionary.dto.SignupRequest;
 import com.web.dictionary.dto.User;
 import com.web.dictionary.model.BasicResponse;
@@ -22,8 +8,13 @@ import com.web.dictionary.service.IUserService;
 import com.web.dictionary.service.JwtService;
 import com.web.dictionary.service.KakaoAPI;
 import com.web.dictionary.util.SHA256Util;
-
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 //로그인이 필요없는 과정들!!!!!!
 @RequestMapping("/user")
 @CrossOrigin(origins = { "*" })
@@ -127,13 +118,13 @@ public class UserController {
 	}
 	
 	@ApiOperation(value = "로그인")
-	@GetMapping(value = "/login/{email}/{password}")
-    public ResponseEntity<?> logIn(  @PathVariable ("email") String email, @PathVariable ("password") String password) throws Exception{
+	@PostMapping(value = "/login")
+    public ResponseEntity<?> logIn(@RequestBody User user) throws Exception{
 		ResponseEntity response = null;
 		BasicResponse result = new BasicResponse();
-		String salt = userService.getUserSalt(email);
-		String newpwd = SHA256Util.getEncrypt(password, salt);
-        User u = userService.logIn(email,newpwd);
+		String salt = userService.getUserSalt(user.getEmail());
+		String newpwd = SHA256Util.getEncrypt(user.getPassword(), salt);
+        User u = userService.logIn(user.getEmail(),newpwd);
         if(u == null) {
         	System.out.println("ID/PW 틀림");
         	result.status = false;

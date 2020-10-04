@@ -150,12 +150,13 @@ public class CultureController {
                                         @RequestParam("content") String content) throws Exception {
         SimpleDateFormat format1 = new SimpleDateFormat("yyMMDDHHmmss");
         String time1 = format1.format(new Date());
-        String filename = "http://localhost:8080/dictionary/images/" + time1 + "_" + imgfile.getOriginalFilename();
+//        String filename = "http://localhost:8080/dictionary/images/" + time1 + "_" + imgfile.getOriginalFilename();
+        String filename = "http://j3b202.p.ssafy.io:8088/dictionary/images/cultures/" + time1 + "_" + imgfile.getOriginalFilename();
         Culture post = new Culture();
         post.setCulturename(culturename);
         post.setContent(content);
         post.setImageUrl(filename);
-        String fileUrl = "C:\\images/" + time1 + "_" + imgfile.getOriginalFilename();
+        String fileUrl = "/home/ubuntu/springboot/images/cultures/" + time1 + "_" + imgfile.getOriginalFilename();
         File dest = new File(fileUrl);
         imgfile.transferTo(dest);
 
@@ -183,13 +184,13 @@ public class CultureController {
 
         SimpleDateFormat format1 = new SimpleDateFormat("yyMMDDHHmmss");
         String time1 = format1.format(new Date());
-        String filename = "http://localhost:8080/dictionary/images/" + time1 + "_" + imgfile.getOriginalFilename();
+        String filename = "http://j3b202.p.ssafy.io:8088/dictionary/images/cultures/" + time1 + "_" + imgfile.getOriginalFilename();
         Culture post = new Culture();
         post.setPostno(postno);
         post.setCulturename(culturename);
         post.setContent(content);
         post.setImageUrl(filename);
-        String fileUrl = "C:\\images/" + time1 + "_" + imgfile.getOriginalFilename();
+        String fileUrl = "/home/ubuntu/springboot/images/cultures/" + time1 + "_" + imgfile.getOriginalFilename();
         File dest = new File(fileUrl);
         imgfile.transferTo(dest);
 

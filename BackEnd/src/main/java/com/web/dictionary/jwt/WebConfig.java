@@ -2,7 +2,6 @@ package com.web.dictionary.jwt;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -14,8 +13,8 @@ public class WebConfig implements WebMvcConfigurer {
 		@Override
 		public void addResourceHandlers(ResourceHandlerRegistry registry) {
 			registry.addResourceHandler("/images/**")
-			.addResourceLocations("file:///C:/images/");
-//		    .addResourceLocations("file:///home/ubuntu/images/");
+//			.addResourceLocations("file:///C:/images/");
+		    .addResourceLocations("file:///home/ubuntu/images/");
 			System.out.println("resource handler");
 		}
 	

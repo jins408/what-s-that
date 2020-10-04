@@ -12,25 +12,25 @@
             WHERE user.userno = commentinfo.userno;
     </select>
 
-	<insert id="registComment">
+    <insert id="registComment">
 		INSERT INTO commentreg(userno, postno) VALUES(#{userno}, #{postno})
 	</insert>
-	
-	<insert id="insertComment">
+
+    <insert id="insertComment">
 		INSERT INTO comment(commentno, reply, reply_date) VALUES(#{commentno}, #{reply} , now())
 	</insert>
-	
-	<update id="modifyComment">
+
+    <update id="modifyComment">
 		UPDATE comment SET reply = #{reply}, reply_date = now() WHERE commentno = #{commentno}
 	</update>
 
-	<select id="getRegNo" resultType="java.lang.Integer">
+    <select id="getRegNo" resultType="java.lang.Integer">
 	SELECT regno FROM commentreg
 		WHERE userno = #{userno}  and postno = #{postno}
 		ORDER BY regno DESC LIMIT 1
 	</select>
 
-	<delete id="deleteComment">
+    <delete id="deleteComment">
 			DELETE FROM commentreg WHERE regno = #{regno}
 	</delete>
 </mapper>
