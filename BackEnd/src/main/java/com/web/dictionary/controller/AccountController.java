@@ -1,36 +1,20 @@
 package com.web.dictionary.controller;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.ibatis.annotations.Delete;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.web.dictionary.dto.User;
 import com.web.dictionary.model.BasicResponse;
 import com.web.dictionary.service.IUserService;
 import com.web.dictionary.service.JwtService;
 import com.web.dictionary.util.SHA256Util;
-
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @RequestMapping("/account")
 @CrossOrigin(origins = {"*"})
@@ -70,13 +54,14 @@ public class AccountController {
             SimpleDateFormat format1 = new SimpleDateFormat("yyMMddHHmmss");
             String time1 = format1.format(new Date());
 
-            String filename = "http://localhost:8080/dictionary/images/profile/" + userno + time1 + profile.getOriginalFilename();
+//            String filename = "http://localhost:8080/dictionary/images/profile/" + userno + time1 + profile.getOriginalFilename();
+            String filename = "http://j3b202.p.ssafy.io:8088/dictionary/images/profiles/" + userno + "_" + time1 + "_" + profile.getOriginalFilename();
             u.setProfileurl(filename);
 
-            String fileUrl = "/C://images/profile/" + userno + time1
-                    + profile.getOriginalFilename();
-//			String fileUrl = "/C://Users/multicampus/Documents/workspace-spring-tool-suite-4-4.7.0.RELEASE/AIproject/src/main/resources/static/images/" 
-//					+ userno + time1 + profile.getOriginalFilename();
+//            String fileUrl = "/C://images/profile/" + userno + time1
+//                    + profile.getOriginalFilename();
+			String fileUrl = "/home/ubuntu/springboot/images/profiles/"
+					+ userno + time1 + profile.getOriginalFilename();
             File dest = new File(fileUrl);
             profile.transferTo(dest);
         }
