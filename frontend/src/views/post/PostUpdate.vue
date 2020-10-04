@@ -2,7 +2,7 @@
   <div class="container">
     <v-card style="margin-top:5rem;">
       <v-toolbar flat color="primary" dark>
-        <v-toolbar-title>문화재 등록</v-toolbar-title>
+        <v-toolbar-title>문화재 수정</v-toolbar-title>
       </v-toolbar>
       <v-tabs vertical>
         <v-tab class="d-flex justify-content-start">
@@ -64,7 +64,7 @@
             <v-card-text>
               <v-textarea outlined rows="10" name="content" label="내용" v-model="content"></v-textarea>
               <div class="d-flex justify-content-end">
-                <v-btn @click="regist">등록하기</v-btn>
+                <v-btn @click="modify">수정하기</v-btn>
               </div>
             </v-card-text>
           </v-card>
@@ -81,15 +81,19 @@ import Swal from "sweetalert2";
 const baseURL = "http://localhost:8080";
 
 export default {
+    created(){
+        this.postno = this.$route.params.ID;
+    },
   data() {
     return {
         culturename:"",
         content:"",
         imageUrl: "",
+        postno:"",
     };
   },
   methods: {
-      regist(){
+      modify(){
           Swal.fire({
             text: "등록하시겠습니까?",
             icon: 'question',
@@ -112,19 +116,18 @@ export default {
                     console.log(pair[0] + ", " + pair[1]);
                 }
                 axios
-                .post(`${baseURL}/dictionary/culture?content=`+this.content+`&culturename=`+this.culturename, formData)
+                .post(`${baseURL}/dictionary/culture/${this.postno}?content=`+this.content+`&culturename=`+this.culturename, formData)
                 .then(()=>{
                     
                         Swal.fire({
                             text: "등록되었습니다",
                             icon: 'success',
                         })
-
                 })
                 .catch((err)=>{
                     console.log(err)
                 })
-                }
+                    }
             })
       },
     onClickImageUpload() {

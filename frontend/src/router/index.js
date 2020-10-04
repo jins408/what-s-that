@@ -15,6 +15,7 @@ import Main from '../views/main/Main.vue'
 import PostList from '../views/post/PostList.vue'
 import PostDetail from '../views/post/PostDetail.vue'
 import PostCreate from '../views/post/PostCreate.vue'
+import PostUpdate from '../views/post/PostUpdate.vue'
 
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -61,6 +62,11 @@ const routes = [
     path: '/postcreate',
     name: 'PostCreate',
     component: PostCreate
+  },
+  {
+    path: '/postupdate/:ID',
+    name: 'PostUpdate',
+    component: PostUpdate
   },
 
 ]

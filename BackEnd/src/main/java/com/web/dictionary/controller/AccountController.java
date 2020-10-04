@@ -54,14 +54,14 @@ public class AccountController {
             SimpleDateFormat format1 = new SimpleDateFormat("yyMMddHHmmss");
             String time1 = format1.format(new Date());
 
-//            String filename = "http://localhost:8080/dictionary/images/profile/" + userno + time1 + profile.getOriginalFilename();
-            String filename = "http://j3b202.p.ssafy.io:8088/dictionary/images/profiles/" + userno + "_" + time1 + "_" + profile.getOriginalFilename();
+           String filename = "http://localhost:8080/dictionary/images/profile/" + userno + time1 + profile.getOriginalFilename();
+            // String filename = "http://j3b202.p.ssafy.io:8088/dictionary/images/profiles/" + userno + "_" + time1 + "_" + profile.getOriginalFilename();
             u.setProfileurl(filename);
 
-//            String fileUrl = "/C://images/profile/" + userno + time1
-//                    + profile.getOriginalFilename();
-			String fileUrl = "/home/ubuntu/springboot/images/profiles/"
-					+ userno + time1 + profile.getOriginalFilename();
+           String fileUrl = "/C://images/profile/" + userno + time1
+                   + profile.getOriginalFilename();
+			// String fileUrl = "/home/ubuntu/springboot/images/profiles/"
+			// 		+ userno + time1 + profile.getOriginalFilename();
             File dest = new File(fileUrl);
             profile.transferTo(dest);
         }
