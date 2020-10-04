@@ -151,7 +151,7 @@ public class CultureController {
         SimpleDateFormat format1 = new SimpleDateFormat("yyMMDDHHmmss");
         String time1 = format1.format(new Date());
 //        String filename = "http://localhost:8080/dictionary/images/" + time1 + "_" + imgfile.getOriginalFilename();
-        String filename = "http://j3b202.p.ssafy.io:8088/dictionary/cultures/" + time1 + "_" + imgfile.getOriginalFilename();
+        String filename = "http://j3b202.p.ssafy.io:8088/dictionary/images/cultures/" + time1 + "_" + imgfile.getOriginalFilename();
         Culture post = new Culture();
         post.setCulturename(culturename);
         post.setContent(content);
@@ -184,7 +184,7 @@ public class CultureController {
 
         SimpleDateFormat format1 = new SimpleDateFormat("yyMMDDHHmmss");
         String time1 = format1.format(new Date());
-        String filename = "http://j3b202.p.ssafy.io:8088/dictionary/cultures/" + time1 + "_" + imgfile.getOriginalFilename();
+        String filename = "http://j3b202.p.ssafy.io:8088/dictionary/images/culture/" + time1 + "_" + imgfile.getOriginalFilename();
 
         Culture post = new Culture();
         post.setPostno(postno);
