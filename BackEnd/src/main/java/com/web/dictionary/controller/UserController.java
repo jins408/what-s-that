@@ -1,19 +1,5 @@
 package com.web.dictionary.controller;
 
-import java.util.HashMap;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.web.dictionary.dto.SignupRequest;
 import com.web.dictionary.dto.User;
 import com.web.dictionary.model.BasicResponse;
@@ -22,13 +8,21 @@ import com.web.dictionary.service.IUserService;
 import com.web.dictionary.service.JwtService;
 import com.web.dictionary.service.KakaoAPI;
 import com.web.dictionary.util.SHA256Util;
-
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 //로그인이 필요없는 과정들!!!!!!
 @RequestMapping("/user")
 @CrossOrigin(origins = { "*" })
 @RestController
 public class UserController {
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@Autowired EmailServiceImpl emailService;
 	@Autowired IUserService userService;
@@ -40,23 +34,23 @@ public class UserController {
     public ResponseEntity<?> checkOverlapEmail( @PathVariable ("email") String email) throws Exception{
 		int IsOverlap = 0;
 		ResponseEntity response = null;
-		final BasicResponse result = new BasicResponse();
+		BasicResponse result = new BasicResponse();
         IsOverlap = userService.checkOverlapEmail(email);
         // 1이라면 이메일 중복
         if(IsOverlap == 1){
-        	System.out.println("중복");
+        	logger.info("중복");
         	result.status = true;
 			result.message = "fail";
 			return response = new ResponseEntity<>(result, HttpStatus.OK);
         }
         else {
         	// 1이 아니라면 사용 가능
-    		System.out.println(email);
+			logger.info(email);
     		//이메일 주소 받아서 코드 생성한 뒤 이메일에 코드를 보냄
     		String code = emailService.mailSend(email);
     		
     		if(code.equals("")) {
-    			System.out.println("코드 생성 실패");
+				logger.info("코드 생성 실패");
     			result.status = false;
     			result.message = "fail";
     			return response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
@@ -68,13 +62,13 @@ public class UserController {
     				userService.deleteAuthcode(email);
     			}
     			if(userService.saveAuthcode(email, code)) {
-    				System.out.println("코드 등록 성공");
+    				logger.info("코드 등록 성공");
     				result.status = true;
     				result.message = "success";
     				return response = new ResponseEntity<>(result, HttpStatus.OK);
     			}
     			else {
-    				System.out.println("코드 등록 실패");
+					logger.info("코드 등록 실패");
     				result.status = false;
     				result.message = "fail";
     				return response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
@@ -101,7 +95,7 @@ public class UserController {
 	@PostMapping(value = "/signup")
 	 public ResponseEntity<?> signUp( @RequestBody SignupRequest request ) throws Exception{
 		ResponseEntity response = null;
-		final BasicResponse result = new BasicResponse();
+		BasicResponse result = new BasicResponse();
 		
 		//비밀번호 : salt값 생성 -> 입력한 비밀번호 + salt 합쳐서 SHA256(해싱) 해서 비밀번호로 저장
 		String salt = SHA256Util.generateSalt();
@@ -110,14 +104,14 @@ public class UserController {
 		request.setPassword(newpwd);
 		
 		if(userService.signUp(request)) {
-			System.out.println("회원가입 성공");
+			logger.info("회원가입 성공");
 			userService.deleteAuthcode(request.getEmail());
 			result.status = true;
 			result.message = "success";
 			return response = new ResponseEntity<>(result, HttpStatus.OK);
 		}
 		else {
-			System.out.println("회원가입 실패");
+			logger.info("회원가입 실패");
 			userService.deleteAuthcode(request.getEmail());
 			result.status = false;
 			result.message = "fail";
@@ -127,23 +121,26 @@ public class UserController {
 	}
 	
 	@ApiOperation(value = "로그인")
-	@GetMapping(value = "/login/{email}/{password}")
-    public ResponseEntity<?> logIn(  @PathVariable ("email") String email, @PathVariable ("password") String password) throws Exception{
+	@PostMapping(value = "/login")
+    public ResponseEntity<?> logIn(@RequestBody User user) throws Exception{
 		ResponseEntity response = null;
-		final BasicResponse result = new BasicResponse();
-		String salt = userService.getUserSalt(email);
-		String newpwd = SHA256Util.getEncrypt(password, salt);
-        User u = userService.logIn(email,newpwd);
+		BasicResponse result = new BasicResponse();
+		String salt = userService.getUserSalt(user.getEmail());
+		User u = null;
+		if(salt != null) {
+			String newpwd = SHA256Util.getEncrypt(user.getPassword(), salt);
+			u = userService.logIn(user.getEmail(), newpwd);
+		}
         if(u == null) {
-        	System.out.println("ID/PW 틀림");
+			logger.info("ID/PW 틀림");
         	result.status = false;
 			result.message = "fail";
 			return response = new ResponseEntity<>(result, HttpStatus.OK);
         }
         else {
-        	System.out.println("ID/PW 맞고, Token 발생하여 insert");
+			logger.info("ID/PW 맞고, Token 발생하여 insert");
         	String token = jwtService.createToken(u.getUserno());
-        	System.out.println(token);
+			logger.info(token);
         	u.setToken(token);
         	result.status = true;
 			result.message = "success";
@@ -160,8 +157,8 @@ public class UserController {
 		ResponseEntity response = null;
 
 		HashMap<String, Object> userInfo = kakao.getUserInfo(access_token);
-		System.out.println("login Controller : " + userInfo);
-		final BasicResponse result = new BasicResponse();
+		logger.info("login Controller : " + userInfo);
+		BasicResponse result = new BasicResponse();
 		// 클라이언트의 이메일이 존재할 때 세션에 해당 이메일과 토큰 등록
 		User u = userService.getUserByEmail((String) userInfo.get("email"));
 		if (u != null) { // 중복된 에메일이 있으면
@@ -176,8 +173,8 @@ public class UserController {
 			SignupRequest user = new SignupRequest();
 			String email = (String) userInfo.get("email");
 			String username = (String)userInfo.get("nickname");
-			System.out.println("email : " + email);
-			System.out.println("username : " + username);
+			logger.info("email : " + email);
+			logger.info("username : " + username);
 			String pwd = access_token;
 			String salt = SHA256Util.generateSalt();
 			user.setEmail(email);
@@ -205,7 +202,7 @@ public class UserController {
 	@GetMapping(value = "/findpwd/{email}/")
     public ResponseEntity<?> findPwd(  @PathVariable ("email") String email) throws Exception{
 		ResponseEntity response = null;
-		final BasicResponse result = new BasicResponse();
+		BasicResponse result = new BasicResponse();
 		//이메일이 존재하는지 확인 -> 새로운 비밀번호를 만들어서  update 후  -> 이메일로 새로운 비밀번호 전송
 		int IsOverlap = 0; 
 		IsOverlap = userService.checkOverlapEmail(email);
@@ -216,19 +213,19 @@ public class UserController {
 			String salt = userService.getUserSalt(email);
 			String newpassword = SHA256Util.getEncrypt(password, salt);
 			if(userService.updatePassword(email, newpassword)) {
-				System.out.println("비밀번호 update 성공");
+				logger.info("비밀번호 update 성공");
 	        	result.status = true;
 				result.message = "success";
 				return response = new ResponseEntity<>(result, HttpStatus.OK);
 			}else {
-				System.out.println("비밀번호 update 실패");
+				logger.info("비밀번호 update 실패");
 				result.status = false;
 				result.message = "fail";
 				return response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
 			}
 		}
 		else {
-			System.out.println("입력 이메일을 확인해주세요");
+			logger.info("입력 이메일을 확인해주세요");
         	result.status = true;
 			result.message = "fail";
 			return response = new ResponseEntity<>(result, HttpStatus.OK);

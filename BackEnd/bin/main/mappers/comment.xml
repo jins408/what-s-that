@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dictionary.dao.CommentDao">
+
+    <select id="getComments" resultType="com.web.dictionary.model.CommentResponse">
+        SELECT user.userno, user.username, user.profileurl, commentinfo.regno, commentinfo.reply, commentinfo.reply_date
+            FROM user,(
+            SELECT commentreg.regno, commentreg.userno, comment.reply, comment.reply_date FROM comment ,
+                    (SELECT * FROM commentreg WHERE postno = #{postno} ) AS commentreg
+                WHERE comment.commentno = commentreg.regno
+            ) AS commentinfo
+            WHERE user.userno = commentinfo.userno;
+    </select>
+
+    <insert id="registComment">
+		INSERT INTO commentreg(userno, postno) VALUES(#{userno}, #{postno})
+	</insert>
+
+    <insert id="insertComment">
+		INSERT INTO comment(commentno, reply, reply_date) VALUES(#{commentno}, #{reply} , now())
+	</insert>
+
+    <update id="modifyComment">
+		UPDATE comment SET reply = #{reply}, reply_date = now() WHERE commentno = #{commentno}
+	</update>
+
+    <select id="getRegNo" resultType="java.lang.Integer">
+	SELECT regno FROM commentreg
+		WHERE userno = #{userno}  and postno = #{postno}
+		ORDER BY regno DESC LIMIT 1
+	</select>
+
+    <delete id="deleteComment">
+			DELETE FROM commentreg WHERE regno = #{regno}
+	</delete>
+</mapper>

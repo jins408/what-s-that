@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8088
   servlet:
     context-path: /dictionary
     
@@ -22,6 +22,7 @@ spring:
     url: jdbc:mariadb://j3b202.p.ssafy.io/ssafyPJT2
     username: ssafy
     password: ssafy
+
 
 
   mail:

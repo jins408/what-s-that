@@ -31,13 +31,23 @@
 	</select>
 	
 	<select id="getUserByUsernoForModify" resultType="com.web.dictionary.dto.User">
+<<<<<<< HEAD
 		select userno, username, email, salt, password, introduce, profileurl
+=======
+		select userno, username, email, salt, password, introduce, 
+		ifnull(profileurl,'http://localhost:8080/dictionary/images/profile/noimage.png') as profileurl
+>>>>>>> 6ecad682f9e8d4255fe81ca1aa661b5b822d6527
 		from user
 		where userno = #{userno}
 	</select>
 	
 	<select id="getUserByUsernoForResponse" resultType="com.web.dictionary.dto.User">
+<<<<<<< HEAD
 		select username, email, profileurl, introduce
+=======
+		select username, email, introduce,
+		ifnull(profileurl,'http://localhost:8080/dictionary/images/profile/noimage.png') as profileurl
+>>>>>>> 6ecad682f9e8d4255fe81ca1aa661b5b822d6527
 		from user
 		where userno = #{userno}
 	</select>
