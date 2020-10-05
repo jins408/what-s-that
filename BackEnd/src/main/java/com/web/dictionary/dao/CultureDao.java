@@ -1,15 +1,14 @@
 package com.web.dictionary.dao;
 
-import java.util.List;
-
+import com.web.dictionary.dto.Culture;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.web.dictionary.dto.Culture;
+import java.util.List;
 @Mapper
 public interface CultureDao {
 
-	public Culture getCultureInfoByCultureName(@Param("culturename") String culturename) throws Exception;
+	public List<Culture> getCultureInfoByCultureName(@Param("culturename") String culturename) throws Exception;
 
 	public boolean registFavoriteCulture(@Param("postno") int postno, @Param("userno") int userno) throws Exception;
 

@@ -1,12 +1,12 @@
 package com.web.dictionary.service;
 
-import java.util.List;
-
 import com.web.dictionary.dto.Culture;
+
+import java.util.List;
 
 public interface ICultureService {
 
-    public Culture getCultureInfoByCultureName(String culturename) throws Exception;
+    public List<Culture> getCultureInfoByCultureName(String culturename) throws Exception;
 
     public boolean registFavoriteCulture(int postno, int userno) throws Exception;
 
