@@ -12,10 +12,10 @@ const state = {
 
 const actions = {
   [USER_REQUEST]: ({ commit, dispatch }, data) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       if (data === null) {
         commit(USER_ERROR);
-        await dispatch(AUTH_LOGOUT);
+        dispatch(AUTH_LOGOUT);
         reject();
       }
       else {

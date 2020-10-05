@@ -8,8 +8,6 @@ import {
 import { USER_REQUEST } from "../actions/user";
 import axios from "axios";
 
-const baseURL = "http://j3b202.ssafy.io:8088/dictionary";
-
 const state = {
   token: localStorage.getItem("user-login") || "",
   status: "",
@@ -25,7 +23,17 @@ const actions = {
   [AUTH_REQUEST]: ({ commit, dispatch }, user) => {
     return new Promise((resolve, reject) => {
       commit(AUTH_REQUEST);
-      axios.post(`${baseURL}/user/login`, user)
+      axios(
+        {
+          method: "POST",
+          url: "http://j3b202.p.ssafy.io:8088/dictionary/user/login",
+
+          data: {
+            email: user.email,
+            password: user.password
+          }
+        }
+      )
         .then(async response => {
           let data = response.data.object;
           localStorage.setItem("user-login", data.userno);
