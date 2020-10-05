@@ -64,7 +64,7 @@ public class AccountController {
 //            String fileUrl = "/C://images/profile/" + userno + time1
 //                    + profile.getOriginalFilename();
             String fileUrl = "/home/ubuntu/springboot/images/profiles/"
-                    + userno + time1 + profile.getOriginalFilename();
+                    + userno + "_" + time1 + "_" + profile.getOriginalFilename();
             File dest = new File(fileUrl);
             profile.transferTo(dest);
         }
