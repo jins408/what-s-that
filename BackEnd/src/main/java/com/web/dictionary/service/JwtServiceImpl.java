@@ -26,7 +26,6 @@ public class JwtServiceImpl implements JwtService {
     @Autowired
     private JwtService jwtService;
 
-
     @Override
     public String createToken(int userno) {
         Map<String, Object> headers = new HashMap<>();
@@ -47,7 +46,6 @@ public class JwtServiceImpl implements JwtService {
                 .compact();
         return jwt;
     }
-
 
     @Override
     public boolean isUsable(String jwt) {
@@ -87,7 +85,6 @@ public class JwtServiceImpl implements JwtService {
             claims = Jwts.parser()
                     .setSigningKey(SALT.getBytes("UTF-8"))
                     .parseClaimsJws(jwt);
-            System.out.println("claims : " + claims);
         } catch (Exception e) {
             throw new UnauthorizedException();
         }
@@ -98,7 +95,6 @@ public class JwtServiceImpl implements JwtService {
     public Object getKey(String key) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         String jwt = request.getHeader("Authorization");
-        System.out.println("jwt token : " + jwt);
         Jws<Claims> claims = null;
 
         if (jwt != null) {
@@ -115,6 +111,5 @@ public class JwtServiceImpl implements JwtService {
             return "none";
         }
     }
-
 
 }

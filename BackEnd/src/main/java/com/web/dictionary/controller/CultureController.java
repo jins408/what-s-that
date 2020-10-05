@@ -1,6 +1,5 @@
 package com.web.dictionary.controller;
 
-
 import com.web.dictionary.dto.Culture;
 import com.web.dictionary.model.BasicResponse;
 import com.web.dictionary.service.ICultureService;
@@ -19,7 +18,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-
 @RequestMapping("/culture")
 @CrossOrigin(origins = {"*"})
 @RestController
@@ -31,13 +29,14 @@ public class CultureController {
     @Autowired
     JwtService jwtService;
 
-
     @ApiOperation(value = "문화재 상세페이지 조회 (문화재이름, 문화재내용, 찜 상태(1이면 찜한 상태)")
     @GetMapping(value = "/detail/{postno}")
     public ResponseEntity<?> getDetailCulturePost(@PathVariable("postno") int postno) throws Exception {
         ResponseEntity response = null;
         BasicResponse result = new BasicResponse();
-        int userno = (int) jwtService.getKey("userno");
+        String strKey = (String) jwtService.getKey("userno");
+        int userno = 0;
+        if (!strKey.equals("none")) userno = Integer.parseInt(strKey);
         Culture culture = cultureService.getDetailCulturePost(postno, userno);
         if (culture != null) {
             result.status = true;
@@ -51,9 +50,8 @@ public class CultureController {
         }
     }
 
-
     @ApiOperation(value = "문화재 이름으로 문화재 조회")
-    @GetMapping(value = "")
+    @GetMapping(value = "/find")
     public ResponseEntity<?> getCultureInfoByCultureName(@RequestParam(value = "culturename", required = false) String culturename) throws Exception {
         ResponseEntity response = null;
         BasicResponse result = new BasicResponse();
@@ -108,7 +106,6 @@ public class CultureController {
         }
     }
 
-
     @ApiOperation(value = "찜 등록")
     @PostMapping(value = "/favorite")
     public ResponseEntity<?> registFavoriteCulture(@RequestParam("postno") int postno) throws Exception {
@@ -146,7 +143,7 @@ public class CultureController {
     }
 
     @ApiOperation(value = "문화재 게시물 생성")
-    @PostMapping(value = "")
+    @PostMapping(value = "/admin")
     public ResponseEntity<?> uploadPost(@RequestPart("image") MultipartFile imgfile,
                                         @RequestParam("culturename") String culturename,
                                         @RequestParam("content") String content) throws Exception {
@@ -178,7 +175,7 @@ public class CultureController {
     }
 
     @ApiOperation(value = "문화재 게시물 수정")
-    @PutMapping(value = "/{postno}")
+    @PutMapping(value = "/admin/{postno}")
     public ResponseEntity<?> updatePost(@PathVariable("postno") int postno,
                                         @RequestPart("image") MultipartFile imgfile,
                                         @RequestParam("culturename") String culturename,
@@ -214,7 +211,7 @@ public class CultureController {
     }
 
     @ApiOperation("문화재 게시물 삭제")
-    @DeleteMapping(value = "/{postno}")
+    @DeleteMapping(value = "/admin/{postno}")
     public ResponseEntity<?> deletePost(@PathVariable("postno") int postno) throws Exception {
 
         ResponseEntity response = null;
