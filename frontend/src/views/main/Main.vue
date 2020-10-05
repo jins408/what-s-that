@@ -69,8 +69,6 @@
 import axios from "axios";
 import searchview from "../../components/Searchview.vue";
 
-const baseURL = "http://localhost:8080";
-
 export default {
   components:{
     searchview,
@@ -83,7 +81,7 @@ export default {
       if(this.culturename == ""){
         this.searchok = false
       }else{
-        axios.get(`${baseURL}/dictionary/culture/search/${this.culturename}`)
+        axios.get(this.$baseurl + `/culture/search/${this.culturename}`)
         .then((res)=>{
           if(this.searchok == false){
             this.scroll();

@@ -78,8 +78,6 @@
 import axios from "axios";
 import { mapState } from "vuex";
 
-const baseURL = "http://localhost:8080";
-
 export default {
     computed: {
         ...mapState({
@@ -109,7 +107,7 @@ export default {
                 }
             }
             if(flag==0){
-                axios.post(`${baseURL}/dictionary/comment?postno=`+this.commentData.postno+'&reply='+this.commentData.reply+'&userno='+this.commentData.userno)
+                axios.post(this.$baseurl + '/comment?postno='+this.commentData.postno+'&reply='+this.commentData.reply+'&userno='+this.commentData.userno)
                 .then((response) =>{
                     console.log(response.data)
                     alert("댓글이 등록되었습니다.")
@@ -122,7 +120,7 @@ export default {
             }
         },
         commentList(){
-            axios.get(`${baseURL}/dictionary/comment/${this.commentData.postno}`)
+            axios.get(this.$baseurl + `/comment/${this.commentData.postno}`)
             .then((response) =>{
                 console.log(response.data.object)
                 this.comments = response.data.object
@@ -132,7 +130,7 @@ export default {
             })
         },
         commentdelete(regno){
-            axios.delete(`${baseURL}/dictionary/comment/${regno}`)
+            axios.delete(this.$baseurl + `/comment/${regno}`)
             .then(() =>{
                alert("댓글이 삭제되었습니다")
                location.reload();
@@ -142,7 +140,7 @@ export default {
             })
         },
         commentupdate(){
-            axios.put(`${baseURL}/dictionary/comment`, this.updatecomment)
+            axios.put(this.$baseurl + `/comment`, this.updatecomment)
             .then(() =>{
                 alert("댓글 수정완료!")
                 location.reload();

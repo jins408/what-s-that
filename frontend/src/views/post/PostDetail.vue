@@ -78,8 +78,6 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 
-const baseURL = "http://localhost:8080";
-
 import comment from "../../components/Comment.vue";
 
 export default {
@@ -97,7 +95,7 @@ export default {
 
   methods: {
     bookmark(){
-      axios.post(`${baseURL}/dictionary/culture/favorite?postno=${this.commentData.postno}`,this.commentData.postno,{
+      axios.post(this.$baseurl + `/culture/favorite?postno=${this.commentData.postno}`,this.commentData.postno,{
          headers: {
             Authorization: this.$store.state.user.token,
           },
@@ -112,7 +110,7 @@ export default {
       })
     },
     bmarkList(){
-      axios.get(`${baseURL}/dictionary/culture/favorite`, {
+      axios.get(this.$baseurl + `/culture/favorite`, {
           headers: {
             Authorization: this.$store.state.user.token,
           },
@@ -131,7 +129,7 @@ export default {
     },
     bookmarkdelete(){
        axios
-        .delete(`${baseURL}/dictionary/culture/favorite/${this.commentData.postno}`,{
+        .delete(this.$baseurl + `/culture/favorite/${this.commentData.postno}`,{
           headers: {
             Authorization: this.$store.state.user.token,
           },
@@ -162,7 +160,7 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           axios
-          .delete(`${baseURL}/dictionary/culture/${this.commentData.postno}`)
+          .delete(this.$baseurl + `/culture/${this.commentData.postno}`)
           .then(()=>{
             Swal.fire({
               text:"삭제완료",

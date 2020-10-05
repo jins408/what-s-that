@@ -78,8 +78,6 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 
-const baseURL = "http://localhost:8080";
-
 export default {
     created(){
         this.postno = this.$route.params.ID;
@@ -116,7 +114,7 @@ export default {
                     console.log(pair[0] + ", " + pair[1]);
                 }
                 axios
-                .post(`${baseURL}/dictionary/culture/${this.postno}?content=`+this.content+`&culturename=`+this.culturename, formData)
+                .post(this.$baseurl + `/culture/${this.postno}?content=`+this.content+`&culturename=`+this.culturename, formData)
                 .then(()=>{
                     
                         Swal.fire({
