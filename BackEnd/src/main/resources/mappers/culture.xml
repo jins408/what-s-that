@@ -5,7 +5,10 @@
 	<select id="getCultureInfoByCultureName" resultType="com.web.dictionary.dto.Culture">
 		select postno, culturename, content
 		from culturepost
-		where culturename = #{culturename}	
+		where 1 = 1
+		<if test="culturename != null">
+			AND culturename = #{culturename}
+		</if>
 	</select>
 	
 	<select id="getDetailCulturePost" resultType="com.web.dictionary.dto.Culture">

@@ -53,11 +53,11 @@ public class CultureController {
 
 
     @ApiOperation(value = "문화재 이름으로 문화재 조회")
-    @GetMapping(value = "/{culturename}")
-    public ResponseEntity<?> getCultureInfoByCultureName(@PathVariable("culturename") String culturename) throws Exception {
+    @GetMapping(value = "")
+    public ResponseEntity<?> getCultureInfoByCultureName(@RequestParam(value = "culturename", required = false) String culturename) throws Exception {
         ResponseEntity response = null;
         BasicResponse result = new BasicResponse();
-        Culture culture = cultureService.getCultureInfoByCultureName(culturename);
+        List<Culture> culture = cultureService.getCultureInfoByCultureName(culturename);
         if (culture != null) {
             result.status = true;
             result.message = "success";
@@ -94,7 +94,7 @@ public class CultureController {
         ResponseEntity response = null;
         BasicResponse result = new BasicResponse();
         int userno = (int) jwtService.getKey("userno");
-        logger.info(""+userno);
+        logger.info("" + userno);
         List<Culture> list = cultureService.getfavoritePost(userno);
         if (list != null) {
             result.status = true;
@@ -115,7 +115,7 @@ public class CultureController {
         ResponseEntity response = null;
         BasicResponse result = new BasicResponse();
         int userno = (int) jwtService.getKey("userno");
-        logger.info(""+userno);
+        logger.info("" + userno);
         if (cultureService.registFavoriteCulture(postno, userno)) {
             result.status = true;
             result.message = "success";
@@ -133,7 +133,7 @@ public class CultureController {
         ResponseEntity response = null;
         BasicResponse result = new BasicResponse();
         int userno = (int) jwtService.getKey("userno");
-        logger.info(""+userno);
+        logger.info("" + userno);
         if (cultureService.deleteFavoriteCulture(postno, userno)) {
             result.status = true;
             result.message = "success";

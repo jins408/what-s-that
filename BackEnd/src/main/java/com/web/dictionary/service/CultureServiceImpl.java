@@ -1,12 +1,11 @@
 package com.web.dictionary.service;
 
-import java.util.List;
-
+import com.web.dictionary.dao.CultureDao;
+import com.web.dictionary.dto.Culture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.web.dictionary.dao.CultureDao;
-import com.web.dictionary.dto.Culture;
+import java.util.List;
 
 @Service
 public class CultureServiceImpl implements ICultureService{
@@ -15,7 +14,7 @@ public class CultureServiceImpl implements ICultureService{
 	@Autowired CultureDao cultureDao;
 	
 	@Override
-	public Culture getCultureInfoByCultureName(String culturename) throws Exception {
+	public List<Culture> getCultureInfoByCultureName(String culturename) throws Exception {
 		return cultureDao.getCultureInfoByCultureName(culturename);
 	}
 
