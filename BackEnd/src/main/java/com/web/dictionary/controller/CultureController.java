@@ -17,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -55,10 +54,10 @@ public class CultureController {
 
     @ApiOperation(value = "문화재 이름으로 문화재 조회")
     @GetMapping(value = "/{culturename}")
-    public ResponseEntity<?> getCultureInfoByCultureName(@PathVariable("culturename") HashMap<String, String> culturename) throws Exception {
+    public ResponseEntity<?> getCultureInfoByCultureName(@PathVariable("culturename") String culturename) throws Exception {
         ResponseEntity response = null;
         BasicResponse result = new BasicResponse();
-        Culture culture = cultureService.getCultureInfoByCultureName(culturename.get(culturename));
+        Culture culture = cultureService.getCultureInfoByCultureName(culturename);
         if (culture != null) {
             result.status = true;
             result.message = "success";
