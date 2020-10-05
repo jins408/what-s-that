@@ -29,7 +29,8 @@ public class WebConfig implements WebMvcConfigurer {
             "/culture/find/**",
             "/culture/search/**",
             "/culture/favorite/**",
-            "/error/**"
+            "/error/**",
+            "/comment/get/**"
     };
 
     @Autowired

@@ -1,20 +1,14 @@
 package com.web.dictionary.controller;
 
-import com.web.dictionary.dao.CommentDao;
 import com.web.dictionary.dto.Comment;
 import com.web.dictionary.model.BasicResponse;
 import com.web.dictionary.service.ICommentService;
-import com.web.dictionary.util.SHA256Util;
-
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.ws.Response;
 import java.util.List;
 
 @RestController
@@ -25,7 +19,7 @@ public class CommentController {
     ICommentService commentservice;
 
     @ApiOperation(value = "해당 게시물에 달린 댓글 불러오기")
-    @GetMapping("/{postno}")
+    @GetMapping("/get/{postno}")
     public ResponseEntity<?> getComments(@PathVariable("postno") int postno) throws Exception {
         BasicResponse result = new BasicResponse();
         List<Comment> commentList = commentservice.getComments(postno);
@@ -67,13 +61,13 @@ public class CommentController {
         	return new ResponseEntity(result, HttpStatus.NOT_FOUND);
         }
     }
-    
-    
+
+    @ApiOperation(value = "댓글 입력")
     @PostMapping("")
-    public ResponseEntity<?> insertComment(Comment commnet) throws Exception {
+    public ResponseEntity<?> insertComment(Comment comment) throws Exception {
         BasicResponse result = new BasicResponse();
 
-        commentservice.insertComment(commnet);
+        commentservice.insertComment(comment);
         
         return new ResponseEntity(result, HttpStatus.OK);
     
