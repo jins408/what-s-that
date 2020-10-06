@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" style="min-height: 45rem">
     <div>
       <p class="text-center" style="margin: 3rem 0">
         <span
@@ -15,7 +15,7 @@
           >'s that!?</span
         >
       </p>
-      <v-row>
+      <v-row v-if="culture.length != 0" >
         <v-card
           class="mx-5 my-3"
           max-width="250"
@@ -29,7 +29,7 @@
             src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
             @click="gopostdetail(item)"
           >
-            <v-card-title>{{ item.culturename }}</v-card-title>
+            <v-card-title>{{ item }}</v-card-title>
           </v-img>
           <v-card-actions class="d-flex justify-content-center">
             <v-btn
@@ -42,6 +42,9 @@
             </v-btn>
           </v-card-actions>
         </v-card>
+      </v-row>
+      <v-row class="d-flex justify-content-center mb-5" v-if="culture.length == 0">
+        <p style="font-size:1.5rem; font-weight:bold;">등록된 결과물이 없습니다.</p>
       </v-row>
 
       <!-- <span style="font-size:2rem; color:gray;">{{index+1}}. </span>
@@ -65,7 +68,7 @@ export default {
   methods: {
     gopostdetail(item) {
       axios
-        .get(this.$baseurl + `/culture/find?culturename=${item.culturename}`)
+        .get(this.$baseurl + `/culture/find?culturename=${item}`)
         .then((res) => {
           this.post = res.data.object[0];
           // console.log(this.post);

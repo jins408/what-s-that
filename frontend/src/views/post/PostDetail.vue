@@ -42,6 +42,7 @@
                 />
               </v-col>
               <v-col v-if="n == 2" cols="12" md="4">
+                <i class="fas fa-microphone ml-2 mt-2" style="font-size:1.6rem;" @click="audiotest"></i>
                 {{post.content}}
               </v-col>
             </v-row>
@@ -192,6 +193,19 @@ export default {
         }
     })
     },
+    audiotest(){
+      if(!this.audio){
+        this.audio = new Audio("http://j3b202.p.ssafy.io:8088/dictionary/images/audio/"+this.commentData.postno +".mp3");
+      } 
+      if(!this.isPlaying){
+        this.audio.play();
+        this.isPlaying = "true";
+      }else{
+        this.audio.pause();
+        this.audio.currentTime = 0;
+        this.isPlaying = "";
+      }
+    },
     
   },
 
@@ -207,7 +221,7 @@ export default {
           postno:"",
       },
       post:[],
-      
+      audio : false
     }
   }
 
