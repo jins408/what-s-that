@@ -108,9 +108,6 @@ export default {
             axios.get(this.$baseurl + `/user/kakaologin?access_token=${response.access_token}`)
               .then(res =>{
                 alert("카카오로그인 성공")
-                location.href="http://j3b202.p.ssafy.io/main"
-                console.log(res);
-                alert(res);
                 kakaovue.$store.commit(USER_SUCCESS, res.data.object)
               })
               .finally(() => {
