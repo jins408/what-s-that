@@ -1,8 +1,8 @@
 package com.web.dictionary.dto;
 
-import org.springframework.web.multipart.MultipartFile;
-
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,5 +17,5 @@ public class User {
 	private String introduce;
 	private String token;
 	private String salt;
-	
+	private int isadmin;
 }
