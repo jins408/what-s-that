@@ -17,6 +17,10 @@ public class CultureServiceImpl implements ICultureService{
 	public List<Culture> getCultureInfoByCultureName(String culturename) throws Exception {
 		return cultureDao.getCultureInfoByCultureName(culturename);
 	}
+	@Override
+	public Culture getCultureInfoByEName(String culturename) throws Exception {
+		return cultureDao.getCultureInfoByEName(culturename);
+	}
 
 	@Override
 	public boolean registFavoriteCulture(int postno, int userno) throws Exception {

@@ -11,6 +11,13 @@
 		</if>
 	</select>
 	
+	<select id="getCultureInfoByECultureName" resultType="com.web.dictionary.dto.Culture">
+		select postno, culturename, content, imageUrl, ename
+		from culturepost
+		where 1 = 1
+		AND ename = #{ename}
+	</select>
+	
 	<select id="getDetailCulturePost" resultType="com.web.dictionary.dto.Culture">
 		SELECT culture.postno, culture.culturename, culture.content, 
 		(SELECT COUNT(*) FROM favoriteculture AS favorite WHERE favorite.postno = #{postno} AND favorite.userno = #{userno}) AS isfavorite
