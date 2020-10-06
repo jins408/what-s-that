@@ -104,14 +104,14 @@ export default {
       kakaoLogin(){
         const kakaovue = this;
         Kakao.Auth.login({
-          success: function(respones){
-            axios.get(this.$baseurl + `/user/kakaologin?access_token=${respones.access_token}`)
-              .then(respones =>{
+          success: function(response){
+            axios.get(this.$baseurl + `/user/kakaologin?access_token=${response.access_token}`)
+              .then(res =>{
                 alert("카카오로그인 성공")
                 location.href="http://j3b202.p.ssafy.io/main"
-                console.log(respones);
-                alert(respones);
-                kakaovue.$store.commit(USER_SUCCESS, respones.data.object)
+                console.log(res);
+                alert(res);
+                kakaovue.$store.commit(USER_SUCCESS, res.data.object)
               })
               .finally(() => {
                 this.main();
