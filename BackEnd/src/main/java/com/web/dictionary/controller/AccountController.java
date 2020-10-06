@@ -36,12 +36,9 @@ public class AccountController {
         ResponseEntity response = null;
         BasicResponse result = new BasicResponse();
         int userno = (int) jwtService.getKey("userno");
-        logger.info("" + userno);
         //기존의 유저정보 not null인 부분만 null일시 기존데이터로 바꿔준다.
         User u = userService.getUserByUsernoForModify(userno);
 
-        logger.info("profile : " + profile);
-        logger.info("수정을 위해 불러온 회원정보 " + u.toString());
         if (password != null && !password.equals("")) {
             String salt = u.getSalt();
             String newpassword = SHA256Util.getEncrypt(password, salt);
