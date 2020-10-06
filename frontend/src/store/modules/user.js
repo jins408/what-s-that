@@ -12,6 +12,7 @@ const actions = {
   [USER_REQUEST]: ({ commit, dispatch }, data) => {
     return new Promise((resolve, reject) => {
       if (data === null) {
+        console.log("data = null");
         commit(USER_ERROR);
         dispatch(AUTH_LOGOUT);
         reject();

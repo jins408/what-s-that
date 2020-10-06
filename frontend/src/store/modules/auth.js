@@ -26,8 +26,8 @@ const actions = {
       axios(
         {
           method: "POST",
-          // url: "http://j3b202.p.ssafy.io:8088/dictionary/user/login",
-          url: "http://localhost:8088/dictionary/user/login",
+          url: "http://j3b202.p.ssafy.io:8088/dictionary/user/login",
+          // url: "http://localhost:8088/dictionary/user/login",
           data: {
             email: user.email,
             password: user.password
@@ -36,6 +36,7 @@ const actions = {
       )
         .then(async response => {
           let data = response.data.object;
+          console.log(data.token)
           localStorage.setItem("token", data.token);
           commit(AUTH_SUCCESS, response);
           await dispatch(USER_REQUEST, data);
