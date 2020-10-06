@@ -248,8 +248,8 @@ public class CultureController {
 
     
     @ApiOperation(value = "이미지로 검색")
-    @GetMapping(value = "/image")
-    public ResponseEntity<?> getCultureByImage(@RequestParam("image") MultipartFile file) throws Exception {
+    @PostMapping(value = "/image")
+    public ResponseEntity<?> getCultureByImage(@RequestPart("image") MultipartFile file) throws Exception {
         ResponseEntity response = null;
         BasicResponse result = new BasicResponse();
 
