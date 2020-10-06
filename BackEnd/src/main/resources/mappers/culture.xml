@@ -55,7 +55,7 @@
 		WHERE postno = #{postno}
 	</delete>
 
-	<select id="getCultureInfoByEName" resultType="com.web.dictionary.dto.Culture">
+	<select id="getCultureInfoByEName" resultType="java.lang.Integer">
 		select postno
 		from culturepost
 		where 1 = 1

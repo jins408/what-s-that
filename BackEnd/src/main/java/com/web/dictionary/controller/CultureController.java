@@ -42,9 +42,10 @@ public class CultureController {
         ResponseEntity response = null;
         BasicResponse result = new BasicResponse();
         Map m = jwtService.getKey("userno");
-        String strKey = (String) m.get("userno");
         int userno = 0;
-        if (!strKey.equals("none")) userno = Integer.parseInt(strKey);
+        if (m.containsKey("userno")) {
+            userno = (int) m.get("userno");
+        }
         Culture culture = cultureService.getDetailCulturePost(postno, userno);
         if (culture != null) {
             result.status = true;
