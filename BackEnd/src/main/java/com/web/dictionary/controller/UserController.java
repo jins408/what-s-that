@@ -135,7 +135,7 @@ public class UserController {
 			logger.info("ID/PW 틀림");
         	result.status = false;
 			result.message = "fail";
-			return response = new ResponseEntity<>(result, HttpStatus.OK);
+			return response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
         }
         else {
 			logger.info("ID/PW 맞고, Token 발생하여 insert");
