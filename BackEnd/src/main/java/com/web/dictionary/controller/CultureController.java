@@ -1,10 +1,11 @@
 package com.web.dictionary.controller;
 
-import com.web.dictionary.dto.Culture;
-import com.web.dictionary.model.BasicResponse;
-import com.web.dictionary.service.ICultureService;
-import com.web.dictionary.service.JwtService;
-import io.swagger.annotations.ApiOperation;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.PumpStreamHandler;
@@ -14,14 +15,25 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import com.web.dictionary.dto.Culture;
+import com.web.dictionary.model.BasicResponse;
+import com.web.dictionary.service.ICultureService;
+import com.web.dictionary.service.JwtService;
+
+import io.swagger.annotations.ApiOperation;
 
 @RequestMapping("/culture")
 @CrossOrigin(origins = {"*"})
@@ -237,30 +249,57 @@ public class CultureController {
     
     @ApiOperation(value = "이미지로 검색")
     @GetMapping(value = "/image")
-    public ResponseEntity<?> getCultureByImage() throws Exception {
+    public ResponseEntity<?> getCultureByImage(@RequestParam("image") MultipartFile file) throws Exception {
         ResponseEntity response = null;
         BasicResponse result = new BasicResponse();
 
+        //image파일에 저장된 데이터 삭제
+        String path = "/home/ubuntu/model/image";
+        removeDirectory(path);
+    
+        //저장
+        saveImage(path, file);
         System.out.println("Python Call");
         String[] command = new String[4];
         command[0] = "python";
         command[1] = "/home/ubuntu/model/test_frcnn.py";
         command[2] = "--path";
         command[3] = "/home/ubuntu/model/image";
-        
         //python test_frcnn.py --path image
+     
         try {
         	ByteArrayOutputStream out =  execPython(command);
-        	String res = out.toString();
-        	result.object = res.split("result:")[1];
+        	String extact_result = out.toString().split("result:")[1];
+        	if(!extact_result.equals(" ")) {
+        		//정보 가져오기
+        		result.object = cultureService.getCultureInfoByEName(extact_result);
+        		response = new ResponseEntity(result,HttpStatus.OK);
+        	}else {
+        		response = new ResponseEntity(result,HttpStatus.NOT_FOUND);
+        	}
         	
         } catch (Exception e) {
             e.printStackTrace();
         }
         
-        return new ResponseEntity(result,HttpStatus.OK);
+        return response;
     }
 
+    private void saveImage(String path, MultipartFile file) throws IllegalStateException, IOException {
+    	 SimpleDateFormat format1 = new SimpleDateFormat("yyMMDDHHmmss");
+         String time1 = format1.format(new Date());
+         String fileUrl = path+"/"+time1 + "_" + file.getOriginalFilename();
+         File dest = new File(fileUrl);
+         file.transferTo(dest);
+	}
+
+	private void removeDirectory(String path) {
+    	   File deleteFolder = new File(path);
+           File[] deleteFolderList = deleteFolder.listFiles();
+           for (int j = 0; j < deleteFolderList.length; j++ ) {
+           	deleteFolderList[j].delete();
+           }
+    }
 
 	public static ByteArrayOutputStream execPython(String[] command) throws IOException, InterruptedException {
 	    CommandLine commandLine = CommandLine.parse(command[0]);
