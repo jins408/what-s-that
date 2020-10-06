@@ -14,7 +14,7 @@ public interface CultureDao {
 
 	public boolean deleteFavoriteCulture(@Param("postno") int postno, @Param("userno")int userno) throws Exception;
 
-	public List<String> searchCultureInfoByCultureName(@Param("culturename") String culturename) throws Exception;
+	public List<Culture> searchCultureInfoByCultureName(@Param("culturename") String culturename) throws Exception;
 
 	public List<Culture> getfavoritePost( @Param("userno") int userno) throws Exception;
 
@@ -26,5 +26,5 @@ public interface CultureDao {
 
 	public int deletePost(int postno) throws Exception;
 
-	public Culture getCultureInfoByEName(String culturename) throws Exception;
+	public int getCultureInfoByEName(String culturename) throws Exception;
 }

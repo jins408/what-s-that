@@ -12,7 +12,7 @@ public interface ICultureService {
 
     public boolean deleteFavoriteCulture(int postno, int userno) throws Exception;
 
-    public List<String> searchCultureInfoByCultureName(String culturename) throws Exception;
+    public List<Culture> searchCultureInfoByCultureName(String culturename) throws Exception;
 
     public List<Culture> getfavoritePost(int userno) throws Exception;
 
@@ -24,7 +24,7 @@ public interface ICultureService {
 
     public int deletePost(int postno) throws Exception;
 
-    public Culture getCultureInfoByEName(String culturename) throws Exception;
+    public int getCultureInfoByEName(String culturename) throws Exception;
 
 
 }

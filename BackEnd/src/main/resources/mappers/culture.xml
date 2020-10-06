@@ -18,14 +18,14 @@
 		WHERE culture.postno = #{postno}
 	</select>
 	
-	<select id="searchCultureInfoByCultureName" resultType="java.lang.String">
-		select culturename
+	<select id="searchCultureInfoByCultureName" resultType="com.web.dictionary.dto.Culture">
+		select culturename, imageUrl
 		from culturepost
 		where culturename LIKE concat('%',#{culturename},'%')
 	</select>
 	
 	<select id="getfavoritePost" resultType="com.web.dictionary.dto.Culture">
-		SELECT post.postno, post.culturename, post.content 
+		SELECT post.postno, post.culturename, post.content, post.imageUrl
 		FROM culturepost AS post
 		LEFT JOIN favoriteculture AS favorite 
 		ON (post.postno = favorite.postno) 
@@ -56,7 +56,7 @@
 	</delete>
 
 	<select id="getCultureInfoByEName" resultType="com.web.dictionary.dto.Culture">
-		select postno, culturename, content, imageUrl, ename
+		select postno
 		from culturepost
 		where 1 = 1
 		AND ename = #{ename}

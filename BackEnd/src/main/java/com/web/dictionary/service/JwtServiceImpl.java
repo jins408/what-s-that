@@ -92,23 +92,27 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public Object getKey(String key) {
+    public Map<?, ?> getKey(String key) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         String jwt = request.getHeader("Authorization");
         Jws<Claims> claims = null;
-
-        if (jwt != null) {
+        Map<String, Object> map = new HashMap<>();
+        if(jwt == null) {
+            jwt = "";
+        }
+        if (!jwt.equals("")) {
             try {
                 claims = Jwts.parser()
                         .setSigningKey(SALT.getBytes("UTF-8"))
                         .parseClaimsJws(jwt);
-                System.out.println("claims : " + claims);
             } catch (Exception e) {
                 throw new UnauthorizedException();
             }
-            return claims.getBody().get(key);
+
+            map.put(key, claims.getBody().get(key));
+            return map;
         } else {
-            return "none";
+            return map;
         }
     }
 

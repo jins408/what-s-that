@@ -20,8 +20,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/culture")
 @CrossOrigin(origins = {"*"})
@@ -39,7 +41,8 @@ public class CultureController {
     public ResponseEntity<?> getDetailCulturePost(@PathVariable("postno") int postno) throws Exception {
         ResponseEntity response = null;
         BasicResponse result = new BasicResponse();
-        String strKey = (String) jwtService.getKey("userno");
+        Map m = jwtService.getKey("userno");
+        String strKey = (String) m.get("userno");
         int userno = 0;
         if (!strKey.equals("none")) userno = Integer.parseInt(strKey);
         Culture culture = cultureService.getDetailCulturePost(postno, userno);
@@ -79,7 +82,7 @@ public class CultureController {
     public ResponseEntity<?> searchCultureInfoByCultureName(@PathVariable("culturename") String culturename) throws Exception {
         ResponseEntity response = null;
         BasicResponse result = new BasicResponse();
-        List<String> list = cultureService.searchCultureInfoByCultureName(culturename);
+        List<Culture> list = cultureService.searchCultureInfoByCultureName(culturename);
         if (list != null) {
             result.status = true;
             result.message = "success";
@@ -97,18 +100,26 @@ public class CultureController {
     public ResponseEntity<?> getfavoritePost() throws Exception {
         ResponseEntity response = null;
         BasicResponse result = new BasicResponse();
-        int userno = (int) jwtService.getKey("userno");
-        logger.info("" + userno);
-        List<Culture> list = cultureService.getfavoritePost(userno);
-        if (list != null) {
+        Map m = jwtService.getKey("userno");
+        if(m.containsKey("userno")) {
+            int userno = (int) m.get("userno");
+            List<Culture> list = cultureService.getfavoritePost(userno);
+            if (list != null) {
+                result.status = true;
+                result.message = "success";
+                result.object = list;
+                return response = new ResponseEntity<>(result, HttpStatus.OK);
+            } else {
+                result.status = false;
+                result.message = "fail";
+                return response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+            }
+        } else {
+            List<Culture> list = new ArrayList<>();
             result.status = true;
             result.message = "success";
             result.object = list;
             return response = new ResponseEntity<>(result, HttpStatus.OK);
-        } else {
-            result.status = false;
-            result.message = "fail";
-            return response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -117,7 +128,8 @@ public class CultureController {
     public ResponseEntity<?> registFavoriteCulture(@RequestBody Culture post) throws Exception {
         ResponseEntity response = null;
         BasicResponse result = new BasicResponse();
-        int userno = (int) jwtService.getKey("userno");
+        Map m = jwtService.getKey("userno");
+        int userno = (int) m.get("userno");
         logger.info("" + userno);
         if (cultureService.registFavoriteCulture(post.getPostno(), userno)) {
             result.status = true;
@@ -135,7 +147,8 @@ public class CultureController {
     public ResponseEntity<?> deleteFavoriteCulture(@PathVariable("postno") int postno) throws Exception {
         ResponseEntity response = null;
         BasicResponse result = new BasicResponse();
-        int userno = (int) jwtService.getKey("userno");
+        Map m = jwtService.getKey("userno");
+        int userno = (int) m.get("userno");
         logger.info("" + userno);
         if (cultureService.deleteFavoriteCulture(postno, userno)) {
             result.status = true;

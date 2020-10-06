@@ -29,7 +29,7 @@ public class CultureServiceImpl implements ICultureService{
 	}
 
 	@Override
-	public List<String> searchCultureInfoByCultureName(String culturename) throws Exception {
+	public List<Culture> searchCultureInfoByCultureName(String culturename) throws Exception {
 		return cultureDao.searchCultureInfoByCultureName(culturename);
 	}
 
@@ -59,7 +59,7 @@ public class CultureServiceImpl implements ICultureService{
 	}
 
 	@Override
-	public Culture getCultureInfoByEName(String culturename) throws Exception {
+	public int getCultureInfoByEName(String culturename) throws Exception {
 		return cultureDao.getCultureInfoByEName(culturename);
 	}
 

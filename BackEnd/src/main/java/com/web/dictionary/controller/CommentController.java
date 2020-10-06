@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/comment")
@@ -69,7 +70,8 @@ public class CommentController {
     @PostMapping("")
     public ResponseEntity<?> insertComment(@RequestBody Comment comment) throws Exception {
         BasicResponse result = new BasicResponse();
-        int userno = (int) jwtService.getKey("userno");
+        Map m = jwtService.getKey("userno");
+        int userno = (int) m.get("userno");
         comment.setUserno(userno);
         if(commentservice.insertComment(comment) == 1) {
             return new ResponseEntity(result, HttpStatus.OK);

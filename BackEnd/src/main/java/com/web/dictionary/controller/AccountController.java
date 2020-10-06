@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 @RequestMapping("/account")
 @CrossOrigin(origins = {"*"})
@@ -31,11 +32,12 @@ public class AccountController {
 
     @ApiOperation(value = "회원정보 수정 (비밀번호, 프로필, 소개, 닉네임 변경 가능) **formdata로 profile,password,introduce,userno 넘겨주기!!")
     @PutMapping(value = "/modify")
-    public ResponseEntity<?> modifyUserInfo(@RequestPart(value="profile", required = false) MultipartFile profile, @RequestParam("password") String password
+    public ResponseEntity<?> modifyUserInfo(@RequestPart(value = "profile", required = false) MultipartFile profile, @RequestParam("password") String password
             , @RequestParam("introduce") String introduce, @RequestParam("username") String username) throws Exception {
         ResponseEntity response = null;
         BasicResponse result = new BasicResponse();
-        int userno = (int) jwtService.getKey("userno");
+        Map m = jwtService.getKey("userno");
+        int userno = (int) m.get("userno");
         //기존의 유저정보 not null인 부분만 null일시 기존데이터로 바꿔준다.
         User u = userService.getUserByUsernoForModify(userno);
 
@@ -86,7 +88,8 @@ public class AccountController {
     public ResponseEntity<?> deleteAccount() throws Exception {
         ResponseEntity response = null;
         BasicResponse result = new BasicResponse();
-        int userno = (int) jwtService.getKey("userno");
+        Map m = jwtService.getKey("userno");
+        int userno = (int) m.get("userno");
         if (userService.deleteAccount(userno)) {
             result.status = true;
             result.message = "success";
@@ -104,19 +107,27 @@ public class AccountController {
     public ResponseEntity<?> getUserByUsernoForResponse() throws Exception {
         ResponseEntity response = null;
         BasicResponse result = new BasicResponse();
-        int userno = (int) jwtService.getKey("userno");
-        User u = userService.getUserByUsernoForResponse(userno);
-        if (u != null) {
+        Map m = jwtService.getKey("userno");
+        if (m.containsKey("userno")) {
+            int userno = (int) m.get("userno");
+            User u = userService.getUserByUsernoForResponse(userno);
+            if (u != null) {
+                result.status = true;
+                result.message = "success";
+                result.object = u;
+                return response = new ResponseEntity<>(result, HttpStatus.OK);
+            } else {
+                result.status = false;
+                result.message = "fail";
+                return response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+            }
+        } else {
+            User u = new User();
             result.status = true;
             result.message = "success";
             result.object = u;
             return response = new ResponseEntity<>(result, HttpStatus.OK);
-        } else {
-            result.status = false;
-            result.message = "fail";
-            return response = new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
         }
-
     }
 
 
