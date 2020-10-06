@@ -26,8 +26,8 @@ const actions = {
       axios(
         {
           method: "POST",
-          // url: "http://j3b202.p.ssafy.io:8088/dictionary/user/login",
-          url: "http://localhost:8088/dictionary/user/login",
+          url: "http://j3b202.p.ssafy.io:8088/dictionary/user/login",
+          // url: "http://localhost:8088/dictionary/user/login",
           data: {
             email: user.email,
             password: user.password
