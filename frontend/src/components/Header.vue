@@ -117,9 +117,9 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
 import store from "../store";
 import Main from "../views/main/Main.vue";
+import { mapGetters } from "vuex";
 
 // import { mapState} from "vuex";
 
@@ -131,8 +131,8 @@ export default {
   },
 
   computed: {
-    ...mapState({
-      isLoggedIn: (state) => state.user.isLoggedIn,
+    ...mapGetters ({
+      isLoggedIn : 'isAuthenticated'
     }),
     mainpage() {
       return this.$route.name == Main;

@@ -276,7 +276,10 @@ export default {
       let introduce = this.info.introduce;
       let password = this.info.password;
       let username = this.info.username;
-      const file = this.$refs.imageInput.files[0];
+      let file = null;
+      if(this.$refs.imageInput.files[0]) {
+        file = this.$refs.imageInput.files[0];
+      }
       console.log(file);
       formData.append("profile", file);
       formData.append("introduce", introduce);

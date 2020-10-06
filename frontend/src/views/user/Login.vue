@@ -85,9 +85,7 @@ export default {
           this.$store
             .dispatch(AUTH_REQUEST, {email, password})
             .then(() =>{
-              this.$store.commit(USER_SUCCESS, {email, password})
-              this.$router.push('/main')
-              this.$router.go()
+              this.main();
             })
             .catch((error)=>{
               console.log(error)

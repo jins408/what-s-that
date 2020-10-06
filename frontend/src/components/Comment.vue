@@ -78,25 +78,16 @@
 
 <script>
 import axios from "axios";
-import { mapState } from "vuex";
 
 export default {
-  computed: {
-    ...mapState({
-      userno: (state) => state.user.userno,
-      isLoggedIn: (state) => state.user.isLoggedIn,
-    }),
-  },
   created() {
-    // console.log(this.$store.state.user.userno);
-    // this.commentData.userno=this.$store.state.user.userno
-    // console.log(this.commentData.userno);
     this.updatecomment.userno = this.$store.state.user.userno;
     this.commentList();
   },
   methods: {
     createComment() {
-      let isLoggedIn = this.$store.state.user.isLoggedIn || "";
+      let isLoggedIn = this.$store.getters.auth.isAuthenticated;
+      alert(isLoggedIn);
       if (!isLoggedIn) {
         alert("로그인 후 입력가능 합니다");
       } else {
@@ -130,7 +121,7 @@ export default {
     },
     commentList() {
       axios
-        .get(this.$baseurl + `/comment/get/${this.commentData.postno}`, {
+        .get(this.$baseurl + `/comment/load/${this.commentData.postno}`, {
           headers: {
             Authorization: this.$store.state.user.token,
           },

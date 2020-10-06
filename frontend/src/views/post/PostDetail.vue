@@ -93,15 +93,21 @@ export default {
       })
     },
     bookmark(){
-      axios.post(`${this.$baseurl}/culture/favorite?postno=${this.commentData.postno}`,this.commentData.postno,{
+      axios({
+        method: 'POST',
+        url: this.$baseurl + `/culture/regfavorite`,
+        data: {
+          postno: this.commentData.postno
+        },
          headers: {
             Authorization: this.$store.state.user.token,
           },
       })
       .then((response) =>{
         console.log(response)
+        this.ismark = true;
         alert("찜등록!")
-        location.reload();
+        // location.reload();
       })
       .catch((error)=>{
         console.log(error)
@@ -134,7 +140,8 @@ export default {
           })
           .then(()=>{
               alert('찜해제!')
-              location.reload()
+              this.ismark = false
+              // location.reload()
           })
           .catch((err)=>{
               console.log(err)
