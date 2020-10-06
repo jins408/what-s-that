@@ -78,8 +78,6 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 
-const baseURL = "http://localhost:8080";
-
 export default {
     created(){
         this.postno = this.$route.params.ID;
@@ -95,33 +93,42 @@ export default {
   methods: {
       modify(){
           Swal.fire({
-            text: "등록하시겠습니까?",
+            text: "수정하시겠습니까?",
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             cancelButtonText: '취소',
-            confirmButtonText: '등록'
+            confirmButtonText: '수정'
             }).then((result) => {
                 if (result.isConfirmed) {
                 let formData = new FormData();
                 let culturename = this.culturename;
                 let content = this.content;
+                // let postno = this.postno
                 const file = this.$refs.imageInput.files[0];
                 console.log(file);
-                formData.append("profile", file);
+                formData.append("image", file);
                 formData.append("culturename", culturename);
                 formData.append("content", content);
+                // formData.append("postno", postno);
                 for (var pair of formData.entries()) {
                     console.log(pair[0] + ", " + pair[1]);
                 }
                 axios
-                .post(`${baseURL}/dictionary/culture/${this.postno}?content=`+this.content+`&culturename=`+this.culturename, formData)
+                .put(this.$baseurl + `/culture/admin/${this.postno}`, formData,{
+                  headers: {
+                    Authorization: this.$store.state.user.token,
+                  },
+                })
                 .then(()=>{
-                    
                         Swal.fire({
-                            text: "등록되었습니다",
+                            text: "수정되었습니다",
                             icon: 'success',
+                        })
+                        this.$router.push({
+                           name: "PostDetail",
+                           params: { ID: this.postno },
                         })
                 })
                 .catch((err)=>{

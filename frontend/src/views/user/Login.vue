@@ -57,8 +57,6 @@
 import axios from "axios";
 import findpw from "../../components/Findpw.vue"
 
-const baseURL = "http://localhost:8080";
-
 
 import { AUTH_REQUEST } from "../../store/actions/auth";
 import { USER_SUCCESS } from "../../store/actions/user";
@@ -109,10 +107,10 @@ export default {
         const kakaovue = this;
         Kakao.Auth.login({
           success: function(respones){
-            axios.get(`${baseURL}/dictionary/user/kakaologin?access_token=${respones.access_token}`)
+            axios.get(this.$baseurl + `/user/kakaologin?access_token=${respones.access_token}`)
               .then(respones =>{
                 alert("카카오로그인 성공")
-                location.href="http://localhost:8081/main"
+                location.href="http://j3b202.p.ssafy.io/main"
                 kakaovue.$store.commit(USER_SUCCESS, respones)
               })
             },

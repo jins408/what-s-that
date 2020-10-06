@@ -4,66 +4,52 @@
       class="d-flex justify-content-start"
       style="width: 90%; margin: auto; padding-top: 5rem"
     >
-      <img
-        src="../../assets/bgbg.jpg"
-        alt="여긴 이미지"
-        style="width: 26rem; height: 24rem; padding-left: 12px"
-      />
       <div class="ml-5 w-100">
         <p style="font-size: 1.5rem; font-weight: 540; text-align: center">
-          경주 불국사
+          {{ this.post.culturename }}
         </p>
-        <div class="d-flex justify-content-end">
+        <div class="d-flex justify-content-end mb-5">
           <i
             class="far fa-bookmark"
-            style="font-size: 2rem"
+            style="font-size: 1.5rem"
             v-if="!ismark"
             @click="bookmark"
           ></i>
           <i
             class="fas fa-bookmark"
-            style="font-size: 2rem"
+            style="font-size: 1.5rem"
             v-if="ismark"
             @click="bookmarkdelete"
           ></i>
         </div>
-        <p>유형</p>
-        <p>시대</p>
-        <p>건립시기/연도</p>
-        <p>규모(면적)</p>
-        <p>소새지</p>
-        <p>소유자</p>
-        <p>관리자</p>
-        <p>문화재 지정번호</p>
-        <p>문화재 지정일</p>
       </div>
     </div>
 
-    <comment :commentData="commentData"></comment>
 
     <v-card width="90%" class="mx-auto mt-5">
       <v-tabs background-color="white" color="red" left>
-        <v-tab>정의</v-tab>
+        <v-tab>사진</v-tab>
         <v-tab>내용</v-tab>
-        <v-tab>Abstract</v-tab>
 
-        <v-tab-item v-for="n in 3" :key="n">
+        <v-tab-item v-for="n in 2" :key="n">
           <v-container fluid>
-            <v-row>
-              <v-col v-for="i in 6" :key="i" cols="12" md="4">
-                <v-img
-                  :src="`https://picsum.photos/500/300?image=${i * n * 5 + 10}`"
-                  :lazy-src="`https://picsum.photos/10/6?image=${
-                    i * n * 5 + 10
-                  }`"
-                  aspect-ratio="1"
-                ></v-img>
+            <v-row >
+              <v-col v-if="n == 1" class="d-flex justify-content-center">
+                <img
+                  src="../../assets/bgbg.jpg"
+                  alt="여긴 이미지"
+                  style="width: 26rem; height: 24rem; padding-left: 12px"
+                />
+              </v-col>
+              <v-col v-if="n == 2" cols="12" md="4">
+                {{post.content}}
               </v-col>
             </v-row>
           </v-container>
         </v-tab-item>
       </v-tabs>
     </v-card>
+    <comment :commentData="commentData"></comment>
     <div
       class="d-flex justify-content-end"
       style="width: 90%; margin: 2rem auto"
@@ -78,8 +64,6 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 
-const baseURL = "http://localhost:8080";
-
 import comment from "../../components/Comment.vue";
 
 export default {
@@ -90,14 +74,26 @@ export default {
   created(){
      this.commentData.userno=this.$store.state.user.userno
      this.commentData.postno = this.$route.params.ID;
-     console.log(this.commentData.postno)
-     console.log(this.$store.state.user.token)
+    //  console.log(this.commentData.postno)
+    //  console.log(this.$store.state.user.token)
      this.bmarkList()
+     this.getdetail()
   },
 
   methods: {
+    getdetail(){
+      axios
+      .get(`${this.$baseurl}/culture/detail/${this.commentData.postno}`)
+      .then((res)=>{
+        this.post = res.data.object
+        console.log(this.post)
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
+    },
     bookmark(){
-      axios.post(`${baseURL}/dictionary/culture/favorite?postno=${this.commentData.postno}`,this.commentData.postno,{
+      axios.post(`${this.$baseurl}/culture/favorite?postno=${this.commentData.postno}`,this.commentData.postno,{
          headers: {
             Authorization: this.$store.state.user.token,
           },
@@ -112,7 +108,7 @@ export default {
       })
     },
     bmarkList(){
-      axios.get(`${baseURL}/dictionary/culture/favorite`, {
+      axios.get(`${this.$baseurl}/culture/favorite`, {
           headers: {
             Authorization: this.$store.state.user.token,
           },
@@ -131,7 +127,7 @@ export default {
     },
     bookmarkdelete(){
        axios
-        .delete(`${baseURL}/dictionary/culture/favorite/${this.commentData.postno}`,{
+        .delete(`${this.$baseurl}/culture/favorite/${this.commentData.postno}`,{
           headers: {
             Authorization: this.$store.state.user.token,
           },
@@ -162,7 +158,7 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           axios
-          .delete(`${baseURL}/dictionary/culture/${this.commentData.postno}`)
+          .delete(`${this.$baseurl}/culture/${this.commentData.postno}`)
           .then(()=>{
             Swal.fire({
               text:"삭제완료",
@@ -188,6 +184,7 @@ export default {
           userno:"",
           postno:"",
       },
+      post:[],
       
     }
   }

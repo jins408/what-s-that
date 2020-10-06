@@ -78,8 +78,6 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 
-const baseURL = "http://localhost:8080";
-
 export default {
   data() {
     return {
@@ -105,20 +103,24 @@ export default {
                 let content = this.content;
                 const file = this.$refs.imageInput.files[0];
                 console.log(file);
-                formData.append("profile", file);
+                formData.append("image", file);
                 formData.append("culturename", culturename);
                 formData.append("content", content);
                 for (var pair of formData.entries()) {
                     console.log(pair[0] + ", " + pair[1]);
                 }
                 axios
-                .post(`${baseURL}/dictionary/culture?content=`+this.content+`&culturename=`+this.culturename, formData)
+                .post(this.$baseurl + `/culture/admin`, formData,{
+                   headers: {
+                      Authorization: this.$store.state.user.token,
+                    },
+                })
                 .then(()=>{
-                    
                         Swal.fire({
                             text: "등록되었습니다",
                             icon: 'success',
                         })
+                        this.$router.push('/main')
 
                 })
                 .catch((err)=>{

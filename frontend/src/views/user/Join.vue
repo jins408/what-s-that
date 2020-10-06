@@ -80,8 +80,6 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import PV from "password-validator";
 
-const baseURL = "http://localhost:8080";
-
 export default {
   created(){
     this.passwordSchema
@@ -97,7 +95,7 @@ export default {
     methods: {
       checkemail(){
         axios
-        .get(`${baseURL}/dictionary/user/emailoverlap/${this.joindata.email}`)
+        .get(this.$baseurl + `/user/emailoverlap/${this.joindata.email}`)
         .then((res)=>{
           if(res.data.message == "success"){
             this.emailcheck = true
@@ -134,7 +132,7 @@ export default {
       },
       checkauthnum(){
         axios
-        .get(`${baseURL}/dictionary/user/emailcode/${this.joindata.email}/${this.authnum}`)
+        .get(this.$baseurl + `/user/emailcode/${this.joindata.email}/${this.authnum}`)
         .then(()=>{
           this.authnumcheck = true
           // console.log(this.authnumcheck)
@@ -213,7 +211,7 @@ export default {
           }
           else{
             axios
-            .post(`${baseURL}/dictionary/user/signup`, this.joindata)
+            .post(this.$baseurl + `/user/signup`, this.joindata)
             .then(()=>{
                 alert('회원가입 성공!')
                 this.$router.push('/')

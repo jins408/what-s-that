@@ -17,8 +17,6 @@
 <script>
 import axios from 'axios'
 
-const baseURL = "http://localhost:8080";
-
 export default {
     computed: {
         show: {
@@ -35,7 +33,7 @@ export default {
     },
     methods:{
         findPW(){
-            axios.get(`${baseURL}/dictionary/user/findpwd/${this.email}/`)
+            axios.get(this.$baseurl + `/user/findpwd/${this.email}/`)
             .then((response) =>{
                 console.log(response.data)
                 alert("이메일로 임시 비밀번호가 발송 되었습니다")

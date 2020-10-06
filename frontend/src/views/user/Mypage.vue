@@ -159,8 +159,6 @@ import store from "../../store";
 import category from "../../components/Category.vue";
 import mystorage from "../../components/Mystorage.vue";
 
-const baseURL = "http://localhost:8080";
-
 export default {
   components: {
     category,
@@ -193,7 +191,7 @@ export default {
   methods: {
     mylist() {
       axios
-        .get(`${baseURL}/dictionary/culture/favorite`, {
+        .get(this.$baseurl + `/culture/favorite`, {
           headers: {
             Authorization: this.$store.state.user.token,
           },
@@ -216,7 +214,7 @@ export default {
     },
     getinfo() {
       axios
-        .get(`${baseURL}/dictionary/account/userinfo`, {
+        .get(this.$baseurl + `/account/userinfo`, {
           headers: {
             Authorization: this.$store.state.user.token,
           },
@@ -250,7 +248,7 @@ export default {
             icon: "success",
           });
           axios
-            .delete(`${baseURL}/dictionary/account/signout`, {
+            .delete(this.$baseurl + `/account/signout`, {
               headers: {
                 Authorization: this.$store.state.user.token,
               },
@@ -289,7 +287,7 @@ export default {
       }
 
       axios
-        .put(`${baseURL}/dictionary/account/modify`, formData, {
+        .put(this.$baseurl + `/account/modify`, formData, {
           headers: {
             Authorization: this.$store.state.user.token,
           },

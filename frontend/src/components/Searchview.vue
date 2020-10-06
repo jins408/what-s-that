@@ -53,8 +53,6 @@
 <script>
 import axios from "axios";
 
-const baseURL = "http://localhost:8080";
-
 export default {
   props: {
     culture: Array,
@@ -67,10 +65,10 @@ export default {
   methods: {
     gopostdetail(item) {
       axios
-        .get(`${baseURL}/dictionary/culture/${item}`)
+        .get(this.$baseurl + `/culture/find?culturename=${item}`)
         .then((res) => {
-          this.post = res.data.object;
-          console.log(this.post);
+          this.post = res.data.object[0];
+          // console.log(this.post);
           this.$router.push({
             name: "PostDetail",
             params: { ID: this.post.postno },

@@ -32,8 +32,6 @@
 <script>
 import axios from "axios";
 
-const baseURL = "http://localhost:8080";
-
 export default {
     props:{
         mystorages:Array,
@@ -41,7 +39,7 @@ export default {
   methods: {
     delmystorage(postno){
         axios
-        .delete(`${baseURL}/dictionary/culture/favorite/${postno}`,{
+        .delete(this.$baseurl + `/culture/favorite/${postno}`,{
           headers: {
             Authorization: this.$store.state.user.token,
           },
