@@ -109,10 +109,12 @@ export default {
             axios.get(this.$baseurl + `/user/kakaologin?access_token=${response.access_token}`)
               .then(res =>{
                 alert("카카오로그인 성공");
+                console.log(res.data);
+                alert(" ");
                 kakaovue.$store.commit(USER_SUCCESS, res.data.object);
               })
               .finally(() => {
-                this.main();
+                 location.href="http://j3b202.p.ssafy.io/main"
                 }
               )
             },
