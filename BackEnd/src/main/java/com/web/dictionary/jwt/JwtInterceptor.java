@@ -33,7 +33,6 @@ public class JwtInterceptor implements HandlerInterceptor {
         while (headers.hasMoreElements()) {
             String headerName = (String) headers.nextElement();
             String value = request.getHeader(headerName);
-            logger.info("headerName:" + headerName + "," + value);
         }
 
         if ("OPTIONS".equals(request.getMethod())) {
