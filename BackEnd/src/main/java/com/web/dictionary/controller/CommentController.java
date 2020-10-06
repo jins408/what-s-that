@@ -19,7 +19,7 @@ public class CommentController {
     ICommentService commentservice;
 
     @ApiOperation(value = "해당 게시물에 달린 댓글 불러오기")
-    @GetMapping("/get/{postno}")
+    @GetMapping("/load/{postno}")
     public ResponseEntity<?> getComments(@PathVariable("postno") int postno) throws Exception {
         BasicResponse result = new BasicResponse();
         List<Comment> commentList = commentservice.getComments(postno);
