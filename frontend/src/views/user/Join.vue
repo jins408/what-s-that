@@ -6,8 +6,9 @@
                 <v-row>
                     <v-col cols="3"></v-col>
                     <v-col cols="6">
-                        <v-row>
-                            <div style="width:46%">
+                        <v-row rows="12" sm="12" md="6">
+                          <v-col class="p-0" cols="12" sm="5">
+                            <div>
                                 <v-text-field
                                     label="E-mail"
                                     required
@@ -15,11 +16,14 @@
                                     :disabled="emailcheck ? '' : emailcheck"
                                     ></v-text-field>
                             </div>
-                                    <v-btn class="mt-5 ml-2" style="padding:0 0.5rem;" small outlined color="indigo" @click="checkemail" :disabled="emailcheck ? '' : emailcheck">중복 확인</v-btn>
+                          </v-col>
+                          <v-col class="d-flex justify-content-end p-0 mt-5" cols="12" sm="2">
+                            <v-btn style="padding:0 1rem;" small outlined color="indigo" @click="checkemail" :disabled="emailcheck ? '' : emailcheck">중복 확인</v-btn>
+                          </v-col>
 
-                            <div style="width:25%">
+                          <v-col class="p-0" cols="12" sm="3">
+                            <div>
                                 <v-text-field
-                                    class="ml-2"
                                     label="인증번호"
                                     v-model="authnum"
                                     required
@@ -27,7 +31,10 @@
                                     ></v-text-field>
                                 
                             </div>
-                                    <v-btn sm="2" class="mt-5 ml-2" style="padding:0 0.5rem;" small outlined color="indigo" @click="checkauthnum" :disabled="authnumcheck ? '' : authnumcheck">인증 확인</v-btn>
+                          </v-col>
+                          <v-col class="d-flex justify-content-end p-0 mt-5" cols="12" sm="2">
+                            <v-btn sm="2" style="padding:0 1rem;" small outlined color="indigo" @click="checkauthnum" :disabled="authnumcheck ? '' : authnumcheck">인증 확인</v-btn>
+                          </v-col>
                         </v-row>
                         
                         <v-row>

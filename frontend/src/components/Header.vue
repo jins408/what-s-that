@@ -29,7 +29,7 @@
                 >Login</v-list-item-title
               >
             </v-list-item>
-            <v-list-item class="userlist" @click="gowrite" v-if="isLoggedIn">
+            <v-list-item class="userlist" @click="gowrite" v-if="isLoggedIn && isadmin == 1">
               <v-list-item-title style="font-size: 0.9rem; color:white;"
                 >Write</v-list-item-title
               >
@@ -77,7 +77,7 @@
                 >Login</v-list-item-title
               >
             </v-list-item>
-            <v-list-item class="userlist" @click="gowrite" v-if="isLoggedIn">
+            <v-list-item class="userlist" @click="gowrite" v-if="isLoggedIn && isadmin == 1">
               <v-list-item-title style="font-size: 0.9rem;"
                 >Write</v-list-item-title
               >
@@ -117,6 +117,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import store from "../store";
 import Main from "../views/main/Main.vue";
 import { mapGetters } from "vuex";
@@ -127,6 +128,7 @@ export default {
   data() {
     return {
       checkmain: false,
+      isadmin:"",
     };
   },
 
@@ -137,6 +139,9 @@ export default {
     mainpage() {
       return this.$route.name == Main;
     },
+  },
+  created(){
+    this.getinfo()
   },
   methods: {
     gojoin() {
@@ -159,7 +164,22 @@ export default {
     },
     gowrite(){
       this.$router.push('/postcreate')
-    }
+    },
+    getinfo() {
+      axios
+        .get(this.$baseurl + `/account/userinfo`, {
+          headers: {
+            Authorization: this.$store.state.user.token,
+          },
+        })
+        .then((res) => {
+          this.isadmin = res.data.object.isadmin;
+          console.log(this.isadmin)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
 };
 </script>

@@ -51,6 +51,7 @@
     </v-card>
     <comment :commentData="commentData"></comment>
     <div
+      v-if="isadmin == 1"
       class="d-flex justify-content-end"
       style="width: 90%; margin: 2rem auto"
     >
@@ -72,15 +73,28 @@ export default {
   },
 
   created(){
-     this.commentData.userno=this.$store.state.user.userno
      this.commentData.postno = this.$route.params.ID;
-    //  console.log(this.commentData.postno)
-    //  console.log(this.$store.state.user.token)
      this.bmarkList()
      this.getdetail()
+     this.getinfo()
   },
 
   methods: {
+    getinfo() {
+      axios
+        .get(this.$baseurl + `/account/userinfo`, {
+          headers: {
+            Authorization: this.$store.state.user.token,
+          },
+        })
+        .then((res) => {
+          this.isadmin = res.data.object.isadmin;
+          // console.log(this.isadmin)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     getdetail(){
       axios
       .get(`${this.$baseurl}/culture/detail/${this.commentData.postno}`)
@@ -183,6 +197,7 @@ export default {
 
   data() {
     return {
+      isadmin:"",
       comment: null,
       bookmarkdata:"",
       ismark:false,

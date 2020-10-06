@@ -86,7 +86,7 @@ export default {
   },
   methods: {
     createComment() {
-      let isLoggedIn = this.$store.getters.auth.isAuthenticated;
+      let isLoggedIn = this.$store.getters.isAuthenticated;
       alert(isLoggedIn);
       if (!isLoggedIn) {
         alert("로그인 후 입력가능 합니다");
@@ -98,16 +98,17 @@ export default {
         }
       }
       if (flag == 0) {
-        axios
-          .post(
-            this.$baseurl +
-              "/comment?postno=" +
-              this.commentData.postno +
-              "&reply=" +
-              this.commentData.reply +
-              "&userno=" +
-              this.commentData.userno
-          )
+        axios ({
+            method: "POST",
+            url: this.$baseurl + '/comment',
+            data: {
+              postno: this.commentData.postno,
+              reply: this.commentData.reply
+            },
+            headers: {
+            Authorization: this.$store.state.user.token,
+            }
+        })
           .then((response) => {
             console.log(response.data);
             alert("댓글이 등록되었습니다.");
@@ -176,7 +177,7 @@ export default {
       comments: [],
       updatecomment: {
         commentno: "",
-        postno: 1,
+        postno: "",
         reply: "",
         userno: "",
       },
