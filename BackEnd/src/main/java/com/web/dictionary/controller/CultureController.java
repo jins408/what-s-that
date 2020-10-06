@@ -5,6 +5,11 @@ import com.web.dictionary.model.BasicResponse;
 import com.web.dictionary.service.ICultureService;
 import com.web.dictionary.service.JwtService;
 import io.swagger.annotations.ApiOperation;
+
+import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.DefaultExecutor;
+import org.apache.commons.exec.PumpStreamHandler;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -229,4 +235,44 @@ public class CultureController {
         return response;
     }
 
+    
+    @ApiOperation(value = "이미지로 검색")
+    @GetMapping(value = "/image")
+    public ResponseEntity<?> getCultureByImage() throws Exception {
+        ResponseEntity response = null;
+        BasicResponse result = new BasicResponse();
+
+        System.out.println("Python Call");
+        String[] command = new String[4];
+        command[0] = "python";
+        command[1] = "/home/ubuntu/model/test_frcnn.py";
+        command[2] = "--path";
+        command[3] = "images";
+        
+        //python test_frcnn.py --path image
+        try {
+            execPython(command);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return new ResponseEntity(result,HttpStatus.OK);
+    }
+
+
+	public static void execPython(String[] command) throws IOException, InterruptedException {
+	    CommandLine commandLine = CommandLine.parse(command[0]);
+	    for (int i = 1, n = command.length; i < n; i++) {
+	        commandLine.addArgument(command[i]);
+	    }
+	
+	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	    PumpStreamHandler pumpStreamHandler = new PumpStreamHandler(outputStream);
+	    DefaultExecutor executor = new DefaultExecutor();
+	    executor.setStreamHandler(pumpStreamHandler);
+	    int result = executor.execute(commandLine);
+	    System.out.println("result: " + result);
+	    System.out.println("output: " + outputStream.toString());
+	
+	}    
 }
