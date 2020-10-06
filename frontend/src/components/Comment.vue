@@ -81,13 +81,11 @@ import axios from "axios";
 
 export default {
   created() {
-    this.updatecomment.userno = this.$store.state.user.userno;
     this.commentList();
   },
   methods: {
     createComment() {
       let isLoggedIn = this.$store.getters.isAuthenticated;
-      alert(isLoggedIn);
       if (!isLoggedIn) {
         alert("로그인 후 입력가능 합니다");
       } else {
@@ -106,7 +104,7 @@ export default {
               reply: this.commentData.reply
             },
             headers: {
-            Authorization: this.$store.state.user.token,
+              Authorization: this.$store.state.user.token,
             }
         })
           .then((response) => {
