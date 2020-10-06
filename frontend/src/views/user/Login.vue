@@ -105,10 +105,11 @@ export default {
         const kakaovue = this;
         Kakao.Auth.login({
           success: function(response){
+            alert(response.access_token);
             axios.get(this.$baseurl + `/user/kakaologin?access_token=${response.access_token}`)
               .then(res =>{
-                alert("카카오로그인 성공")
-                kakaovue.$store.commit(USER_SUCCESS, res.data.object)
+                alert("카카오로그인 성공");
+                kakaovue.$store.commit(USER_SUCCESS, res.data.object);
               })
               .finally(() => {
                 this.main();
