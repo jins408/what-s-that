@@ -10,6 +10,6 @@ public interface JwtService {
 
     public String createToken(int userno);
 
-    public Object getKey(String key);
+    public Map<?, ?> getKey(String key);
 
 }
