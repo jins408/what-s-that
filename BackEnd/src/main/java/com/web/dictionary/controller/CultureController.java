@@ -245,8 +245,7 @@ public class CultureController {
         }
         return response;
     }
-
-    
+  
     @ApiOperation(value = "이미지로 검색")
     @PostMapping(value = "/image")
     public ResponseEntity<?> getCultureByImage(@RequestPart("image") MultipartFile file) throws Exception {
@@ -270,9 +269,18 @@ public class CultureController {
         try {
         	ByteArrayOutputStream out =  execPython(command);
         	String extact_result = out.toString().split("result:")[1];
-        	if(!extact_result.equals(" ")) {
+           	StringBuffer res = new StringBuffer();
+        	for (int i = 0; i < extact_result.length(); i++) {
+        		char c = extact_result.charAt(i);
+        		if(c =='\n' || c== '\r'){
+        			break;
+        		}else if(c != ' ') {
+        			res.append(c); 
+        		}
+        	}
+        	if(!res.toString().equals(" ")) {
         		//정보 가져오기
-        		result.object = cultureService.getCultureInfoByEName(extact_result);
+        		result.object = cultureService.getCultureInfoByEName(res.toString());
         		response = new ResponseEntity(result,HttpStatus.OK);
         	}else {
         		response = new ResponseEntity(result,HttpStatus.NOT_FOUND);
