@@ -247,11 +247,12 @@ public class CultureController {
         command[0] = "python";
         command[1] = "/home/ubuntu/model/test_frcnn.py";
         command[2] = "--path";
-        command[3] = "images";
+        command[3] = "image";
         
         //python test_frcnn.py --path image
         try {
-            execPython(command);
+        	ByteArrayOutputStream out =  execPython(command);
+        	result.message = out.toString();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -260,7 +261,7 @@ public class CultureController {
     }
 
 
-	public static void execPython(String[] command) throws IOException, InterruptedException {
+	public static ByteArrayOutputStream execPython(String[] command) throws IOException, InterruptedException {
 	    CommandLine commandLine = CommandLine.parse(command[0]);
 	    for (int i = 1, n = command.length; i < n; i++) {
 	        commandLine.addArgument(command[i]);
@@ -273,6 +274,6 @@ public class CultureController {
 	    int result = executor.execute(commandLine);
 	    System.out.println("result: " + result);
 	    System.out.println("output: " + outputStream.toString());
-	
+	    return outputStream;
 	}    
 }
