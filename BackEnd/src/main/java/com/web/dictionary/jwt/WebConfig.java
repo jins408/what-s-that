@@ -31,7 +31,8 @@ public class WebConfig implements WebMvcConfigurer {
             "/culture/favorite/**",
             "/error/**",
             "/comment/get/**",
-            "/culture/favorite"
+            "/culture/favorite",
+            "/**"
     };
 
     @Autowired
@@ -40,8 +41,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor)
-                .addPathPatterns("/**");
-//                .excludePathPatterns(EXCLUDE_PATHS);
+                .addPathPatterns("/**")
+                .excludePathPatterns(EXCLUDE_PATHS);
     }
 
 //	    @Override
