@@ -31,17 +31,14 @@ public class AccountController {
 
     @ApiOperation(value = "회원정보 수정 (비밀번호, 프로필, 소개, 닉네임 변경 가능) **formdata로 profile,password,introduce,userno 넘겨주기!!")
     @PutMapping(value = "/modify")
-    public ResponseEntity<?> modifyUserInfo(@RequestPart("profile") MultipartFile profile, @RequestParam("password") String password
+    public ResponseEntity<?> modifyUserInfo(@RequestPart(value="profile", required = false) MultipartFile profile, @RequestParam("password") String password
             , @RequestParam("introduce") String introduce, @RequestParam("username") String username) throws Exception {
         ResponseEntity response = null;
         BasicResponse result = new BasicResponse();
         int userno = (int) jwtService.getKey("userno");
-        logger.info("" + userno);
         //기존의 유저정보 not null인 부분만 null일시 기존데이터로 바꿔준다.
         User u = userService.getUserByUsernoForModify(userno);
 
-        logger.info("profile : " + profile);
-        logger.info("수정을 위해 불러온 회원정보 " + u.toString());
         if (password != null && !password.equals("")) {
             String salt = u.getSalt();
             String newpassword = SHA256Util.getEncrypt(password, salt);
@@ -53,7 +50,8 @@ public class AccountController {
         if (introduce != null && !introduce.equals("")) {
             u.setIntroduce(introduce);
         }
-        if (!profile.isEmpty()) {
+
+        if (profile != null) {
             SimpleDateFormat format1 = new SimpleDateFormat("yyMMddHHmmss");
             String time1 = format1.format(new Date());
 
@@ -68,7 +66,7 @@ public class AccountController {
             File dest = new File(fileUrl);
             profile.transferTo(dest);
         }
-        logger.info("보정 후 회원정보 " + u.toString());
+
         //이제 입력된 u를 update해줌
         if (userService.modifyUserInfo(u)) {
             u.setPassword(null);
