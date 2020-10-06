@@ -107,7 +107,7 @@ public class CultureController {
     }
 
     @ApiOperation(value = "찜 등록")
-    @PostMapping(value = "/favorite")
+    @PostMapping(value = "/regfavorite")
     public ResponseEntity<?> registFavoriteCulture(@RequestParam("postno") int postno) throws Exception {
         ResponseEntity response = null;
         BasicResponse result = new BasicResponse();
