@@ -247,7 +247,7 @@ public class CultureController {
         command[0] = "python";
         command[1] = "/home/ubuntu/model/test_frcnn.py";
         command[2] = "--path";
-        command[3] = "image";
+        command[3] = "/home/ubuntu/model/image";
         
         //python test_frcnn.py --path image
         try {
