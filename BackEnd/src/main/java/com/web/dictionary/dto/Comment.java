@@ -8,12 +8,10 @@ import lombok.Setter;
 @Setter
 public class Comment {
 
-
 	private int userno;
 	private int postno;
 	private int commentno;
     private String reply;
     private String reply_date;
-    
 
 }

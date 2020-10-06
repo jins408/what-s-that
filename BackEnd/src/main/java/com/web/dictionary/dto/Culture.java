@@ -11,4 +11,5 @@ public class Culture {
 	private String content;
 	private int isfavorite;
 	private String imageUrl;
+	private String ename;
 }

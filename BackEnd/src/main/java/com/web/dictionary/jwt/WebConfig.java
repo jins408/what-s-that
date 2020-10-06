@@ -19,19 +19,19 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     private static final String[] EXCLUDE_PATHS = {
-//            "/user/**",
-//            "/swagger-resources/**",
-//            "/swagger-ui.html/**",
-//            "/csrf/**",
-//            "/v2/api-docs/**",
-//            "/webjars/**",
-//            "/culture/detail/**",
-//            "/culture/find/**",
-//            "/culture/search/**",
-//            "/culture/favorite/**",
-//            "/error/**",
-//            "/comment/get/**",
-//            "/culture/favorite",
+            "/user/**",
+            "/swagger-resources/**",
+            "/swagger-ui.html/**",
+            "/csrf/**",
+            "/v2/api-docs/**",
+            "/webjars/**",
+            "/culture/detail/**",
+            "/culture/find/**",
+            "/culture/search/**",
+            "/culture/favorite/**",
+            "/error/**",
+            "/comment/get/**",
+            "/culture/favorite",
             "/**"
     };
 

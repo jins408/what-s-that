@@ -5,12 +5,11 @@ import com.web.dictionary.dto.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 @Service
-public class CommentService implements ICommentService{
+public class CommentService implements ICommentService {
 
     @Autowired
     CommentDao commentdao;
@@ -23,22 +22,24 @@ public class CommentService implements ICommentService{
     @Override
     @Transactional
     public int insertComment(Comment comment) throws Exception {
-    	int userno = comment.getUserno();
-    	int postno = comment.getPostno();
-    	commentdao.registComment(userno, postno); // insert -> null이면 성공, 실패면 e에러
-    	int regno = commentdao.getRegNo(userno, postno);
-    	comment.setCommentno(regno);
-        return commentdao.insertComment(comment);
+        int userno = comment.getUserno();
+        int postno = comment.getPostno();
+        if(commentdao.registComment(userno, postno) == 1) { // insert -> null이면 성공, 실패면 e에러
+            int regno = commentdao.getRegNo(userno, postno);
+            comment.setCommentno(regno);
+            return commentdao.insertComment(comment);
+        } else {
+            return 0;
+        }
     }
-
 
     @Override
     public int deleteComment(int regno) throws Exception {
-        return  commentdao.deleteComment(regno);
+        return commentdao.deleteComment(regno);
     }
 
-	@Override
-	public boolean modifyComment(Comment comment) throws Exception {
-		return commentdao.modifyComment(comment);
-	}
+    @Override
+    public boolean modifyComment(Comment comment) throws Exception {
+        return commentdao.modifyComment(comment);
+    }
 }

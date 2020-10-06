@@ -7,7 +7,7 @@ import java.util.List;
 public interface ICultureService {
 
     public List<Culture> getCultureInfoByCultureName(String culturename) throws Exception;
-    public Culture getCultureInfoByEName(String culturename) throws Exception;
+
     public boolean registFavoriteCulture(int postno, int userno) throws Exception;
 
     public boolean deleteFavoriteCulture(int postno, int userno) throws Exception;
@@ -23,5 +23,8 @@ public interface ICultureService {
     public int updatePost(Culture post) throws Exception;
 
     public int deletePost(int postno) throws Exception;
+
+    public Culture getCultureInfoByEName(String culturename) throws Exception;
+
 
 }
