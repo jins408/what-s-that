@@ -1,11 +1,10 @@
 package com.web.dictionary.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
+import com.web.dictionary.dto.Culture;
+import com.web.dictionary.model.BasicResponse;
+import com.web.dictionary.service.ICultureService;
+import com.web.dictionary.service.JwtService;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.PumpStreamHandler;
@@ -15,24 +14,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.web.dictionary.dto.Culture;
-import com.web.dictionary.model.BasicResponse;
-import com.web.dictionary.service.ICultureService;
-import com.web.dictionary.service.JwtService;
-
-import io.swagger.annotations.ApiOperation;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 @RequestMapping("/culture")
 @CrossOrigin(origins = {"*"})
@@ -124,12 +113,12 @@ public class CultureController {
 
     @ApiOperation(value = "찜 등록")
     @PostMapping(value = "/regfavorite")
-    public ResponseEntity<?> registFavoriteCulture(@RequestParam("postno") int postno) throws Exception {
+    public ResponseEntity<?> registFavoriteCulture(@RequestBody Culture post) throws Exception {
         ResponseEntity response = null;
         BasicResponse result = new BasicResponse();
         int userno = (int) jwtService.getKey("userno");
         logger.info("" + userno);
-        if (cultureService.registFavoriteCulture(postno, userno)) {
+        if (cultureService.registFavoriteCulture(post.getPostno(), userno)) {
             result.status = true;
             result.message = "success";
             return response = new ResponseEntity<>(result, HttpStatus.OK);
