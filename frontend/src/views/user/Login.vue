@@ -109,6 +109,7 @@ export default {
               .then(respones =>{
                 alert("카카오로그인 성공")
                 location.href="http://j3b202.p.ssafy.io/main"
+                alert(respones.data.object);
                 kakaovue.$store.commit(USER_SUCCESS, respones.data.object)
               })
               .finally(() => {
