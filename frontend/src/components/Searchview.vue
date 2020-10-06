@@ -26,10 +26,10 @@
           <v-img
             class="white--text align-end"
             height="200px"
-            src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+            :src= item.imageUrl
             @click="gopostdetail(item)"
           >
-            <v-card-title>{{ item }}</v-card-title>
+            <v-card-title>{{ item.culturename }}</v-card-title>
           </v-img>
           <v-card-actions class="d-flex justify-content-center">
             <v-btn
@@ -68,7 +68,7 @@ export default {
   methods: {
     gopostdetail(item) {
       axios
-        .get(this.$baseurl + `/culture/find?culturename=${item}`)
+        .get(this.$baseurl + `/culture/find?culturename=${item.culturename}`)
         .then((res) => {
           this.post = res.data.object[0];
           // console.log(this.post);

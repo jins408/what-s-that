@@ -1,53 +1,77 @@
 <template>
     <div class="my-auto">
+  <div class="joinbg">
+    <!-- 웹버전 -->
+    <div class="d-none d-sm-block">
+    <div class=" join_title_web" >간편 회원가입</div>
+    </div>
+    <!-- 모바일버전 -->
+    <div class="d-block d-sm-none d-md-none">
+    <div class=" join_title_mobile" >간편 회원가입</div>
+    </div>
+    </div>
         <v-container >
             <v-form>
-                <p class="text-center" style="font-size:1.3rem; font-weight:bold;">간편 회원가입</p>
                 <v-row>
-                    <v-col cols="3"></v-col>
-                    <v-col cols="6">
-                        <v-row rows="12" sm="12" md="6">
-                          <v-col class="p-0" cols="12" sm="5">
-                            <div>
+                    <v-col cols="2"></v-col>
+                    <v-col cols="9">
+                      <div class="d-flex justify-content-end" style="margin-top: 6rem;">
+                      <h6>* 표시는 필수 입력 항목입니다.</h6>
+                      </div>
+                      <hr class="joinhr">
+                        <v-row rows="12" sm="12" class="mb-5" >
+                            <v-col cols="12" sm="3">
+                             <h5 style="font-weight: bold">* 이메일 </h5> 
+                            </v-col>
+                          <v-col class="p-0" cols="12" sm="6">  
                                 <v-text-field
-                                    label="E-mail"
-                                    required
+                                    outlined
                                     v-model="joindata.email"
                                     :disabled="emailcheck ? '' : emailcheck"
-                                    ></v-text-field>
-                            </div>
+                                ></v-text-field>
                           </v-col>
-                          <v-col class="d-flex justify-content-end p-0 mt-5" cols="12" sm="2">
-                            <v-btn style="padding:0 1rem;" small outlined color="indigo" @click="checkemail" :disabled="emailcheck ? '' : emailcheck">중복 확인</v-btn>
+                          <v-col class="d-flex justify-content-end p-0 mt-2" cols="12" sm="2">
+                            <v-btn large  outlined color="indigo" @click="checkemail" :disabled="emailcheck ? '' : emailcheck">중복 확인</v-btn>
                           </v-col>
+                          </v-row>
 
-                          <v-col class="p-0" cols="12" sm="3">
-                            <div>
+                          <v-row rows="12" sm="12" class="mb-5">
+                          <v-col cols="12" sm="3">
+                             <h5 style="font-weight: bold">* 인증번호 </h5> 
+                          </v-col>
+                             <v-col class="p-0" cols="12" sm="6">
                                 <v-text-field
-                                    label="인증번호"
+                                    outlined
                                     v-model="authnum"
                                     required
                                     :disabled="authnumcheck ? '' : authnumcheck"
-                                    ></v-text-field>
-                                
-                            </div>
+                                    ></v-text-field>           
                           </v-col>
-                          <v-col class="d-flex justify-content-end p-0 mt-5" cols="12" sm="2">
-                            <v-btn sm="2" style="padding:0 1rem;" small outlined color="indigo" @click="checkauthnum" :disabled="authnumcheck ? '' : authnumcheck">인증 확인</v-btn>
+                          <v-col class="d-flex justify-content-end p-0 mt-2" cols="12" sm="2">
+                            <v-btn sm="2" large outlined color="indigo" @click="checkauthnum" :disabled="authnumcheck ? '' : authnumcheck">인증 확인</v-btn>
                           </v-col>
                         </v-row>
                         
-                        <v-row>
-                            <v-text-field
-                                label="Username"
-                                v-model="joindata.username"
-                                required
-                                ></v-text-field>
+                        <v-row rows="12" sm="12" class="mb-5">
+                          <v-col cols="12" sm="3">
+                            <h5 style="font-weight: bold">* 이름 </h5> 
+                          </v-col>
+                            <v-col class="p-0" cols="12" sm="6">
+                              <v-text-field
+                                  outlined
+                                  v-model="joindata.username"
+                                  required
+                                  ></v-text-field>
+                            </v-col>
                         </v-row>
 
-                        <v-row>
+                        <v-row rows="12" sm="12" class="mb-5">
+                          <v-col cols="12" sm="3">
+                            <h5 style="font-weight: bold">* 비밀번호 </h5> 
+                          </v-col>
+                          <v-col class="p-0" cols="12" sm="6">
                             <v-text-field
-                                label="Password"
+                                outlined
                                 :rules="passwordrules"
                                 v-model="joindata.password"
                                 :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -55,25 +79,31 @@
                                 @click:append="show1 = !show1"
                                 required
                                 ></v-text-field>
+                            </v-col>
                         </v-row>
-                        
-                            <v-form ref="form">
-                                <v-row>
-
+                      
+                          <v-row rows="12" sm="12" class="mb-5">
+                            <v-col cols="12" sm="3">
+                              <h5 style="font-weight: bold">* 비밀번호확인 </h5> 
+                            </v-col>
+                               <v-col class="p-0" cols="12" sm="6">
                                 <v-text-field
+                                    outlined
                                     v-model="joindata.passwordconfirm"
                                     :rules="confirmrules"
-                                    label="Password Confirm"
                                     :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
                                     :type="show2 ? 'text' : 'password'"
                                     @click:append="show2 = !show2"
                                 ></v-text-field>
-                                </v-row>
-                            </v-form>
-                <v-row class="mt-5">
+                               </v-col>
+                               <v-col class="d-flex justify-content-end p-0 mt-2" cols="12" sm="2">
+                                <v-btn large outlined color="error" @click="checkrules" v-if="!this.rulecheck" > 확인 </v-btn>
+                               </v-col>
+                          </v-row>
+                            
+                <v-row class="mt-5 mb-5">
                     <v-row rows="9"></v-row>
-                    <v-btn outlined color="indigo" @click="checkrules" v-if="!this.rulecheck" >비밀번호 확인</v-btn>
-                    <v-btn outlined color="indigo" @click="join" v-if="this.rulecheck">가입하기</v-btn>
+                    <v-btn large color="primary" dark @click="join" v-if="this.rulecheck">가입하기</v-btn>
                 </v-row>
                     </v-col>
                 </v-row>
@@ -292,4 +322,35 @@ export default {
 </script>
 
 <style>
+.joinbg{
+    background: url('../../assets/join_bg.jpg') no-repeat;
+    width: 100%;
+    height: 18rem;
+    background-size: cover;
+    background-position: center;
+}
+
+.join_title_web{
+  position: absolute;
+  left: 42%;
+  top: 11rem;
+  color: white;
+  font-size: 2.7rem;
+  font-weight: bold;
+}
+
+.join_title_mobile{
+  position: absolute;
+  left: 12%;
+  top: 11rem;
+  color: white;
+  font-size: 2.7rem;
+  font-weight: bold;
+}
+
+.joinhr{
+  margin-bottom: 3rem;
+  border: 0.5px solid;
+}
+
 </style>

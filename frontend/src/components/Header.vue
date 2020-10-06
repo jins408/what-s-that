@@ -97,7 +97,9 @@
       </div>
     </div>
 
-    <div class="text-center" style="margin-top:5rem;" v-if="!mainpage">
+    <!-- 웹버전 -->
+    <div class="d-none d-sm-block">
+    <div class="text-center" v-if="!mainpage">
       <span @click="gomain()" style="cursor: pointer">
         <span
           style="
@@ -113,8 +115,31 @@
         >
       </span>
     </div>
+    </div>
+
+    <!-- 모바일버전 -->
+    <div class="d-block d-sm-none d-md-none">
+      <div class="ml-5" v-if="!mainpage">
+      <span @click="gomain()" style="cursor: pointer">
+        <span
+          style="
+            font-size: 3rem;
+            font-weight: bold;
+            color: red;
+            text-shadow: 2px 2px 2px gray;
+          "
+          >What</span
+        >
+        <span style="font-size: 2rem; text-shadow: 2px 2px 2px gray"
+          >'s that!?</span
+        >
+      </span>
+    </div>
+    </div>
   </div>
 </template>
+
+
 
 <script>
 import axios from "axios";
@@ -169,7 +194,7 @@ export default {
       axios
         .get(this.$baseurl + `/account/userinfo`, {
           headers: {
-            Authorization: this.$store.state.user.token,
+            Authorization: this.$store.state.auth.token,
           },
         })
         .then((res) => {
@@ -188,7 +213,7 @@ export default {
 .header{
   position: absolute;
   right:1%;
-  top:0.5%;
+  top:1%;
   z-index: 5;
 }
 

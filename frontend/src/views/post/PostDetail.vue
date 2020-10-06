@@ -35,8 +35,8 @@
           <v-container fluid>
             <v-row >
               <v-col v-if="n == 1" class="d-flex justify-content-center">
-                <img
-                  src="../../assets/bgbg.jpg"
+                <v-img
+                  :src= post.imageUrl
                   alt="여긴 이미지"
                   style="width: 26rem; height: 24rem; padding-left: 12px"
                 />
@@ -85,7 +85,7 @@ export default {
       axios
         .get(this.$baseurl + `/account/userinfo`, {
           headers: {
-            Authorization: this.$store.state.user.token,
+            Authorization: this.$store.state.auth.token,
           },
         })
         .then((res) => {

@@ -1,18 +1,21 @@
 <template>
   <div style="margin: 3rem 0">
-    <v-card class="mx-auto" outlined width="90%" style="margin-bottom: 2rem">
+    <v-card class="mx-auto" outlined width="90%" style="margin-bottom: 2rem" color="#FBE9E7">
       <div class="d-flex justify-content-between">
-        <v-card-title>MyPage</v-card-title>
+        <v-card-title class="mb-5">MyProfile</v-card-title>
         <div class="d-flex justify-end">
           <v-card-actions>
-            <v-btn @click="gomodify()" v-if="!modifycheck">회원정보 수정</v-btn>
-            <v-btn @click="signout()" v-if="modifycheck">회원탈퇴</v-btn>
+            <v-btn  text color="Normal" style="border: 1.5px solid red; border-radius: 10px; "
+              @click="gomodify()" v-if="!modifycheck" >회원정보 수정</v-btn>
+            <v-btn color="error" dark
+             @click="signout()" v-if="modifycheck">회원탈퇴</v-btn>
           </v-card-actions>
         </div>
       </div>
       <!-- <div class="overline mb-4">OVERLINE</div> -->
 
       <v-list-item three-line>
+         <v-avatar :size="avatarSize" style="margin-bottom: 2rem">
         <img
           v-if="!this.getuser.profileurl"
           style="width: 10rem; hegith: 11rem"
@@ -25,61 +28,47 @@
           :src="getuser.profileurl"
           alt="안나옴"
         />
+         </v-avatar>
         <v-list-item-content>
           <v-row>
-            <v-col cols="12" sm="5" class="ml-5">
+            <v-col cols="12" sm="4" class="ml-5">
               <v-list-item-title class="headline mb-4"
                 >{{ this.getuser.username }} 님</v-list-item-title
               >
-              <v-list-item-title class="mb-1">{{
+              <v-list-item-title class="mb-4">{{
                 this.getuser.email
-              }}</v-list-item-title>
-              <v-list-item-subtitle style="margin-bottom: 2rem">{{
+              }}</v-list-item-title >
+            </v-col>
+            <v-col cols="12" sm="5" class="ml-5">
+               <span style="font-weight: bold;">소개</span>
+              <v-list-item-subtitle class="mt-2">{{
                 this.getuser.introduce
               }}</v-list-item-subtitle>
             </v-col>
-            <v-col cols="12" sm="1"></v-col>
-            <v-col cols="12" sm="5">
+            <v-col cols="12" sm="2" class="ml-5">
               <v-list-item-subtitle class="mb-3"
                 ><v-icon>mdi-bookmark</v-icon> 찜한 수 : {{this.mystorages.length}}
               </v-list-item-subtitle>
-              <v-list-item-subtitle>
-                <v-icon>mdi-pencil</v-icon> 카테고리 수</v-list-item-subtitle
-              >
+              
             </v-col>
           </v-row>
         </v-list-item-content>
       </v-list-item>
     </v-card>
 
-    <v-card class="mx-auto" width="90%">
+    <v-card class="mx-auto" width="90%" style="margin-bottom:8rem;">
       <v-tabs
         background-color="white"
-        color="deep-purple accent-4"
+        color="red accent-3"
         left
-        v-if="!modifycheck"
+        
       >
-        <v-tab>찜목록</v-tab>
-        <v-tab>카테고리</v-tab>
+        <v-tab v-if="!modifycheck" style="font-weight: bold; font-size:1rem;">찜목록</v-tab>
+        <v-tab v-if="modifycheck" style="font-weight: bold; font-size:1rem;">내정보</v-tab>
 
-        <v-tab>내정보</v-tab>
-
-        <v-tab-item v-for="n in 3" :key="n">
-          <mystorage v-if="n == 1" :mystorages="mystorages" />
-          <category v-if="n == 2" />
-          <v-container fluid>
-            <v-row>
-              <v-col v-for="i in 6" :key="i" cols="12" md="4">
-                <!-- <v-img
-                :src="`https://picsum.photos/500/300?image=${i * n * 5 + 10}`"
-                :lazy-src="`https://picsum.photos/10/6?image=${i * n * 5 + 10}`"
-                aspect-ratio="1"
-              ></v-img> -->
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-tab-item>
-      </v-tabs>
+        <v-tab-item >
+          <mystorage v-if="!modifycheck" :mystorages="mystorages" />
+          
       <v-container v-if="modifycheck">
         <v-row rows="12">
           <v-col cols="12" sm="4">
@@ -99,7 +88,8 @@
               />
             </div>
             <v-row class="d-flex justify-content-center mt-5">
-                <v-btn accept="image/*"
+                <v-btn color="primary" dark 
+                  accept="image/*"
                   @click="onClickImageUpload">이미지 업로드</v-btn>
                 <!-- <v-file-input
                   accept="image/*"
@@ -141,31 +131,43 @@
           </v-col>
         </v-row>
         <div class="d-flex justify-content-end" style="width: 85%">
-          <v-btn @click="gomodify()" v-if="modifycheck" class="mr-2"
+          <v-btn outlined color="error"  @click="gomodify()" v-if="modifycheck" class="mr-2"
             >취소</v-btn
           >
-          <v-btn @click="completemodify()" v-if="modifycheck">수정 완료</v-btn>
+          <v-btn  outlined color="teal" 
+          @click="completemodify()" v-if="modifycheck">수정 완료</v-btn>
         </div>
       </v-container>
+        </v-tab-item>
+
+      </v-tabs>
     </v-card>
   </div>
 </template>
+
+
 
 <script>
 import axios from "axios";
 import Swal from "sweetalert2";
 
 import store from "../../store";
-import category from "../../components/Category.vue";
 import mystorage from "../../components/Mystorage.vue";
 
 export default {
   components: {
-    category,
     mystorage,
+  },
+
+  computed: {
+    avatarSize () {
+      return `${this.slider}px`
+    }
   },
   data() {
     return {
+      slider:"120",
+
       rules: [(v) => v.length <= 200 || "Max 200 characters"],
       info: {
         username: "",
@@ -277,7 +279,7 @@ export default {
       let password = this.info.password;
       let username = this.info.username;
       let file = null;
-      if(this.$refs.imageInput.files[0]) {
+      if (this.$refs.imageInput.files[0]){
         file = this.$refs.imageInput.files[0];
       }
       console.log(file);
