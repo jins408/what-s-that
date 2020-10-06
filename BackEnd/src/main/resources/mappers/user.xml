@@ -38,7 +38,7 @@
 	</select>
 	
 	<select id="getUserByUsernoForResponse" resultType="com.web.dictionary.dto.User">
-		select username, email, introduce, isadmin
+		select username, email, introduce, isadmin,
 		ifnull(profileurl,'http://j3b202.p.ssafy.io:8088/dictionary/images/profiles/noimage.png') as profileurl
 		from user
 		where userno = #{userno}
