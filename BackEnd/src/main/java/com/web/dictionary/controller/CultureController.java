@@ -1,5 +1,13 @@
 package com.web.dictionary.controller;
 
+import com.fasterxml.jackson.core.Base64Variant;
+import com.fasterxml.jackson.core.JsonLocation;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonStreamContext;
+import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.core.ObjectCodec;
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.core.JsonParser.NumberType;
 import com.web.dictionary.dto.Culture;
 import com.web.dictionary.model.BasicResponse;
 import com.web.dictionary.service.ICultureService;
@@ -10,6 +18,8 @@ import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +30,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/culture")
 @CrossOrigin(origins = {"*"})
@@ -252,7 +265,9 @@ public class CultureController {
         //python test_frcnn.py --path image
         try {
         	ByteArrayOutputStream out =  execPython(command);
-        	result.message = out.toString();
+        	String res = out.toString();
+        	result.object = res.split("result:")[1];
+        	
         } catch (Exception e) {
             e.printStackTrace();
         }
