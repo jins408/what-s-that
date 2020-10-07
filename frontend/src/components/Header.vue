@@ -144,6 +144,7 @@
 <script>
 import axios from "axios";
 import store from "../store";
+import Swal from "sweetalert2";
 import Main from "../views/main/Main.vue";
 import { mapGetters } from "vuex";
 
@@ -190,8 +191,18 @@ export default {
     logout() {
       scroll(0, 0);
       store.dispatch("AUTH_LOGOUT").then(() => {
-        alert("로그아웃 되었습니다.");
-        this.$router.push("/");
+        Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: '로그아웃 되었습니다.',
+              showConfirmButton: false,
+              timer:1500
+          })
+          setTimeout(()=>{
+            this.$router.push("/");
+          },1500)
+        // alert("로그아웃 되었습니다.");
+        // this.$router.push("/");
       });
     },
     gomain() {

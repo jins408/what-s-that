@@ -115,7 +115,7 @@ export default {
         const kakaovue = this;
         Kakao.Auth.login({
           success: function(respones){
-            axios.get(this.$baseurl + `/user/kakaologin?access_token=${respones.access_token}`)
+            axios.get(kakaovue.$baseurl + `/user/kakaologin?access_token=${respones.access_token}`)
               .then(respones =>{
                 Swal.fire({
           position: 'top',
