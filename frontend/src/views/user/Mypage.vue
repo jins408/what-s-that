@@ -5,7 +5,7 @@
         <v-card-title class="mb-5">MyProfile</v-card-title>
         <div class="d-flex justify-end">
           <v-card-actions>
-            <v-btn  text color="Normal" style="border: 1.5px solid red; border-radius: 10px; "
+            <v-btn  text color="Normal" style="border: 2px solid red; border-radius: 10px; "
               @click="gomodify()" v-if="!modifycheck" >회원정보 수정</v-btn>
             <v-btn color="error" dark
              @click="signout()" v-if="modifycheck">회원탈퇴</v-btn>
@@ -144,6 +144,7 @@
     </v-card>
   </div>
 </template>
+
 
 
 

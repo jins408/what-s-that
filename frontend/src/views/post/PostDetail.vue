@@ -1,76 +1,105 @@
 <template>
   <div>
-    <div
-      class="d-flex justify-content-start"
-    >
-      <div class="w-100">
-        <img
-              src="../../assets/bgbg.jpg"
-              alt="여긴 이미지"
-              style="width: 100%; height: 18rem;"
-            />
-        <p class="culturetitle">
-          {{ this.post.culturename }}
-        </p>
-        <div class="d-flex justify-content-end mb-5">
-          <i class="fas fa-microphone mr-3" style="font-size:1.6rem;" @click="audiotest"></i>
-          <i
-            class="far fa-bookmark"
-            style="font-size: 1.5rem"
-            v-if="!ismark"
-            @click="bookmark"
-          ></i>
-          <i
-            class="fas fa-bookmark"
-            style="font-size: 1.5rem"
-            v-if="ismark"
-            @click="bookmarkdelete"
-          ></i>
-        </div>
-        <div id="map" style="width:500px;height:400px;"></div>
-        <div> 
-          <Viewer v-if="post.content != null" :initialValue="post.content" />           
-            <!-- {{post.content}} -->
-        </div>
+  <div class="postdetail_bg">
+    <!-- 웹버전 -->
+    <div class="d-none d-sm-block">
+    <div class="post_title_web" >문화정보</div>
+    </div>
+    <!-- 모바일버전 -->
+    <div class="d-block d-sm-none d-md-none">  
+    <div class=" post_title_mobile" >문화정보</div>
+    </div>
+    </div>
+
+    <v-container>
+          <v-row class="mb-6" no-gutters>
+            <v-col cols="12" sm="12" md="6">
+            <v-card class="pa-2 mt-5" outlined tile color="#BDBDBD" >
+              <img
+                :src="this.post.imageUrl"
+                alt="여긴 이미지"
+                style="width: 97%; height: 27rem; padding-left: 16px; margin-top:1.5rem; margin-bottom:1.5rem;"
+              />
+
+            </v-card>
+            </v-col>
+            
+   
+          <v-col cols="12" sm="12" md="6">
+          <v-card class="pa-2 mt-5" outlined tile style="height: 31.13rem;" color="#EEEEEE">
+          <div class="d-flex justify-content-between mx-5 mt-5">
+            <span style="font-size:1.8rem; font-weight: bold;">
+              {{ this.post.culturename }}
+            </span>
+              <i
+                class="far fa-bookmark mt-1"
+                style="font-size: 1.8rem;"
+                v-if="!ismark"
+                @click="bookmark"
+              ></i>
+              <i
+                class="fas fa-bookmark"
+                style="font-size: 1.5rem"
+                v-if="ismark"
+                @click="bookmarkdelete"
+              ></i>
+            </div>
+            <hr class="posthr">
+
+          <div class="pa-5">
+            <div class="d-flex justify-content-start mb-5">
+            <h6 style="font-weight: bold; color:#BF360C; margin-right:3rem; ">유형 </h6>
+            {{ this.post.category}}
+            </div>    
+            
+            <div class="d-flex justify-content-start mb-5">
+            <h6 style="font-weight: bold; color:#BF360C; margin-right:3rem;">시대</h6>
+            {{ this.post.generation}}
+            </div>
+
+            <div class="d-flex justify-content-start mb-5">
+            <h6 style="font-weight: bold; color:#BF360C; margin-right:3rem;">연도</h6>
+            {{ this.post.constructionperiod}}
+            </div>
+
+            <div class="d-flex justify-content-start mb-5">
+            <h6 style="font-weight: bold; color:#BF360C; margin-right:3rem;">위치</h6>
+            {{ this.post.location}}
+            </div>
+          
+          </div>
+           </v-card>
+          </v-col>
+        </v-row>
+    </v-container>
+    
+    <div class="container">
+      <div class="d-flex justify-content-start">
+      <h5 style=" font-weight: bold; color:#BF360C">상세 내용 </h5>
+      <i class="fas fa-microphone ml-3" style="font-size:1.6rem;" @click="audiotest"></i>
+      </div>
+      <div>
+      {{this.post.content}}
       </div>
     </div>
 
-
-    <!-- <v-card width="90%" class="mx-auto mt-5">
-      <v-tabs background-color="white" color="red" left>
-        <v-tab>사진</v-tab>
-        <v-tab>내용</v-tab>
-
-        <v-tab-item v-for="n in 2" :key="n">
-          <v-container fluid>
-            <v-row >
-              <v-col v-if="n == 1" class="d-flex justify-content-center">
-                <img
-                  src="../../assets/bgbg.jpg"
-                  alt="여긴 이미지"
-                  style="width: 26rem; height: 24rem; padding-left: 12px"
-                />
-              </v-col>
-              <v-col v-if="n == 2" cols="12" md="4">
-                <i class="fas fa-microphone ml-2 mt-2" style="font-size:1.6rem;" @click="audiotest"></i>
-                {{post.content}}
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-tab-item>
-      </v-tabs>
-    </v-card> -->
+    <v-container>
+    <hr class="commenthr">          
     <comment :commentData="commentData"></comment>
     <div
       v-if="isadmin == 1"
       class="d-flex justify-content-end"
-      style="width: 90%; margin: 2rem auto"
+      style="margin: 2rem auto"
     >
-      <v-btn @click="deleted">삭제하기</v-btn>
-      <v-btn @click="gomodify">수정하기</v-btn>
+      <v-btn @click="deleted" class="mr-2" color="error">삭제하기</v-btn>
+      <v-btn @click="gomodify" color="info">수정하기</v-btn>
     </div>
+    </v-container>
+  
+
   </div>
 </template>
+
 
   <script type="text/javascript"
     src="http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${process.env.VUE_APP_KAKAO_MAP_API_KEY}"></script>
@@ -104,7 +133,7 @@ export default {
       var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
       mapOption = { 
           center: new kakao.maps.LatLng(lng, lat), // 지도의 중심좌표
-          level: 3 // 지도의 확대 레벨
+          level: 2 // 지도의 확대 레벨
       };
       var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
       var markerPosition  = new kakao.maps.LatLng(lng, lat);
@@ -266,13 +295,42 @@ export default {
 };
 </script>
 
-<style scoped>
-.culturetitle{
-  position: absolute;
-  top:12rem;
-  left:45%;
-  font-size: 3rem; 
-  font-weight: bold;
-  color:white;
+<style>
+.postdetail_bg{
+    background: url('../../assets/postdetail_bg.jpg') no-repeat;
+    width: 100%;
+    height: 18rem;
+    background-size: cover;
+    background-position: center;
 }
+.post_title_web{
+  position: absolute;
+  left: 44%;
+  top: 11rem;
+  color: white;
+  font-size: 2.7rem;
+  font-weight: bold;
+}
+
+.post_title_mobile{
+  position: absolute;
+  left: 22%;
+  top: 11rem;
+  color: white;
+  font-size: 2.7rem;
+  font-weight: bold;
+}
+
+.posthr{
+  margin-top: 0.3rem;
+  margin-bottom: 0;
+  margin-left: 1.3rem;
+  width: 95%;
+}
+.commenthr{
+  margin-top: 0.5rem;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
 </style>

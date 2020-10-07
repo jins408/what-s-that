@@ -12,7 +12,6 @@ Vue.use(vuetify)
 Vue.use(VueCookies)
 Vue.use(Vuex)
 
-Vue.config.productionTip = false;
 Vue.prototype.$baseurl = "http://j3b202.p.ssafy.io:8088/dictionary";
 // Vue.prototype.$baseurl = "http://localhost:8088/dictionary";
 

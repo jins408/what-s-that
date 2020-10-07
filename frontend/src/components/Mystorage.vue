@@ -3,26 +3,26 @@
     <v-col class="pt-5">
       <v-row cols="12" sm="12">
         <v-card
-          class="mx-5 my-3"
+          class="mx-5 my-3 favoritecard"
           max-width="250"
           v-for="(mystorage, index) in mystorages"
           :key="index"
           style="cursor: pointer"
         >
+          <v-card-actions class="d-flex justify-content-between">
+            <span class="ml-2" style="font-size:1.2rem; font-weight:bold" @click="gopostdetail(mystorage.postno)">{{ mystorage.culturename }}</span>
+            <i class="fas fa-times mr-2" style="color:red;" @click="delmystorage(mystorage.postno)"></i>
+            <!-- <v-btn color="red" style="font-weight:bold; width:50%" text @click="gopostdetail(mystorage.postno)"> 상세보기 </v-btn> -->
+            <!-- <v-btn color="red" style="font-weight:bold; width:50%" text @click="delmystorage(mystorage.postno)"> 취소 </v-btn> -->
+          </v-card-actions>
           <v-img
-            class="white--text align-end"
-            height="200px"
-            :src= mystorage.imageUrl
+            class="white--text align-end favoiteimg"
+            height="250px"
+            :src="mystorage.imageUrl"
             @click="gopostdetail(mystorage.postno)"
           >
-            <div class="d-flex justify-content-end">
-              <v-card-title>{{ mystorage.culturename }}</v-card-title>
-            </div>
           </v-img>
-          <v-card-actions class="d-flex justify-content-center">
-            <v-btn color="red" style="font-weight:bold; width:50%" text @click="gopostdetail(mystorage.postno)"> 상세보기 </v-btn>
-            <v-btn color="red" style="font-weight:bold; width:50%" text @click="delmystorage(mystorage.postno)"> 취소 </v-btn>
-          </v-card-actions>
+          <p class="favoriteshow" @click="gopostdetail(mystorage.postno)"><i class="fas fa-map-marker-alt mr-2"></i>상세보기</p>
         </v-card>
       </v-row>
     </v-col>
@@ -63,4 +63,21 @@ export default {
 </script>
 
 <style>
+.favoritecard:hover .favoiteimg{
+  filter: brightness(40%);
+  transition: all 0.4s  0s
+}
+
+.favoritecard:hover p{
+  visibility: visible;
+}
+
+.favoriteshow{
+  font-size:1.5rem;
+  color:white;
+  position: absolute;
+  top:50%;
+  left:25%;
+  visibility: hidden;
+}
 </style>
