@@ -263,7 +263,11 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           axios
-          .delete(`${this.$baseurl}/culture/${this.commentData.postno}`)
+          .delete(`${this.$baseurl}/culture/${this.commentData.postno}`, {
+            headers: {
+            Authorization: this.$store.state.user.token,
+           },
+          })
           .then(()=>{
             Swal.fire({
               text:"삭제완료",
