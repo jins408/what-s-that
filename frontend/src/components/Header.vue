@@ -1,14 +1,15 @@
 <template>
-  <div>
+<div>
+  <div class="d-flex justify-content-end">
     <div class="header" v-if="mainpage">
       <div class="text-center mr-3 mt-2">
         <v-menu offset-y>
           <template v-slot:activator="{ on, attrs }">
             <v-btn
-              class="userbtn"
+              class="userbtn mt-2"
               v-bind="attrs"
               v-on="on"
-              style="box-shadow: none"
+              style="box-shadow: none; font-family: '국립박물관문화재단클래식B';"
               ><i
                 class="far fa-user-circle mr-2"
                 style="font-size: 1.3rem"
@@ -29,7 +30,7 @@
                 >Login</v-list-item-title
               >
             </v-list-item>
-            <v-list-item class="userlist" @click="gowrite" v-if="isLoggedIn">
+            <v-list-item class="userlist" @click="gowrite" v-if="isLoggedIn && isadmin == 1">
               <v-list-item-title style="font-size: 0.9rem; color:white;"
                 >Write</v-list-item-title
               >
@@ -53,10 +54,11 @@
         <v-menu offset-y>
           <template v-slot:activator="{ on, attrs }">
             <v-btn
+              class="mt-2"
               color="white"
               v-bind="attrs"
               v-on="on"
-              style="box-shadow: none"
+              style="box-shadow: none; font-family: '국립박물관문화재단클래식B';"
               ><i
                 class="far fa-user-circle mr-2"
                 style="font-size: 1.3rem"
@@ -77,7 +79,7 @@
                 >Login</v-list-item-title
               >
             </v-list-item>
-            <v-list-item class="userlist" @click="gowrite" v-if="isLoggedIn">
+            <v-list-item class="userlist" @click="gowrite" v-if="isLoggedIn && isadmin == 1">
               <v-list-item-title style="font-size: 0.9rem;"
                 >Write</v-list-item-title
               >
@@ -96,8 +98,11 @@
         </v-menu>
       </div>
     </div>
+  </div>
 
-    <div class="text-center" style="margin-top:5rem;" v-if="!mainpage">
+    <!-- 웹버전 -->
+    <div class="d-none d-sm-block">
+    <div class="text-center" v-if="!mainpage">
       <span @click="gomain()" style="cursor: pointer">
         <span
           style="
@@ -105,21 +110,48 @@
             font-weight: bold;
             color: red;
             text-shadow: 2px 2px 2px gray;
+            font-family: '국립박물관문화재단클래식B';
           "
           >What</span
         >
-        <span style="font-size: 2rem; text-shadow: 2px 2px 2px gray"
+        <span style="font-size: 2rem; text-shadow: 2px 2px 2px gray; font-family: '국립박물관문화재단클래식B';"
           >'s that!?</span
         >
       </span>
     </div>
+    </div>
+
+    <!-- 모바일버전 -->
+    <div class="d-block d-sm-none d-md-none">
+      <div class="ml-5" v-if="!mainpage">
+      <span @click="gomain()" style="cursor: pointer">
+        <span
+          style="
+            font-size: 3rem;
+            font-weight: bold;
+            color: red;
+            text-shadow: 2px 2px 2px gray;
+            font-family: '국립박물관문화재단클래식B';
+          "
+          >What</span
+        >
+        <span style="font-size: 2rem; text-shadow: 2px 2px 2px gray; font-family: '국립박물관문화재단클래식B';"
+          >'s that!?</span
+        >
+      </span>
+    </div>
+    </div>
   </div>
 </template>
 
+
+
 <script>
-import { mapState } from "vuex";
+import axios from "axios";
 import store from "../store";
+import Swal from "sweetalert2";
 import Main from "../views/main/Main.vue";
+import { mapGetters } from "vuex";
 
 // import { mapState} from "vuex";
 
@@ -127,39 +159,86 @@ export default {
   data() {
     return {
       checkmain: false,
+      isadmin:"",
     };
   },
 
   computed: {
-    ...mapState({
-      isLoggedIn: (state) => state.user.isLoggedIn,
+    ...mapGetters ({
+      isLoggedIn : 'isAuthenticated'
     }),
     mainpage() {
       return this.$route.name == Main;
     },
   },
+  created(){
+    this.getinfo()
+  },
   methods: {
     gojoin() {
-      this.$router.push("/user/join");
+      scroll(0, 0);
+      this.$router.push("/user/join").catch(()=>{
+        this.$router.go();
+      });
     },
     gologin() {
-      this.$router.push("/");
+      scroll(0, 0);
+      this.$router.push("/").catch(()=>{
+        this.$router.go();
+      });
     },
     gomypage() {
-      this.$router.push("/user/mypage");
+      scroll(0, 0);
+      this.$router.push("/user/mypage").catch(()=>{
+        this.$router.go();
+      });
     },
     logout() {
+      scroll(0, 0);
       store.dispatch("AUTH_LOGOUT").then(() => {
-        alert("로그아웃 되었습니다.");
-        this.$router.push("/");
+        Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: '로그아웃 되었습니다.',
+              showConfirmButton: false,
+              timer:1500
+          })
+          setTimeout(()=>{
+            this.$router.push("/");
+          },1500)
+        // alert("로그아웃 되었습니다.");
+        // this.$router.push("/");
       });
     },
     gomain() {
-      this.$router.push("/main");
+      scroll(0, 0);
+      this.$router.push("/main").catch(()=>{
+        this.$router.go();
+      });
     },
     gowrite(){
-      this.$router.push('/postcreate')
-    }
+      scroll(0, 0);
+      this.$router.push('/postcreate').catch(()=>{
+        this.$router.go();
+      });
+    },
+    getinfo() {
+      if(this.$store.state.user.token){
+        axios
+          .get(this.$baseurl + `/account/userinfo`, {
+            headers: {
+              Authorization: this.$store.state.user.token,
+            },
+          })
+          .then((res) => {
+            this.isadmin = res.data.object.isadmin;
+            // console.log(this.isadmin)
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
   },
 };
 </script>
@@ -167,8 +246,6 @@ export default {
 <style scoped>
 .header{
   position: absolute;
-  right:1%;
-  top:0.5%;
   z-index: 5;
 }
 

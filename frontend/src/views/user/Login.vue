@@ -55,9 +55,8 @@
 
 <script>
 import axios from "axios";
+import Swal from "sweetalert2";
 import findpw from "../../components/Findpw.vue"
-
-const baseURL = "http://localhost:8080";
 
 
 import { AUTH_REQUEST } from "../../store/actions/auth";
@@ -80,16 +79,21 @@ export default {
     Login(){
       var reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       if(!this.email.match(reg)){
-        alert("이메일 양식을 확인해주세요")
+        Swal.fire({
+          position: 'top',
+          icon: 'error',
+          title: '이메일 양식을 확인해주세요.',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        // alert("이메일 양식을 확인해주세요")
       }
       else{
         const {email, password} = this;
           this.$store
             .dispatch(AUTH_REQUEST, {email, password})
             .then(() =>{
-              this.$store.commit(USER_SUCCESS, {email, password})
-              this.$router.push('/main')
-              this.$router.go()
+              this.main();
             })
             .catch((error)=>{
               console.log(error)
@@ -99,9 +103,11 @@ export default {
           }
       },
       join(){
+        scroll(0,0);
         this.$router.push( '/user/join' )
       },
       main(){
+        scroll(0,0)
         this.$router.push("/main")
         this.$router.go()
       },
@@ -109,15 +115,30 @@ export default {
         const kakaovue = this;
         Kakao.Auth.login({
           success: function(respones){
-            axios.get(`${baseURL}/dictionary/user/kakaologin?access_token=${respones.access_token}`)
-              .then(respones =>{
-                alert("카카오로그인 성공")
-                location.href="http://localhost:8081/main"
-                kakaovue.$store.commit(USER_SUCCESS, respones)
+            axios.get(kakaovue.$baseurl + `/user/kakaologin?access_token=${respones.access_token}`)
+              .then(res =>{
+                Swal.fire({
+                position: 'top',
+                icon: 'success',
+                title: '카카오로그인 성공',
+                showConfirmButton: false,
+                timer: 1500
+              })
+                // alert("카카오로그인 성공")
+                kakaovue.$store.commit(USER_SUCCESS, res.data.object)
+                location.href="http://j3b202.p.ssafy.io/main"
+                // location.href="http://localhost:8080/main"
               })
             },
             fail: function(error){
-              alert("카카오로그인 실패")
+              Swal.fire({
+          position: 'top',
+          icon: 'error',
+          title: '카카오로그인 실패.',
+          showConfirmButton: false,
+          timer: 1500
+        })
+              // alert("카카오로그인 실패")
               console.log(error)
             }
           })

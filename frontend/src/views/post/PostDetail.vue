@@ -1,118 +1,209 @@
 <template>
   <div>
-    <div
-      class="d-flex justify-content-start"
-      style="width: 90%; margin: auto; padding-top: 5rem"
-    >
-      <img
-        src="../../assets/bgbg.jpg"
-        alt="여긴 이미지"
-        style="width: 26rem; height: 24rem; padding-left: 12px"
-      />
-      <div class="ml-5 w-100">
-        <p style="font-size: 1.5rem; font-weight: 540; text-align: center">
-          경주 불국사
-        </p>
-        <div class="d-flex justify-content-end">
-          <i
-            class="far fa-bookmark"
-            style="font-size: 2rem"
-            v-if="!ismark"
-            @click="bookmark"
-          ></i>
-          <i
-            class="fas fa-bookmark"
-            style="font-size: 2rem"
-            v-if="ismark"
-            @click="bookmarkdelete"
-          ></i>
-        </div>
-        <p>유형</p>
-        <p>시대</p>
-        <p>건립시기/연도</p>
-        <p>규모(면적)</p>
-        <p>소새지</p>
-        <p>소유자</p>
-        <p>관리자</p>
-        <p>문화재 지정번호</p>
-        <p>문화재 지정일</p>
+  <div class="postdetail_bg">
+    <!-- 웹버전 -->
+    <div class="d-none d-sm-block">
+    <div class="post_title_web" >문화정보</div>
+    </div>
+    <!-- 모바일버전 -->
+    <div class="d-block d-sm-none d-md-none">  
+    <div class=" post_title_mobile" >문화정보</div>
+    </div>
+    </div>
+
+    <v-container>
+          <v-row class="mb-6" no-gutters>
+            <v-col cols="12" sm="12" md="6">
+            <v-card class="pa-2 mt-5" outlined tile color="#BDBDBD" >
+              <img
+                :src="this.post.imageUrl"
+                alt="여긴 이미지"
+                style="width: 97%; height: 27rem; padding-left: 16px; margin-top:1.5rem; margin-bottom:1.5rem;"
+              />
+
+            </v-card>
+            </v-col>
+            
+   
+          <v-col cols="12" sm="12" md="6">
+          <v-card class="pa-2 mt-5" outlined tile style="height: 31.13rem;" color="#EEEEEE">
+          <div class="d-flex justify-content-between mx-5 mt-5">
+            <span style="font-size:1.8rem; font-weight: bold;">
+              {{ this.post.culturename }}
+            </span>
+              <i
+                class="far fa-bookmark mt-1"
+                style="font-size: 1.8rem;"
+                v-if="!ismark"
+                @click="bookmark"
+              ></i>
+              <i
+                class="fas fa-bookmark"
+                style="font-size: 1.5rem"
+                v-if="ismark"
+                @click="bookmarkdelete"
+              ></i>
+            </div>
+            <hr class="posthr">
+
+          <div class="pa-5">
+            <div class="d-flex justify-content-start mb-5">
+            <h6 style="font-weight: bold; color:#BF360C; margin-right:3rem; ">유형 </h6>
+            {{ this.post.category}}
+            </div>    
+            
+            <div class="d-flex justify-content-start mb-5">
+            <h6 style="font-weight: bold; color:#BF360C; margin-right:3rem;">시대</h6>
+            {{ this.post.generation}}
+            </div>
+
+            <div class="d-flex justify-content-start mb-5">
+            <h6 style="font-weight: bold; color:#BF360C; margin-right:3rem;">연도</h6>
+            {{ this.post.constructionperiod}}
+            </div>
+
+            <div class="d-flex justify-content-start mb-5">
+            <h6 style="font-weight: bold; color:#BF360C; margin-right:3rem;">위치</h6>
+            {{ this.post.location}}
+            </div>
+          
+          </div>
+           </v-card>
+          </v-col>
+        </v-row>
+    </v-container>
+    
+    <div class="container">
+      <div class="d-flex justify-content-start">
+      <h5 style=" font-weight: bold; color:#BF360C">상세 내용 </h5>
+      <i class="fas fa-microphone ml-3" style="font-size:1.6rem;" @click="audiotest"></i>
+      </div>
+      <div>
+      <Viewer v-if="this.post.content != null" :initialValue="this.post.content" />  
       </div>
     </div>
 
+    <v-container>
+    <hr class="commenthr">
+    <h5 style=" font-weight: bold; color:#BF360C">위치 </h5>
+    <div id="map" style="width:100%;height:400px;"></div>
+
+    <hr class="commenthr">
     <comment :commentData="commentData"></comment>
-
-    <v-card width="90%" class="mx-auto mt-5">
-      <v-tabs background-color="white" color="red" left>
-        <v-tab>정의</v-tab>
-        <v-tab>내용</v-tab>
-        <v-tab>Abstract</v-tab>
-
-        <v-tab-item v-for="n in 3" :key="n">
-          <v-container fluid>
-            <v-row>
-              <v-col v-for="i in 6" :key="i" cols="12" md="4">
-                <v-img
-                  :src="`https://picsum.photos/500/300?image=${i * n * 5 + 10}`"
-                  :lazy-src="`https://picsum.photos/10/6?image=${
-                    i * n * 5 + 10
-                  }`"
-                  aspect-ratio="1"
-                ></v-img>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-tab-item>
-      </v-tabs>
-    </v-card>
     <div
+      v-if="isadmin == 1"
       class="d-flex justify-content-end"
-      style="width: 90%; margin: 2rem auto"
+      style="margin: 2rem auto"
     >
-      <v-btn @click="deleted">삭제하기</v-btn>
-      <v-btn @click="gomodify">수정하기</v-btn>
+      <v-btn @click="deleted" class="mr-2" color="error">삭제하기</v-btn>
+      <v-btn @click="gomodify" color="info">수정하기</v-btn>
     </div>
+    </v-container>
+  
+
   </div>
 </template>
-
+  <script type="text/javascript"
+    src="http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${process.env.VUE_APP_KAKAO_MAP_API_KEY}"></script>
+    
 <script>
 import axios from "axios";
 import Swal from "sweetalert2";
-
-const baseURL = "http://localhost:8080";
+import "codemirror/lib/codemirror.css";
+import "@toast-ui/editor/dist/toastui-editor.css";
+import { Viewer } from "@toast-ui/vue-editor";
 
 import comment from "../../components/Comment.vue";
 
 export default {
   components: {
     comment,
+    Viewer
   },
 
   created(){
      this.commentData.userno=this.$store.state.user.userno
      this.commentData.postno = this.$route.params.ID;
-     console.log(this.commentData.postno)
-     console.log(this.$store.state.user.token)
+    //  console.log(this.commentData.postno)
+    //  console.log(this.$store.state.user.token)
      this.bmarkList()
+     this.getdetail()
+     this.getinfo()
+  },
+
+  mounted() {
+    window.kakao && window.kakao.maps ? location.reload() : this.addScript();
   },
 
   methods: {
-    bookmark(){
-      axios.post(`${baseURL}/dictionary/culture/favorite?postno=${this.commentData.postno}`,this.commentData.postno,{
-         headers: {
+    getinfo() {
+      axios
+        .get(this.$baseurl + `/account/userinfo`, {
+          headers: {
             Authorization: this.$store.state.user.token,
           },
+        })
+        .then((res) => {
+          this.isadmin = res.data.object.isadmin;
+          // console.log(this.isadmin)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    getdetail(){
+      axios
+      .get(`${this.$baseurl}/culture/detail/${this.commentData.postno}`)
+      .then((res)=>{
+        this.post = res.data.object
       })
-      .then((response) =>{
-        console.log(response)
-        alert("찜등록!")
-        location.reload();
-      })
-      .catch((error)=>{
-        console.log(error)
+      .catch((err)=>{
+        console.log(err)
       })
     },
+    bookmark(){
+      if(!this.$store.state.user.token){
+        Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: '로그인해주세요!',
+        width:'400px',
+        height:'200px',
+        showConfirmButton: false,
+        timer: 1500
+        })
+      }else{
+
+        axios({
+          method: 'POST',
+          url: this.$baseurl + `/culture/regfavorite`,
+          data: {
+            postno: this.commentData.postno
+          },
+           headers: {
+              Authorization: this.$store.state.user.token,
+            },
+        })
+        .then(() =>{
+          this.ismark = true;
+          Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: '찜등록!',
+          width:'400px',
+          height:'200px',
+          showConfirmButton: false,
+          timer: 1500
+          })
+          // location.reload();
+        })
+        .catch((error)=>{
+          console.log(error)
+        })
+      }
+    },
     bmarkList(){
-      axios.get(`${baseURL}/dictionary/culture/favorite`, {
+      axios.get(`${this.$baseurl}/culture/favorite`, {
           headers: {
             Authorization: this.$store.state.user.token,
           },
@@ -131,14 +222,22 @@ export default {
     },
     bookmarkdelete(){
        axios
-        .delete(`${baseURL}/dictionary/culture/favorite/${this.commentData.postno}`,{
+        .delete(`${this.$baseurl}/culture/favorite/${this.commentData.postno}`,{
           headers: {
             Authorization: this.$store.state.user.token,
           },
           })
           .then(()=>{
-              alert('찜해제!')
-              location.reload()
+              Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: '찜해제!',
+              width:'400px',
+              height:'200px',
+              showConfirmButton: false,
+              timer: 1500
+              })
+              this.ismark = false
           })
           .catch((err)=>{
               console.log(err)
@@ -162,12 +261,17 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           axios
-          .delete(`${baseURL}/dictionary/culture/${this.commentData.postno}`)
+          .delete(`${this.$baseurl}/culture/admin/${this.commentData.postno}`, {
+            headers: {
+            Authorization: this.$store.state.user.token,
+           },
+          })
           .then(()=>{
             Swal.fire({
               text:"삭제완료",
               icon:"success"
             })
+            scroll(0,0)
             this.$router.push('/main')
           }).catch((err)=>{
             console.log(err)
@@ -175,11 +279,46 @@ export default {
         }
     })
     },
+    audiotest(){
+      if(!this.audio){
+        this.audio = new Audio("http://j3b202.p.ssafy.io:8088/dictionary/images/audio/"+this.commentData.postno +".mp3");
+      } 
+      if(!this.isPlaying){
+        this.audio.play();
+        this.isPlaying = "true";
+      }else{
+        this.audio.pause();
+        this.audio.currentTime = 0;
+        this.isPlaying = "";
+      }
+    },
+    initMap() {
+      let lng = this.post.lng;
+      let lat = this.post.lat;
+      var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+      mapOption = { 
+          center: new kakao.maps.LatLng(lng, lat), // 지도의 중심좌표
+          level: 2 // 지도의 확대 레벨
+      };
+      var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+      var markerPosition  = new kakao.maps.LatLng(lng, lat);
+      var marker = new kakao.maps.Marker({
+         position: markerPosition
+      }); 
+      marker.setMap(map);
+    },
+    addScript() {
+      const script = document.createElement('script');
+      script.onload = () => kakao.maps.load(this.initMap);
+      script.src = `http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${process.env.VUE_APP_KAKAO_MAP_API_KEY}`;
+      document.head.appendChild(script);
+    },
     
   },
 
   data() {
     return {
+      isadmin:"",
       comment: null,
       bookmarkdata:"",
       ismark:false,
@@ -188,7 +327,8 @@ export default {
           userno:"",
           postno:"",
       },
-      
+      post:[],
+      audio : false
     }
   }
 
@@ -196,4 +336,41 @@ export default {
 </script>
 
 <style>
+.postdetail_bg{
+    background: url('../../assets/postdetail_bg.jpg') no-repeat;
+    width: 100%;
+    height: 18rem;
+    background-size: cover;
+    background-position: center;
+}
+.post_title_web{
+  position: absolute;
+  left: 44%;
+  top: 11rem;
+  color: white;
+  font-size: 2.7rem;
+  font-weight: bold;
+}
+
+.post_title_mobile{
+  position: absolute;
+  left: 22%;
+  top: 11rem;
+  color: white;
+  font-size: 2.7rem;
+  font-weight: bold;
+}
+
+.posthr{
+  margin-top: 0.3rem;
+  margin-bottom: 0;
+  margin-left: 1.3rem;
+  width: 95%;
+}
+.commenthr{
+  margin-top: 0.5rem;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
 </style>
