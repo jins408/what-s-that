@@ -112,6 +112,7 @@ public class AccountController {
             int userno = (int) m.get("userno");
             User u = userService.getUserByUsernoForResponse(userno);
             if (u != null) {
+                u.setUserno(userno);
                 result.status = true;
                 result.message = "success";
                 result.object = u;
