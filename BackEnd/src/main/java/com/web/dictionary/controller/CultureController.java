@@ -79,8 +79,8 @@ public class CultureController {
     }
 
     @ApiOperation(value = "문화재 이름으로 문화재 검색 (자동완성)")
-    @GetMapping(value = "/search/{culturename}")
-    public ResponseEntity<?> searchCultureInfoByCultureName(@PathVariable("culturename") String culturename) throws Exception {
+    @GetMapping(value = "/search")
+    public ResponseEntity<?> searchCultureInfoByCultureName(@RequestParam("culturename") String culturename) throws Exception {
         ResponseEntity response = null;
         BasicResponse result = new BasicResponse();
         List<Culture> list = cultureService.searchCultureInfoByCultureName(culturename);
