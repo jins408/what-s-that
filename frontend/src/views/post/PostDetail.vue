@@ -305,6 +305,7 @@ export default {
       var marker = new kakao.maps.Marker({
          position: markerPosition
       }); 
+      map.relayout();
       marker.setMap(map);
     },
     addScript() {
