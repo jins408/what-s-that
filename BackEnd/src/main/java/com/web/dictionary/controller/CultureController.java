@@ -165,8 +165,11 @@ public class CultureController {
     @ApiOperation(value = "문화재 게시물 생성")
     @PostMapping(value = "/admin")
     public ResponseEntity<?> uploadPost(@RequestPart("image") MultipartFile imgfile,
-                                        @RequestParam("culturename") String culturename,
-                                        @RequestParam("content") String content) throws Exception {
+                                        @RequestParam("culturename") String culturename, @RequestParam("content") String content,
+                                        @RequestParam("ename") String ename, @RequestParam("category") String category,
+                                        @RequestParam("generation") String generation, @RequestParam("constructionperiod") String constructionperiod,
+                                        @RequestParam("location") String location, @RequestParam("lng") String lng,
+                                        @RequestParam("lat") String lat) throws Exception {
         SimpleDateFormat format1 = new SimpleDateFormat("yyMMDDHHmmss");
         String time1 = format1.format(new Date());
 //        String filename = "http://localhost:8080/dictionary/images/" + time1 + "_" + imgfile.getOriginalFilename();
@@ -175,6 +178,13 @@ public class CultureController {
         post.setCulturename(culturename);
         post.setContent(content);
         post.setImageUrl(filename);
+        post.setGeneration(generation);
+        post.setEname(ename);
+        post.setCategory(category);
+        post.setConstructionperiod(constructionperiod);
+        post.setLocation(location);
+        post.setLng(lng);
+        post.setLat(lat);
         String fileUrl = "/home/ubuntu/springboot/images/cultures/" + time1 + "_" + imgfile.getOriginalFilename();
         File dest = new File(fileUrl);
         imgfile.transferTo(dest);
@@ -198,8 +208,11 @@ public class CultureController {
     @PutMapping(value = "/admin/{postno}")
     public ResponseEntity<?> updatePost(@PathVariable("postno") int postno,
                                         @RequestPart("image") MultipartFile imgfile,
-                                        @RequestParam("culturename") String culturename,
-                                        @RequestParam("content") String content) throws Exception {
+                                        @RequestParam("culturename") String culturename, @RequestParam("content") String content,
+                                        @RequestParam("ename") String ename, @RequestParam("category") String category,
+                                        @RequestParam("generation") String generation, @RequestParam("constructionperiod") String constructionperiod,
+                                        @RequestParam("location") String location, @RequestParam("lng") String lng,
+                                        @RequestParam("lat") String lat) throws Exception {
 
         SimpleDateFormat format1 = new SimpleDateFormat("yyMMDDHHmmss");
         String time1 = format1.format(new Date());
@@ -210,6 +223,13 @@ public class CultureController {
         post.setCulturename(culturename);
         post.setContent(content);
         post.setImageUrl(filename);
+        post.setGeneration(generation);
+        post.setEname(ename);
+        post.setCategory(category);
+        post.setConstructionperiod(constructionperiod);
+        post.setLocation(location);
+        post.setLng(lng);
+        post.setLat(lat);
         String fileUrl = "/home/ubuntu/springboot/images/cultures/" + time1 + "_" + imgfile.getOriginalFilename();
 
         File dest = new File(fileUrl);
