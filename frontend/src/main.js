@@ -8,7 +8,6 @@ import Vuex from 'vuex'
 import vuetify from './plugins/vuetify';
 
 Vue.config.productionTip = false
-
 Vue.use(vuetify)
 Vue.use(VueCookies)
 Vue.use(Vuex)

@@ -27,9 +27,10 @@
             @click="bookmarkdelete"
           ></i>
         </div>
-        <div id="map" style="width:500px;height:400px;"></div>
-        <div>            
-            {{post.content}}
+        <div id="roadview" style="width:500px;height:400px;"></div>
+        <div> 
+          <Viewer v-if="post.content != null" :initialValue="post.content" />           
+            <!-- {{post.content}} -->
         </div>
       </div>
     </div>
@@ -71,16 +72,19 @@
   </div>
 </template>
 
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a1a9c20764f1b8ba5af778823c5a36ae"></script>
+  <script type="text/javascript"
+    src="http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${process.env.VUE_APP_KAKAO_MAP_API_KEY}"></script>
 <script>
 import axios from "axios";
 import Swal from "sweetalert2";
-
+import "codemirror/lib/codemirror.css";
+import "@toast-ui/editor/dist/toastui-editor.css";
+import { Viewer } from "@toast-ui/vue-editor";
 import comment from "../../components/Comment.vue";
 
 export default {
   components: {
-    comment,
+    comment, Viewer
   },
 
   created(){
@@ -88,19 +92,29 @@ export default {
     this.bmarkList();
     this.getdetail();
     this.getinfo();
-    // var roadviewContainer = document.getElementById('roadview'); //로드뷰를 표시할 div
-    // var roadview = new kakao.maps.Roadview(roadviewContainer); //로드뷰 객체
-    // var roadviewClient = new kakao.maps.RoadviewClient(); //좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper객체
-
-    // var position = new kakao.maps.LatLng(33.450701, 126.570667);
-
-    // // 특정 위치의좌표와 가까운 로드뷰의 panoId를 추출하여 로드뷰를 띄운다.
-    // roadviewClient.getNearestPanoId(position, 50, function(panoId) {
-    //     roadview.setPanoId(panoId, position); //panoId와 중심좌표를 통해 로드뷰 실행
-    // });
+  },
+  mounted() {
+    window.kakao && window.kakao.maps ? this.initMap() : this.addScript();
   },
 
   methods: {
+    initMap() {
+      var roadviewContainer = document.getElementById('roadview'); //로드뷰를 표시할 div
+      var roadview = new kakao.maps.Roadview(roadviewContainer); //로드뷰 객체
+      var roadviewClient = new kakao.maps.RoadviewClient(); //좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper객체
+      var position = new kakao.maps.LatLng(33.450701, 126.570667);
+
+      // 특정 위치의좌표와 가까운 로드뷰의 panoId를 추출하여 로드뷰를 띄운다.
+      roadviewClient.getNearestPanoId(position, 50, function(panoId) {
+          roadview.setPanoId(panoId, position); //panoId와 중심좌표를 통해 로드뷰 실행
+      });
+    },
+    addScript() {
+      const script = document.createElement('script');
+      script.onload = () => kakao.maps.load(this.initMap);
+      script.src = `http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${process.env.VUE_APP_KAKAO_MAP_API_KEY}`;
+      document.head.appendChild(script);
+    },
     getinfo() {
       axios
         .get(this.$baseurl + `/account/userinfo`, {

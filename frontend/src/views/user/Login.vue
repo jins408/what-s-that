@@ -51,7 +51,7 @@
 </template>
 
 <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
-<script>Kakao.init('9d9efefa15409fa1a5cb74b4a63fb06c');</script>
+<script>Kakao.init(`${process.env.VUE_APP_KAKAO_LOGIN_API_KEY}`);</script>
 
 <script>
 import axios from "axios";
@@ -112,7 +112,8 @@ export default {
                 kakaovue.$store.commit(USER_SUCCESS, res.data.object);
               })
               .finally(() => {
-                 location.href="http://j3b202.p.ssafy.io/main"
+                //  location.href="http://j3b202.p.ssafy.io/main"
+                 location.href="http://localhost:8080/dictionary/main"
                 }
               )
             },
