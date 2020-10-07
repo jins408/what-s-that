@@ -116,17 +116,18 @@ export default {
         Kakao.Auth.login({
           success: function(respones){
             axios.get(kakaovue.$baseurl + `/user/kakaologin?access_token=${respones.access_token}`)
-              .then(respones =>{
+              .then(res =>{
                 Swal.fire({
-          position: 'top',
-          icon: 'success',
-          title: '카카오로그인 성공',
-          showConfirmButton: false,
-          timer: 1500
-        })
+                position: 'top',
+                icon: 'success',
+                title: '카카오로그인 성공',
+                showConfirmButton: false,
+                timer: 1500
+              })
                 // alert("카카오로그인 성공")
+                kakaovue.$store.commit(USER_SUCCESS, res.data.object)
                 location.href="http://j3b202.p.ssafy.io/main"
-                kakaovue.$store.commit(USER_SUCCESS, respones)
+                // location.href="http://localhost:8080/main"
               })
             },
             fail: function(error){
