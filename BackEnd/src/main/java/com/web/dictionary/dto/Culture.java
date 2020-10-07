@@ -12,7 +12,7 @@ public class Culture {
 	private int isfavorite;
 	private String imageUrl;
 	private String ename;
-	private String categoty;
+	private String category;
 	private String generation;
 	private String constructionperiod;
 	private String location;
