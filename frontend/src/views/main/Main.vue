@@ -62,7 +62,7 @@ export default {
       if(this.culturename == ""){
         this.searchok = false
       }else{
-        axios.get(this.$baseurl + `/culture/search/${this.culturename}`)
+        axios.get(this.$baseurl + `/culture/search?culturename=${this.culturename}`)
         .then((res)=>{
           // if(this.searchok == false){
           //   this.scroll();

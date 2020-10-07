@@ -2,13 +2,18 @@
   <div>
     <div
       class="d-flex justify-content-start"
-      style="width: 90%; margin: auto; padding-top: 5rem"
     >
-      <div class="ml-5 w-100">
-        <p style="font-size: 1.5rem; font-weight: 540; text-align: center">
+      <div class="w-100">
+        <img
+              src="../../assets/bgbg.jpg"
+              alt="여긴 이미지"
+              style="width: 100%; height: 18rem;"
+            />
+        <p class="culturetitle">
           {{ this.post.culturename }}
         </p>
         <div class="d-flex justify-content-end mb-5">
+          <i class="fas fa-microphone mr-3" style="font-size:1.6rem;" @click="audiotest"></i>
           <i
             class="far fa-bookmark"
             style="font-size: 1.5rem"
@@ -22,11 +27,14 @@
             @click="bookmarkdelete"
           ></i>
         </div>
+        <div>            
+            {{post.content}}
+        </div>
       </div>
     </div>
 
 
-    <v-card width="90%" class="mx-auto mt-5">
+    <!-- <v-card width="90%" class="mx-auto mt-5">
       <v-tabs background-color="white" color="red" left>
         <v-tab>사진</v-tab>
         <v-tab>내용</v-tab>
@@ -35,8 +43,8 @@
           <v-container fluid>
             <v-row >
               <v-col v-if="n == 1" class="d-flex justify-content-center">
-                <v-img
-                  :src= post.imageUrl
+                <img
+                  src="../../assets/bgbg.jpg"
                   alt="여긴 이미지"
                   style="width: 26rem; height: 24rem; padding-left: 12px"
                 />
@@ -49,7 +57,7 @@
           </v-container>
         </v-tab-item>
       </v-tabs>
-    </v-card>
+    </v-card> -->
     <comment :commentData="commentData"></comment>
     <div
       v-if="isadmin == 1"
@@ -61,6 +69,8 @@
     </div>
   </div>
 </template>
+
+
 
 <script>
 import axios from "axios";
@@ -228,5 +238,13 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.culturetitle{
+  position: absolute;
+  top:12rem;
+  left:45%;
+  font-size: 3rem; 
+  font-weight: bold;
+  color:white;
+}
 </style>
