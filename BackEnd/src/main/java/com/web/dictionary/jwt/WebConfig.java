@@ -33,7 +33,8 @@ public class WebConfig implements WebMvcConfigurer {
             "/comment/load/**",
             "/culture/favorite",
             "/account/userinfo",
-            "/images/**"
+            "/images/**",
+            "/culture/image/**"
 //            ,"/**"
     };
 
