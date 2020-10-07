@@ -156,7 +156,6 @@ export default {
       .get(`${this.$baseurl}/culture/detail/${this.commentData.postno}`)
       .then((res)=>{
         this.post = res.data.object
-        console.log(this.post)
       })
       .catch((err)=>{
         console.log(err)
@@ -185,8 +184,7 @@ export default {
               Authorization: this.$store.state.user.token,
             },
         })
-        .then((response) =>{
-          console.log(response)
+        .then(() =>{
           this.ismark = true;
           Swal.fire({
           position: 'top-end',

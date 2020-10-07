@@ -34,13 +34,11 @@ export default {
     methods:{
         findPW(){
             axios.get(this.$baseurl + `/user/findpwd/${this.email}/`)
-            .then((response) =>{
-                console.log(response.data)
+            .then(() =>{
                 alert("이메일로 임시 비밀번호가 발송 되었습니다")
                 this.show = false
             })
-            .catch(error =>{
-                console.log(error)
+            .catch(() =>{
                 alert("비밀번호 찾기 실패")
             })
         }

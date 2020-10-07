@@ -125,14 +125,10 @@ export default {
       this.$refs.imageInput.click();
     },
     onChangeImages(e) {
-      console.log(e.target.files);
       const file = e.target.files[0]; // Get first index in files
       this.imageUrl = URL.createObjectURL(file); // Create File URL
       let formData = new FormData();
       formData.append("image", file);
-      for (var pair of formData.entries()) {
-        console.log(pair[0] + ", " + pair[1]);
-      }
       Swal.fire({
         title: '사진 인식 중...'
       })
@@ -140,7 +136,6 @@ export default {
       axios
         .post(this.$baseurl + "/culture/image", formData)
         .then((res) => {
-          console.dir(res.data.object);
           Swal.close()
           scroll(0, 0);
           this.$router.push({
@@ -148,8 +143,7 @@ export default {
             params: { ID: res.data.object },
           });
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
           Swal.close();
           Swal.fire({
             icon: "error",

@@ -174,9 +174,6 @@ export default {
           "content",
           this.$refs.toastuiEditor.invoke("getMarkdown")
         );
-        for (var pair of formData.entries()) {
-        console.log(pair[0] + ", " + pair[1]);
-        }
         // let content = this.$refs.toastuiEditor.invoke("getMarkdown"); // content를 저장하는 액션 처리
         axios({
           method: "POST",

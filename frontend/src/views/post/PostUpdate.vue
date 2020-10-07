@@ -161,7 +161,6 @@ export default {
       .get(`${this.$baseurl}/culture/detail/${this.postno}`)
       .then((res)=>{
         this.post = res.data.object
-        console.log(this.post)
       })
       .catch((err)=>{
         console.log(err)
@@ -183,9 +182,6 @@ export default {
           "content",
           this.$refs.toastuiEditor.invoke("getMarkdown")
         );
-        for (var pair of formData.entries()) {
-        console.log(pair[0] + ", " + pair[1]);
-        }
         axios
           .put(this.$baseurl + `/culture/admin/${this.postno}`, formData,{
             headers: {

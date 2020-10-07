@@ -228,7 +228,6 @@ export default {
         })
         .then((res) => {
           this.mystorages = res.data.object;
-          console.log(this.mystorages);
         })
         .catch((err) => {
           console.log(err);
@@ -238,7 +237,6 @@ export default {
       this.$refs.imageInput.click();
     },
     onChangeImages(e) {
-      console.log(e.target.files);
       const file = e.target.files[0]; // Get first index in files
       this.imageUrl = URL.createObjectURL(file); // Create File URL
     },
@@ -316,9 +314,6 @@ export default {
       formData.append("introduce", introduce);
       formData.append("password", password);
       formData.append("username", username);
-      for (var pair of formData.entries()) {
-        console.log(pair[0] + ", " + pair[1]);
-      }
 
       axios
         .put(this.$baseurl + `/account/modify`, formData, {

@@ -126,8 +126,7 @@ export default {
             Authorization: this.$store.state.user.token,
             }
         })
-          .then((response) => {
-            console.log(response.data);
+          .then(() => {
              Swal.fire({
               position: 'top-end',
               icon: 'success',
@@ -139,8 +138,7 @@ export default {
             location.reload();
           },1500)
           })
-          .catch((error) => {
-            console.log(error);
+          .catch(() => {
             alert("댓글등록 실패");
           });
       }
@@ -153,7 +151,6 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response.data.object);
           this.comments = response.data.object;
         })
         .catch((error) => {
@@ -204,14 +201,12 @@ export default {
         })
         .catch((error) => {
           console.log(error);
-          alert(error);
         });
     },
     changeupdate(regno) {
       this.updatecomment.commentno = regno;
       this.isupdate = !this.isupdate;
       this.cid = regno;
-      console.log(this.cid);
     },
   },
 
