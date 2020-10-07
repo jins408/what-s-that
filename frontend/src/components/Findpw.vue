@@ -7,8 +7,8 @@
     </v-card-text>
     <v-divider></v-divider>
     <v-card-actions class="d-flex justify-end">
-        <v-btn @click="findPW">완료</v-btn>
-        <v-btn  @click.stop="show=false">취소</v-btn>
+        <v-btn depressed color="primary" @click="findPW">완료</v-btn>
+        <v-btn depressed color="error" @click.stop="show=false">취소</v-btn>
     </v-card-actions>
     </v-card>
     </v-dialog>
@@ -16,8 +16,6 @@
 
 <script>
 import axios from 'axios'
-
-const baseURL = "http://localhost:8080";
 
 export default {
     computed: {
@@ -35,14 +33,12 @@ export default {
     },
     methods:{
         findPW(){
-            axios.get(`${baseURL}/dictionary/user/findpwd/${this.email}/`)
-            .then((response) =>{
-                console.log(response.data)
+            axios.get(this.$baseurl + `/user/findpwd/${this.email}/`)
+            .then(() =>{
                 alert("이메일로 임시 비밀번호가 발송 되었습니다")
                 this.show = false
             })
-            .catch(error =>{
-                console.log(error)
+            .catch(() =>{
                 alert("비밀번호 찾기 실패")
             })
         }

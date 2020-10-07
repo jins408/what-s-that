@@ -12,7 +12,6 @@ import Mypage from '../views/user/Mypage.vue'
 import Main from '../views/main/Main.vue'
 
 // Post
-import PostList from '../views/post/PostList.vue'
 import PostDetail from '../views/post/PostDetail.vue'
 import PostCreate from '../views/post/PostCreate.vue'
 import PostUpdate from '../views/post/PostUpdate.vue'
@@ -38,7 +37,7 @@ const routes = [
     name: Mypage,
     component: Mypage
   },
-  
+
 
   // main
   {
@@ -48,11 +47,6 @@ const routes = [
   },
 
   // post
-  {
-    path: '/posts',
-    name: 'PostList',
-    component: PostList
-  },
   {
     path: '/postdetail/:ID',
     name: 'PostDetail',
