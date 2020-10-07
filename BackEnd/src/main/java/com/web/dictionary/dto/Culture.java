@@ -16,6 +16,6 @@ public class Culture {
 	private String generation;
 	private String constructionperiod;
 	private String location;
-	private double lng;
-	private double lat;
+	private String lng;
+	private String lat;
 }

@@ -41,12 +41,12 @@
 	</delete>
 
 	<insert id="uploadPost">
-		INSERT INTO culturepost(culturename, content, imageUrl)
-		VALUES(#{culturename}, #{content}, #{imageUrl});
+		INSERT INTO culturepost(culturename, content, imageUrl, ename, category, generation, constructionperiod, location, lng, lat)
+		VALUES(#{culturename}, #{content}, #{imageUrl}, #{ename}, #{category}, #{generation}, #{constructionperiod}, #{location}, #{lng}, #{lat});
 	</insert>
 
 	<update id="updatePost">
-		UPDATE culturepost SET culturename = #{culturename}, content = #{content}, imageUrl = #{imageUrl}
+		UPDATE culturepost SET culturename = #{culturename}, content = #{content}, imageUrl = #{imageUrl}, generation = #{generation}, constructionperiod = #{constructionperiod}, location = #{location}, lng = #{lng}, lat = #{lat}
 		WHERE postno = #{postno}
 	</update>
 
