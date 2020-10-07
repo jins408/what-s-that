@@ -46,7 +46,7 @@
 	</insert>
 
 	<update id="updatePost">
-		UPDATE culturepost SET culturename = #{culturename}, content = #{content}, ename = #{ename}, category = #{category} imageUrl = #{imageUrl}, generation = #{generation}, constructionperiod = #{constructionperiod}, location = #{location}, lng = #{lng}, lat = #{lat}
+		UPDATE culturepost SET culturename = #{culturename}, content = #{content}, ename = #{ename}, category = #{category}, imageUrl = #{imageUrl}, generation = #{generation}, constructionperiod = #{constructionperiod}, location = #{location}, lng = #{lng}, lat = #{lat}
 		WHERE postno = #{postno}
 	</update>
 
