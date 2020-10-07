@@ -123,10 +123,19 @@ export default {
         .then((res) => {
           console.dir(res.data.object);
           Swal.close()
+          if(res.data.object) {
           this.$router.push({
             name: "PostDetail",
             params: { ID: res.data.object },
           });
+        } else {
+          setTimeout(() => {
+          Swal.fire({
+            title: '인식 실패'
+          })
+          }, 50);
+          Swal.close();
+        }
         })
         .catch((err) => {
           console.log(err);
