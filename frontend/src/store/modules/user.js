@@ -3,7 +3,8 @@ import Vue from "vue";
 
 const state = {
   status: "",
-  token: localStorage.getItem("token") || ""
+  token: localStorage.getItem("token") || "",
+  userno: localStorage.getItem("userno") || ""
 };
 
 const actions = {
@@ -23,6 +24,8 @@ const mutations = {
     state.status = "success";
     localStorage.setItem("token", resp.token);
     Vue.set(state, "token", resp.token);
+    localStorage.setItem("userno", resp.userno);
+    Vue.set(state, "userno", resp.userno);
   },
   [USER_ERROR]: state => {
     state.status = "error";

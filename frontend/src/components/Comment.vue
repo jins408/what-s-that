@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 90%; margin: auto">
+  <div style=" margin: auto">
     <div class="d-flex justify-left mt-5">
       <v-textarea
         label="Comment"
@@ -78,25 +78,44 @@
 
 <script>
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default {
+  computed: {
+
+  },
   created() {
+    // console.log(this.$store.state.user.userno);
+    // this.commentData.userno=this.$store.state.user.userno
+    // console.log(this.commentData.userno);
+    this.updatecomment.userno = this.$store.state.user.userno;
     this.commentList();
   },
   methods: {
     createComment() {
-      let isLoggedIn = this.$store.getters.isAuthenticated;
-      if (!isLoggedIn) {
-        alert("로그인 후 입력가능 합니다");
+      if(!this.$store.state.user.token){
+        Swal.fire({
+          position: 'top',
+          icon: 'error',
+          title: '로그인 후 입력가능 합니다',
+          showConfirmButton: false,
+          timer: 1500
+        })
       } else {
         var flag = 0;
         if (this.commentData.reply == "") {
-          alert("댓글을 입력해주세요");
-          flag = 1;
+          Swal.fire({
+          position: 'top',
+          icon: 'info',
+          title: '댓글을 입력해주세요',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        flag = 1;
         }
       }
-      if (flag == 0) {
-        axios ({
+      if(flag == 0) {
+      axios ({
             method: "POST",
             url: this.$baseurl + '/comment',
             data: {
@@ -104,13 +123,21 @@ export default {
               reply: this.commentData.reply
             },
             headers: {
-              Authorization: this.$store.state.user.token,
+            Authorization: this.$store.state.user.token,
             }
         })
           .then((response) => {
             console.log(response.data);
-            alert("댓글이 등록되었습니다.");
+             Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: '댓글이 등록 완료!',
+              showConfirmButton: false,
+              timer:1500
+          })
+          setTimeout(()=>{
             location.reload();
+          },1500)
           })
           .catch((error) => {
             console.log(error);
@@ -119,7 +146,7 @@ export default {
       }
     },
     commentList() {
-      axios
+     axios
         .get(this.$baseurl + `/comment/load/${this.commentData.postno}`, {
           headers: {
             Authorization: this.$store.state.user.token,
@@ -135,10 +162,22 @@ export default {
     },
     commentdelete(regno) {
       axios
-        .delete(this.$baseurl + `/comment/${regno}`)
+        .delete(this.$baseurl + `/comment/${regno}`, {
+           headers: {
+            Authorization: this.$store.state.user.token,
+          },
+        })
         .then(() => {
-          alert("댓글이 삭제되었습니다");
-          location.reload();
+          Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: '댓글 삭제 완료!',
+              showConfirmButton: false,
+              timer:1500
+          })
+          setTimeout(()=>{
+            location.reload();
+          },1500)
         })
         .catch((error) => {
           console.log(error);
@@ -146,10 +185,22 @@ export default {
     },
     commentupdate() {
       axios
-        .put(this.$baseurl + `/comment`, this.updatecomment)
+        .put(this.$baseurl + `/comment`, this.updatecomment,{
+          headers: {
+            Authorization: this.$store.state.user.token,
+          },
+        })
         .then(() => {
-          alert("댓글 수정완료!");
-          location.reload();
+         Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: '댓글 수정 완료!',
+              showConfirmButton: false,
+              timer:1500
+          })
+          setTimeout(()=>{
+            location.reload();
+          },1500)
         })
         .catch((error) => {
           console.log(error);
@@ -175,7 +226,7 @@ export default {
       comments: [],
       updatecomment: {
         commentno: "",
-        postno: "",
+        postno: 1,
         reply: "",
         userno: "",
       },

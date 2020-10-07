@@ -1,5 +1,30 @@
 <template>
   <div>
+         <v-row justify="center">
+    <v-dialog
+      v-model="dialog"
+      persistent
+      max-width="1100"
+    >
+      <v-card id="card"> 
+        <v-card-title class="headline">
+          사용가이드
+        </v-card-title>
+        <v-card-text><v-img src="../../assets/guideline.png"></v-img></v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+         
+          <v-btn
+            color="green darken-1"
+            text
+            @click="dialog = false"
+          >
+            닫기
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-row>
     <div>
       <v-carousel
         hide-delimiters
@@ -53,12 +78,6 @@
               hidden
               @change="onChangeImages"
             />
-            <!-- <i
-              class="fas fa-camera ml-2 mt-4"
-              style="font-size: 1.6rem; cursor: pointer"
-              accept="image/*"
-              @click="onClickImageUpload"
-            ></i> -->
           </v-row>
         </v-col>
         <div class="d-flex justify-content-center" style="margin-top: 16rem">
@@ -123,18 +142,20 @@ export default {
         .then((res) => {
           console.dir(res.data.object);
           Swal.close()
+          scroll(0, 0);
           this.$router.push({
             name: "PostDetail",
             params: { ID: res.data.object },
           });
-          
         })
         .catch((err) => {
           console.log(err);
           Swal.close();
           Swal.fire({
+            icon: "error",
             title: '인식 실패'
           });
+
         });
     },
     search() {
@@ -154,27 +175,15 @@ export default {
 
     updatescroll() {
       this.scrollposition = window.scrollY;
-      // console.log(this.scrollposition)
     },
     gosearchview() {
       var ll = document.querySelector("#searchview").offsetTop;
       window.scrollTo({ top: ll, behavior: "smooth" });
     },
-    // scroll() {
-    //   var ll = document.querySelector("#heritage").offsetTop;
-    //   window.scrollTo({top:ll-10, behavior:'smooth'});
-    // },
-    // scroll1() {
-    //   var ll = document.querySelector("#location").offsetTop;
-    //   window.scrollTo({top:ll-10, behavior:'smooth'});
-    // },
-    // scroll2() {
-    //   var ll = document.querySelector("#comment").offsetTop;
-    //   window.scrollTo({top:ll-10, behavior:'smooth'});
-    // },
   },
   data() {
     return {
+      dialog: true,
       imageUrl: "",
       culturename: "",
       scrollposition: 0,

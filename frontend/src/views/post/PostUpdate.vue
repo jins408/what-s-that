@@ -15,15 +15,27 @@
    <div class="container" style="margin-top:5rem; margin-bottom:5rem;">
       <v-card>
         <br>
-        <v-text-field
-          label="name"
-          name="name"
-          v-model="name"
-          prepend-icon="mdi-label"
-          type="text"
-          class="mx-10 mb-5"
-          id="name"
-        ></v-text-field>
+        <div class="d-flex justify-content-between">
+          <v-text-field
+            label="이름"
+            name="culturename"
+            v-model="this.post.culturename"
+            prepend-icon="mdi-label"
+            type="text"
+            class="mx-10 mb-5"
+            id="culturename"
+          ></v-text-field>
+
+          <v-text-field
+            label="English Name"
+            name="ename"
+            v-model="this.post.ename"
+            prepend-icon="mdi-label"
+            type="text"
+            class="mx-10 mb-5"
+            id="ename"
+          ></v-text-field>
+        </div>
 
         <div class="mx-10">
           <v-file-input
@@ -37,6 +49,69 @@
             class="mb-5"
           ></v-file-input>
         </div>
+
+        <div class="d-flex justify-content-between">
+        <v-text-field
+          label="유형"
+          name="category"
+          v-model="this.post.category"
+          prepend-icon="mdi-label"
+          type="text"
+          class="mx-10 mb-5"
+          id="category"
+        ></v-text-field>
+
+        <v-text-field
+          label="시대"
+          name="generation"
+          v-model="this.post.generation"
+          prepend-icon="mdi-label"
+          type="text"
+          class="mx-10 mb-5"
+          id="generation"
+        ></v-text-field>
+      </div>
+
+      <v-text-field
+        label="연도"
+        name="constructionperiod"
+        v-model="this.post.constructionperiod"
+        prepend-icon="mdi-label"
+        type="text"
+        class="mx-10 mb-5"
+        id="constructionperiod"
+      ></v-text-field>
+
+      <v-text-field
+        label="위치"
+        name="location"
+        v-model="this.post.location"
+        prepend-icon="mdi-label"
+        type="text"
+        class="mx-10 mb-5"
+        id="location"
+      ></v-text-field>
+
+      <div class="d-flex justify-content-between">
+        <v-text-field
+          label="위도"
+          name="lat"
+          v-model="this.post.lat"
+          prepend-icon="mdi-label"
+          type="text"
+          class="mx-10 mb-5"
+          id="lat"
+        ></v-text-field>
+        <v-text-field
+          label="경도"
+          name="lng"
+          v-model="this.post.lng"
+          prepend-icon="mdi-label"
+          type="text"
+          class="mx-10 mb-5"
+          id="lng"
+        ></v-text-field>
+      </div>
 
 
 
@@ -55,78 +130,214 @@
 </div>
 </template>
 
-
 <script>
+import "@toast-ui/editor/dist/toastui-editor.css";
+import 'codemirror/lib/codemirror.css';
+import { Editor } from '@toast-ui/vue-editor'
+import Swal from 'sweetalert2'
 import axios from "axios";
-import Swal from "sweetalert2";
 
 export default {
-    created(){
-        this.postno = this.$route.params.ID;
-    },
-  data() {
+  components :{
+    Editor,
+  },
+  created(){
+      this.postno = this.$route.params.ID;
+      this.getdetail();
+  },
+  data: () => {
     return {
-        culturename:"",
-        content:"",
-        imageUrl: "",
-        postno:"",
+      dialog: false,
+      thumbnail: null,
+      editorHtml : "",
+      editorText : "",
+      veditorText : "",
+      post:[],
     };
   },
   methods: {
-      modify(){
-          Swal.fire({
-            text: "수정하시겠습니까?",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            cancelButtonText: '취소',
-            confirmButtonText: '수정'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                let formData = new FormData();
-                let culturename = this.culturename;
-                let content = this.content;
-                // let postno = this.postno
-                const file = this.$refs.imageInput.files[0];
-                console.log(file);
-                formData.append("image", file);
-                formData.append("culturename", culturename);
-                formData.append("content", content);
-                // formData.append("postno", postno);
-                for (var pair of formData.entries()) {
-                    console.log(pair[0] + ", " + pair[1]);
-                }
-                axios
-                .put(this.$baseurl + `/culture/admin/${this.postno}`, formData,{
-                  headers: {
-                    Authorization: this.$store.state.user.token,
-                  },
+    getdetail(){
+      axios
+      .get(`${this.$baseurl}/culture/detail/${this.postno}`)
+      .then((res)=>{
+        this.post = res.data.object
+        console.log(this.post)
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
+    },
+    modifypost() {
+      if (this.checkInput()) {
+        const formData = new FormData();
+        formData.append("image", this.thumbnail);
+        formData.append("culturename", this.post.culturename.trim());
+        formData.append("ename", this.post.ename.trim());
+        formData.append("category", this.post.category.trim());
+        formData.append("generation", this.post.generation.trim());
+        formData.append("constructionperiod", this.post.constructionperiod.trim());
+        formData.append("location", this.post.location.trim());
+        formData.append("lng", this.post.lng.trim());
+        formData.append("lat", this.post.lat.trim());
+        formData.append(
+          "content",
+          this.$refs.toastuiEditor.invoke("getMarkdown")
+        );
+        for (var pair of formData.entries()) {
+        console.log(pair[0] + ", " + pair[1]);
+        }
+        axios
+          .put(this.$baseurl + `/culture/admin/${this.postno}`, formData,{
+            headers: {
+              Authorization: this.$store.state.user.token,
+            },
+          })
+          .then(() => {
+               Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: '게시글이 수정되었습니다.',
+                showConfirmButton: false,
+                timer: 1500
                 })
-                .then(()=>{
-                        Swal.fire({
-                            text: "수정되었습니다",
-                            icon: 'success',
-                        })
-                        this.$router.push({
-                           name: "PostDetail",
-                           params: { ID: this.postno },
-                        })
-                })
-                .catch((err)=>{
-                    console.log(err)
-                })
-                    }
+              scroll(0,0)
+              this.$router.push({
+                name: "PostDetail",
+                params: { ID: this.postno },
             })
-      },
-    onClickImageUpload() {
-      this.$refs.imageInput.click();
+          })
+          .catch(() => {
+            Swal.fire({
+                    icon: 'error',
+                    title: '수정 실패',
+                    text: '게시글 수정에 실패하였습니다.',
+                });
+          });
+        this.dialog = false;
+      }
     },
-    onChangeImages(e) {
-      console.log(e.target.files);
-      const file = e.target.files[0]; // Get first index in files
-      this.imageUrl = URL.createObjectURL(file); // Create File URL
-    },
+    checkInput() {
+      let name = this.post.culturename.trim();
+      let ename = this.post.ename.trim();
+      let category = this.post.category.trim();
+      let generation = this.post.generation.trim();
+      let constructionperiod = this.post.constructionperiod.trim();
+      let location = this.post.location.trim();
+      let lng = this.post.lng.trim();
+      let lat = this.post.lat.trim();
+      let thumbnail = this.thumbnail;
+      let content = this.$refs.toastuiEditor.invoke("getMarkdown"); // content를 저장하는 액션 처리 }
+     if (name == "") {
+        Swal.fire({
+          position: 'top',
+          icon: 'info',
+          title: '이름을 입력해주세요',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        document.getElementById("name").focus();
+        return false;
+      }
+      if (ename == "") {
+        Swal.fire({
+          position: 'top',
+          icon: 'info',
+          title: '영어 이름을 입력해주세요',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        document.getElementById("ename").focus();
+        return false;
+      }
+      if (category == "") {
+         Swal.fire({
+          position: 'top',
+          icon: 'info',
+          title: '유형을 입력해주세요',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        document.getElementById("category").focus();
+        return false;
+      }
+      if (generation == "") {
+         Swal.fire({
+          position: 'top',
+          icon: 'info',
+          title: '시대를 입력해주세요',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        document.getElementById("generation").focus();
+        return false;
+      }
+      if (constructionperiod == "") {
+         Swal.fire({
+          position: 'top',
+          icon: 'info',
+          title: '연도를 입력해주세요',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        document.getElementById("constructionperiod").focus();
+        return false;
+      }
+      if (location == "") {
+         Swal.fire({
+          position: 'top',
+          icon: 'info',
+          title: '위치를 입력해주세요',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        document.getElementById("location").focus();
+        return false;
+      }
+      if (lng == "") {
+         Swal.fire({
+          position: 'top',
+          icon: 'info',
+          title: '경도를 입력해주세요',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        document.getElementById("lng").focus();
+        return false;
+      }
+      if (lat == "") {
+         Swal.fire({
+          position: 'top',
+          icon: 'info',
+          title: '위도를 입력해주세요',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        document.getElementById("lat").focus();
+        return false;
+      }
+      if (content == "") {
+         Swal.fire({
+          position: 'top',
+          icon: 'info',
+          title: '내용을 입력해주세요',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        document.getElementById("editor").focus();
+        return false;
+      }
+      if (thumbnail == null) {
+         Swal.fire({
+          position: 'top',
+          icon: 'info',
+          title: '썸네일을 등록해주세요',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        return false;
+      }
+      return true;
+    }
   },
 };
 </script>

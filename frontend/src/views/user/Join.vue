@@ -97,7 +97,7 @@
                                 ></v-text-field>
                                </v-col>
                                <v-col class="d-flex justify-content-end p-0 mt-2" cols="12" sm="2">
-                                <v-btn large outlined color="error" @click="checkrules" v-if="!this.rulecheck" > 확인 </v-btn>
+                                <v-btn large outlined color="error" @click="checkrules" v-if="!this.rulecheck" >비밀번호 확인</v-btn>
                                </v-col>
                           </v-row>
                             
@@ -201,57 +201,157 @@ export default {
       checkrules(){
         if (!this.passwordSchema.validate(this.joindata.password)){
           this.rulecheck = false
-          alert('영문,숫자 포함 8 자리이상이어야 합니다.')
+          Swal.fire({
+          position: 'top',
+          icon: 'error',
+          title: '영문,숫자 포함 8 자리이상이어야 합니다.',
+          showConfirmButton: false,
+          timer: 1500
+        })
+          // alert('영문,숫자 포함 8 자리이상이어야 합니다.')
         }else if(this.joindata.password != this.joindata.passwordconfirm){
           this.rulecheck = false
-          alert('비밀번호와 비밀번호 확인이 다릅니다.')
+          Swal.fire({
+          position: 'top',
+          icon: 'error',
+          title: '비밀번호와 비밀번호 확인이 다릅니다.',
+          showConfirmButton: false,
+          timer: 1500
+        })
+          // alert('비밀번호와 비밀번호 확인이 다릅니다.')
         }else if((this.joindata.password).indexOf(' ') > 0){
           this.rulecheck = false
-          alert('빈 칸을 넣을 수 없습니다.')
+          Swal.fire({
+          position: 'top',
+          icon: 'error',
+          title: '빈 칸을 넣을 수 없습니다.',
+          showConfirmButton: false,
+          timer: 1500
+        })
+          // alert('빈 칸을 넣을 수 없습니다.')
         }
         else{
           this.rulecheck = true
-          alert('비밀번호 확인 되었습니다.')
+          Swal.fire({
+          position: 'top',
+          icon: 'success',
+          title: '비밀번호 확인이 되었습니다.',
+          showConfirmButton: false,
+          timer: 1500
+        })
+          // alert('비밀번호 확인 되었습니다.')
         }
       },
       join(){
         if (this.joindata.email.length == 0 && this.joindata.password.length == 0 && this.joindata.passwordconfirm.length == 0 && this.joindata.username.length == 0 && this.authnum.length == 0){
             this.rulecheck = false
-            alert('정보를 모두 입력해주세요.')
+            Swal.fire({
+          position: 'top',
+          icon: 'error',
+          title: '정보를 모두 입력해주세요.',
+          showConfirmButton: false,
+          timer: 1500
+        })
+            // alert('정보를 모두 입력해주세요.')
           }
           else if (this.joindata.email.length == 0){
-            alert('이메일을 입력해주세요.')
+            Swal.fire({
+          position: 'top',
+          icon: 'error',
+          title: '이메일을 입력해주세요.',
+          showConfirmButton: false,
+          timer: 1500
+        })
+            // alert('이메일을 입력해주세요.')
           }
           else if (this.joindata.password.length == 0){
             this.rulecheck = false
-            alert('비밀번호을 입력해주세요.')
+            Swal.fire({
+          position: 'top',
+          icon: 'error',
+          title: '비밀번호를 입력해주세요.',
+          showConfirmButton: false,
+          timer: 1500
+        })
+            // alert('비밀번호을 입력해주세요.')
           }
           else if (this.joindata.passwordconfirm.length == 0){
             this.rulecheck = false
-            alert('비밀번호 확인을 입력해주세요.')
+            Swal.fire({
+          position: 'top',
+          icon: 'error',
+          title: '비밀번호 확인을 입력해주세요.',
+          showConfirmButton: false,
+          timer: 1500
+        })
+            // alert('비밀번호 확인을 입력해주세요.')
           }
           else if (this.joindata.username.length == 0){
-            alert('이름을 입력해주세요.')
+            Swal.fire({
+          position: 'top',
+          icon: 'error',
+          title: '이름을 입력해주세요.',
+          showConfirmButton: false,
+          timer: 1500
+        })
+            // alert('이름을 입력해주세요.')
           }
           else if (this.authnum.length == 0){
-            alert('인증번호을 입력해주세요.')
+            Swal.fire({
+          position: 'top',
+          icon: 'error',
+          title: '인증번호를 입력해주세요.',
+          showConfirmButton: false,
+          timer: 1500
+        })
+            // alert('인증번호을 입력해주세요.')
           }
           else if (this.joindata.password != this.joindata.passwordconfirm) {
             this.rulecheck = false
-            alert('비밀번호와 비밀번호 확인이 다릅니다.')
+            Swal.fire({
+          position: 'top',
+          icon: 'error',
+          title: '비밀번호와 비밀번호 확인이 다릅니다.',
+          showConfirmButton: false,
+          timer: 1500
+        })
+            // alert('비밀번호와 비밀번호 확인이 다릅니다.')
           }
           else if (!this.checkemail) {
-            alert('이메일 중복확인을 해주세요.')
+            Swal.fire({
+          position: 'top',
+          icon: 'error',
+          title: '이메일 중복확인을 해주세요.',
+          showConfirmButton: false,
+          timer: 1500
+        })
+            // alert('이메일 중복확인을 해주세요.')
           }
           else if (!this.authnumcheck) {
-            alert('인증번호 확인을 해주세요.')
+            Swal.fire({
+          position: 'top',
+          icon: 'error',
+          title: '인증번호 확인을 해주세요.',
+          showConfirmButton: false,
+          timer: 1500
+        })
+            // alert('인증번호 확인을 해주세요.')
           }
           else{
             axios
             .post(this.$baseurl + `/user/signup`, this.joindata)
             .then(()=>{
-                alert('회원가입 성공!')
+              Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: '회원가입 완료!',
+              showConfirmButton: false,
+              timer:1500
+          })
+          setTimeout(()=>{
+            scroll(0, 0);
                 this.$router.push('/')
+          },1500)
             })
             .catch((err)=>{
               console.log(err)

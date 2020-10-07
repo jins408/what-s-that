@@ -52,7 +52,6 @@
   </div>
 </template>
 
-
 <script>
 import axios from "axios";
 
@@ -66,12 +65,22 @@ export default {
     };
   },
   methods: {
-    gopostdetail(item) {
+    list(){
+      axios.get(this.$baseurl + `/culture/search?culturename=${""}`)
+        .then((res)=>{
+          this.culture = res.data.object
+        })
+        .catch((err)=>{
+          console.log(err)
+        })
+    },
+    gopostdetail(culturename) {
       axios
-        .get(this.$baseurl + `/culture/find?culturename=${item.culturename}`)
+        .get(this.$baseurl + `/culture/find?culturename=${culturename}`)
         .then((res) => {
           this.post = res.data.object[0];
           // console.log(this.post);
+          scroll(0, 0);
           this.$router.push({
             name: "PostDetail",
             params: { ID: this.post.postno },

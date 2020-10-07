@@ -141,9 +141,6 @@
   </div>
 </template>
 
-
-
-
 <script>
 import axios from "axios";
 import store from "../store";
@@ -173,40 +170,58 @@ export default {
   },
   methods: {
     gojoin() {
-      this.$router.push("/user/join");
+      scroll(0, 0);
+      this.$router.push("/user/join").catch(()=>{
+        this.$router.go();
+      });
     },
     gologin() {
-      this.$router.push("/");
+      scroll(0, 0);
+      this.$router.push("/").catch(()=>{
+        this.$router.go();
+      });
     },
     gomypage() {
-      this.$router.push("/user/mypage");
+      scroll(0, 0);
+      this.$router.push("/user/mypage").catch(()=>{
+        this.$router.go();
+      });
     },
     logout() {
+      scroll(0, 0);
       store.dispatch("AUTH_LOGOUT").then(() => {
         alert("로그아웃 되었습니다.");
         this.$router.push("/");
       });
     },
     gomain() {
-      this.$router.push("/main");
+      scroll(0, 0);
+      this.$router.push("/main").catch(()=>{
+        this.$router.go();
+      });
     },
     gowrite(){
-      this.$router.push('/postcreate')
+      scroll(0, 0);
+      this.$router.push('/postcreate').catch(()=>{
+        this.$router.go();
+      });
     },
     getinfo() {
-      axios
-        .get(this.$baseurl + `/account/userinfo`, {
-          headers: {
-            Authorization: this.$store.state.auth.token,
-          },
-        })
-        .then((res) => {
-          this.isadmin = res.data.object.isadmin;
-          console.log(this.isadmin)
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      if(this.$store.state.user.token){
+        axios
+          .get(this.$baseurl + `/account/userinfo`, {
+            headers: {
+              Authorization: this.$store.state.user.token,
+            },
+          })
+          .then((res) => {
+            this.isadmin = res.data.object.isadmin;
+            // console.log(this.isadmin)
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     },
   },
 };

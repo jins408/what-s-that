@@ -79,12 +79,16 @@
       <i class="fas fa-microphone ml-3" style="font-size:1.6rem;" @click="audiotest"></i>
       </div>
       <div>
-      {{this.post.content}}
+      <Viewer v-if="this.post.content != null" :initialValue="this.post.content" />  
       </div>
     </div>
 
     <v-container>
-    <hr class="commenthr">          
+    <hr class="commenthr">
+    <h5 style=" font-weight: bold; color:#BF360C">위치 </h5>
+    <div id="map" style="width:100%;height:400px;"></div>
+
+    <hr class="commenthr">
     <comment :commentData="commentData"></comment>
     <div
       v-if="isadmin == 1"
@@ -99,60 +103,44 @@
 
   </div>
 </template>
-
-
   <script type="text/javascript"
     src="http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${process.env.VUE_APP_KAKAO_MAP_API_KEY}"></script>
+    
 <script>
 import axios from "axios";
 import Swal from "sweetalert2";
 import "codemirror/lib/codemirror.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Viewer } from "@toast-ui/vue-editor";
+
 import comment from "../../components/Comment.vue";
 
 export default {
   components: {
-    comment, Viewer
+    comment,
+    Viewer
   },
 
   created(){
-    this.commentData.postno = this.$route.params.ID;
-    this.bmarkList();
-    this.getdetail();
-    this.getinfo();
+     this.commentData.userno=this.$store.state.user.userno
+     this.commentData.postno = this.$route.params.ID;
+    //  console.log(this.commentData.postno)
+    //  console.log(this.$store.state.user.token)
+     this.bmarkList()
+     this.getdetail()
+     this.getinfo()
   },
+
   mounted() {
-    window.kakao && window.kakao.maps ? this.initMap() : this.addScript();
+    window.kakao && window.kakao.maps ? location.reload() : this.addScript();
   },
 
   methods: {
-    initMap() {
-      let lng = this.post.lng;
-      let lat = this.post.lat;
-      var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-      mapOption = { 
-          center: new kakao.maps.LatLng(lng, lat), // 지도의 중심좌표
-          level: 2 // 지도의 확대 레벨
-      };
-      var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-      var markerPosition  = new kakao.maps.LatLng(lng, lat);
-      var marker = new kakao.maps.Marker({
-         position: markerPosition
-      }); 
-      marker.setMap(map);
-    },
-    addScript() {
-      const script = document.createElement('script');
-      script.onload = () => kakao.maps.load(this.initMap);
-      script.src = `http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${process.env.VUE_APP_KAKAO_MAP_API_KEY}`;
-      document.head.appendChild(script);
-    },
     getinfo() {
       axios
         .get(this.$baseurl + `/account/userinfo`, {
           headers: {
-            Authorization: this.$store.state.auth.token,
+            Authorization: this.$store.state.user.token,
           },
         })
         .then((res) => {
@@ -175,25 +163,46 @@ export default {
       })
     },
     bookmark(){
-      axios({
-        method: 'POST',
-        url: this.$baseurl + `/culture/regfavorite`,
-        data: {
-          postno: this.commentData.postno
-        },
-         headers: {
-            Authorization: this.$store.state.user.token,
+      if(!this.$store.state.user.token){
+        Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: '로그인해주세요!',
+        width:'400px',
+        height:'200px',
+        showConfirmButton: false,
+        timer: 1500
+        })
+      }else{
+
+        axios({
+          method: 'POST',
+          url: this.$baseurl + `/culture/regfavorite`,
+          data: {
+            postno: this.commentData.postno
           },
-      })
-      .then((response) =>{
-        console.log(response)
-        this.ismark = true;
-        alert("찜등록!")
-        // location.reload();
-      })
-      .catch((error)=>{
-        console.log(error)
-      })
+           headers: {
+              Authorization: this.$store.state.user.token,
+            },
+        })
+        .then((response) =>{
+          console.log(response)
+          this.ismark = true;
+          Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: '찜등록!',
+          width:'400px',
+          height:'200px',
+          showConfirmButton: false,
+          timer: 1500
+          })
+          // location.reload();
+        })
+        .catch((error)=>{
+          console.log(error)
+        })
+      }
     },
     bmarkList(){
       axios.get(`${this.$baseurl}/culture/favorite`, {
@@ -221,9 +230,16 @@ export default {
           },
           })
           .then(()=>{
-              alert('찜해제!')
+              Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: '찜해제!',
+              width:'400px',
+              height:'200px',
+              showConfirmButton: false,
+              timer: 1500
+              })
               this.ismark = false
-              // location.reload()
           })
           .catch((err)=>{
               console.log(err)
@@ -253,6 +269,7 @@ export default {
               text:"삭제완료",
               icon:"success"
             })
+            scroll(0,0)
             this.$router.push('/main')
           }).catch((err)=>{
             console.log(err)
@@ -272,6 +289,27 @@ export default {
         this.audio.currentTime = 0;
         this.isPlaying = "";
       }
+    },
+    initMap() {
+      let lng = this.post.lng;
+      let lat = this.post.lat;
+      var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+      mapOption = { 
+          center: new kakao.maps.LatLng(lng, lat), // 지도의 중심좌표
+          level: 2 // 지도의 확대 레벨
+      };
+      var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+      var markerPosition  = new kakao.maps.LatLng(lng, lat);
+      var marker = new kakao.maps.Marker({
+         position: markerPosition
+      }); 
+      marker.setMap(map);
+    },
+    addScript() {
+      const script = document.createElement('script');
+      script.onload = () => kakao.maps.load(this.initMap);
+      script.src = `http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${process.env.VUE_APP_KAKAO_MAP_API_KEY}`;
+      document.head.appendChild(script);
     },
     
   },

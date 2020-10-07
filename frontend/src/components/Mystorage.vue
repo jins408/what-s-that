@@ -31,6 +31,7 @@
 
 <script>
 import axios from "axios";
+import Swal from 'sweetalert2'
 
 export default {
     props:{
@@ -45,14 +46,23 @@ export default {
           },
           })
           .then(()=>{
-              alert('삭제완료!')
-              location.reload()
+              Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: '삭제 완료!',
+              showConfirmButton: false,
+              timer:1500
+          })
+          setTimeout(()=>{
+            location.reload();
+          },1500)
           })
           .catch((err)=>{
               console.log(err)
           })
     },
     gopostdetail(postno) {
+      scroll(0,0);
       this.$router.push({
         name: "PostDetail",
         params: { ID: postno },
