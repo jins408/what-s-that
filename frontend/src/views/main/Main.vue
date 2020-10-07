@@ -132,11 +132,9 @@ export default {
         .catch((err) => {
           console.log(err);
           Swal.close();
-          setTimeout(() => {
           Swal.fire({
             title: '인식 실패'
-          })
-          }, 50);
+          });
         });
     },
     search() {
