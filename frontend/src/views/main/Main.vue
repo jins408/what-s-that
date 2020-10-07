@@ -23,13 +23,14 @@
       </v-carousel>
             <div class="display-3 what" style="width:100%;">
               <p class="text-center" style="margin-top:14rem;">
-                <span style="font-size:5rem; font-weight:bold; color:red; text-shadow: 2px 2px 2px gray;">What</span>
-                <span style="font-size:3rem; text-shadow: 2px 2px 2px gray;">'s that!?</span>
+                <span style="font-size:5rem; font-weight:bold; color:red; text-shadow: 2px 2px 2px gray; font-family: '국립박물관문화재단클래식B';">What</span>
+                <span style="font-size:3rem; text-shadow: 2px 2px 2px gray; font-family: '국립박물관문화재단클래식B';">'s that!?</span>
               </p>
               <v-col cols="12" sm="6" class="mx-auto">
                 <v-row>
-                  <v-text-field prepend-icon="fas fa-search" label="검색해주세요!" v-model="culturename" filled rounded @keypress.enter="search" background-color="white" ></v-text-field>
-                  <!-- <i class="fas fa-microphone ml-2 mt-2" style="font-size:1.6rem;"></i> -->
+                  <v-text-field prepend-icon="fas fa-search" label="검색해주세요!" v-model="culturename" filled rounded @keypress.enter="search" background-color="white" style="font-family: '국립박물관문화재단클래식B';" ></v-text-field>
+                  <input ref="imageInput" type="file" hidden @change="onChangeImages">
+                  <i class="fas fa-camera ml-2 mt-4" style="font-size:1.6rem; cursor:pointer;" accept="image/*" @click="onClickImageUpload"></i>
                 </v-row>
               </v-col>
               <div class="d-flex justify-content-center" style="margin-top:16rem;">
@@ -41,10 +42,13 @@
     </div>
 
     <div v-if="this.searchok == true" class="container mt-2" data-offset="0">
-      <searchview  :culture="culture" id="searchview" />
+      <searchview :culture="culture" id="searchview" />
     </div>
   </div>
 </template>
+
+
+
 
 <script>
 import axios from "axios";

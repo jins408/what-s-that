@@ -8,7 +8,7 @@
               class="userbtn"
               v-bind="attrs"
               v-on="on"
-              style="box-shadow: none"
+              style="box-shadow: none; font-family: '국립박물관문화재단클래식B';"
               ><i
                 class="far fa-user-circle mr-2"
                 style="font-size: 1.3rem"
@@ -56,7 +56,7 @@
               color="white"
               v-bind="attrs"
               v-on="on"
-              style="box-shadow: none"
+              style="box-shadow: none; font-family: '국립박물관문화재단클래식B';"
               ><i
                 class="far fa-user-circle mr-2"
                 style="font-size: 1.3rem"
@@ -107,10 +107,11 @@
             font-weight: bold;
             color: red;
             text-shadow: 2px 2px 2px gray;
+            font-family: '국립박물관문화재단클래식B';
           "
           >What</span
         >
-        <span style="font-size: 2rem; text-shadow: 2px 2px 2px gray"
+        <span style="font-size: 2rem; text-shadow: 2px 2px 2px gray; font-family: '국립박물관문화재단클래식B';"
           >'s that!?</span
         >
       </span>
@@ -127,10 +128,11 @@
             font-weight: bold;
             color: red;
             text-shadow: 2px 2px 2px gray;
+            font-family: '국립박물관문화재단클래식B';
           "
           >What</span
         >
-        <span style="font-size: 2rem; text-shadow: 2px 2px 2px gray"
+        <span style="font-size: 2rem; text-shadow: 2px 2px 2px gray; font-family: '국립박물관문화재단클래식B';"
           >'s that!?</span
         >
       </span>
@@ -138,6 +140,7 @@
     </div>
   </div>
 </template>
+
 
 
 

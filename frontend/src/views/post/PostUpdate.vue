@@ -1,78 +1,60 @@
 <template>
-  <div class="container">
-    <v-card style="margin-top:5rem;">
-      <v-toolbar flat color="primary" dark>
-        <v-toolbar-title>문화재 수정</v-toolbar-title>
-      </v-toolbar>
-      <v-tabs vertical>
-        <v-tab class="d-flex justify-content-start">
-            <i class="fas fa-user mr-2" style="font-size:1.5rem;"></i>
-            <span>
-            문화재명
-            </span>
-        </v-tab>
-        <v-tab class="d-flex justify-content-start">
-         <i class="fas fa-image mr-2" style="font-size:1.5rem;"></i> 
-          이미지 등록
-        </v-tab>
-        <v-tab class="d-flex justify-content-start">
-          <i class="fas fa-file-alt mr-2" style="font-size:1.5rem;"></i>
-          내용
-        </v-tab>
+<div>
+   <div class="postupdatebg">
+     <div class="darkcover-img-bg"></div>
+     <!-- 웹버전 -->
+    <div class="d-none d-sm-block">
+    <div class=" postupdatebg_title_web" >내용 수정</div>
+    </div>
+    <!-- 모바일버전 -->
+    <div class="d-block d-sm-none d-md-none">
+    <div class=" postupdatebg_title_mobile" >내용 수정</div>
+    </div>
+   </div>
 
-        <v-tab-item>
-          <v-card flat>
-            <v-card-text>
-              <v-textarea
-          rows="1"
-          auto-grow
-          name="title"
-          label="문화재명"
-          v-model="culturename"
-        ></v-textarea>
-            </v-card-text>
-          </v-card>
-        </v-tab-item>
-        <v-tab-item>
-          <v-card flat>
-            <v-card-text>
-        <div class="d-flex justify-content-center">
-          <input ref="imageInput" type="file" hidden @change="onChangeImages" />
-          <img
-            v-if="!imageUrl"
-            style="height: 15rem; width: 15rem"
-            src="../../assets/bgbg.jpg"
-            alt=""
-          />
-          <img
-            v-if="imageUrl"
-            style="height: 15rem; width: 15rem"
-            :src="imageUrl"
-            alt=""
-          />
+   <div class="container" style="margin-top:5rem; margin-bottom:5rem;">
+      <v-card>
+        <br>
+        <v-text-field
+          label="name"
+          name="name"
+          v-model="name"
+          prepend-icon="mdi-label"
+          type="text"
+          class="mx-10 mb-5"
+          id="name"
+        ></v-text-field>
+
+        <div class="mx-10">
+          <v-file-input
+            v-model="thumbnail"
+            ref="Thumbnail"
+            id="Thumbnail"
+            accept="image/png, image/jpeg, image/bmp"
+            placeholder="Pick an Thumbnail"
+            prepend-icon="mdi-camera"
+            label="Thumbnail"
+            class="mb-5"
+          ></v-file-input>
         </div>
-        <v-row class="d-flex justify-content-center mt-5">
-          <v-btn accept="image/*" @click="onClickImageUpload"
-            >이미지 업로드</v-btn
-          >
-        </v-row>
-            </v-card-text>
-          </v-card>
-        </v-tab-item>
-        <v-tab-item>
-          <v-card flat>
-            <v-card-text>
-              <v-textarea outlined rows="10" name="content" label="내용" v-model="content"></v-textarea>
-              <div class="d-flex justify-content-end">
-                <v-btn @click="modify">수정하기</v-btn>
-              </div>
-            </v-card-text>
-          </v-card>
-        </v-tab-item>
-      </v-tabs>
-    </v-card>
-  </div>
+
+
+
+        <editor height="500px" id="editor" ref="toastuiEditor" > </editor> 
+        
+        <div id="editor"></div>
+
+        <div style="text-align:right">
+        
+          <v-btn class="ma-2" color="rgb(240, 162, 46)" @click="modifypost()">
+            수정하기
+          </v-btn>
+        </div>
+      </v-card>
+   </div>
+</div>
 </template>
+
 
 <script>
 import axios from "axios";
@@ -150,4 +132,37 @@ export default {
 </script>
 
 <style>
+.postupdatebg{
+    background: url('../../assets/login_bg.jpg') no-repeat;
+    width: 100%;
+    height: 18rem;
+    background-size: cover;
+    background-position: center;
+}
+
+.darkcover-img-bg{
+    background-color: rgba(0, 0, 0, 0.3);
+    /*살짝 투명한 검정으로 배경색*/
+    width: 100%;
+    height: 18rem;
+    position: absolute;
+}
+
+.postupdatebg_title_web{
+  position: absolute;
+  left: 44%;
+  top: 11rem;
+  color: white;
+  font-size: 2.7rem;
+  font-weight: bold;
+}
+
+.postupdatebg_title_mobile{
+  position: absolute;
+  left: 25%;
+  top: 11rem;
+  color: white;
+  font-size: 2.7rem;
+  font-weight: bold;
+}
 </style>
