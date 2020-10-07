@@ -12,7 +12,7 @@
 	</select>
 	
 	<select id="getDetailCulturePost" resultType="com.web.dictionary.dto.Culture">
-		SELECT culture.postno, culture.culturename, culture.content, culture.imageUrl,
+		SELECT culture.postno, culture.culturename, culture.content, culture.imageUrl,culture.category, culture.generation, culture.constructionperiod, culture.location, culture.lng, culture.lat,
 		(SELECT COUNT(*) FROM favoriteculture AS favorite WHERE favorite.postno = #{postno} AND favorite.userno = #{userno}) AS isfavorite
 		FROM culturepost AS culture
 		WHERE culture.postno = #{postno}
