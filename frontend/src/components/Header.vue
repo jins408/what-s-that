@@ -1,11 +1,12 @@
 <template>
-  <div>
+<div>
+  <div class="d-flex justify-content-end">
     <div class="header" v-if="mainpage">
       <div class="text-center mr-3 mt-2">
         <v-menu offset-y>
           <template v-slot:activator="{ on, attrs }">
             <v-btn
-              class="userbtn"
+              class="userbtn mt-2"
               v-bind="attrs"
               v-on="on"
               style="box-shadow: none; font-family: '국립박물관문화재단클래식B';"
@@ -53,6 +54,7 @@
         <v-menu offset-y>
           <template v-slot:activator="{ on, attrs }">
             <v-btn
+              class="mt-2"
               color="white"
               v-bind="attrs"
               v-on="on"
@@ -96,6 +98,7 @@
         </v-menu>
       </div>
     </div>
+  </div>
 
     <!-- 웹버전 -->
     <div class="d-none d-sm-block">
@@ -140,6 +143,8 @@
     </div>
   </div>
 </template>
+
+
 
 <script>
 import axios from "axios";
@@ -241,8 +246,6 @@ export default {
 <style scoped>
 .header{
   position: absolute;
-  right:1%;
-  top:1%;
   z-index: 5;
 }
 
