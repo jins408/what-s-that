@@ -105,15 +105,14 @@ export default {
         const kakaovue = this;
         Kakao.Auth.login({
           success: function(response){
-            alert(response.access_token);
             axios.get(kakaovue.$baseurl + `/user/kakaologin?access_token=${response.access_token}`)
               .then(res => {
                 alert("카카오로그인 성공");
                 kakaovue.$store.commit(USER_SUCCESS, res.data.object);
               })
               .finally(() => {
-                //  location.href="http://j3b202.p.ssafy.io/main"
-                 location.href="http://localhost:8080/dictionary/main"
+                 location.href="http://j3b202.p.ssafy.io/main"
+                //  location.href="http://localhost:8080/dictionary/main"
                 }
               )
             },
