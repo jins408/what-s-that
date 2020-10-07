@@ -263,7 +263,7 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           axios
-          .delete(`${this.$baseurl}/culture/${this.commentData.postno}`, {
+          .delete(`${this.$baseurl}/culture/admin/${this.commentData.postno}`, {
             headers: {
             Authorization: this.$store.state.user.token,
            },
