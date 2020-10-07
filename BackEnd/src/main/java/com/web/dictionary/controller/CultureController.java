@@ -282,9 +282,10 @@ public class CultureController {
                     res.append(c);
                 }
             }
-            if(!res.toString().equals(" ")) {
+            if(!res.toString().trim().equals("")) {
                 //정보 가져오기
                 result.object = cultureService.getCultureInfoByEName(res.toString());
+
                 response = new ResponseEntity(result,HttpStatus.OK);
             }else {
                 response = new ResponseEntity(result,HttpStatus.NOT_FOUND);
